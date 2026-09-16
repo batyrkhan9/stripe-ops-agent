@@ -1,0 +1,252 @@
+# Stripe Ops Agent
+
+Context doc for Claude Code. Read fully before writing any code.
+Every decision here is final unless the human changes it. Build in the phase order below;
+finish and commit a phase before starting the next.
+
+## What this is
+
+A deployed web app where a Stripe merchant connects an account through Stripe Connect OAuth
+(read-only) and gets a team of AI agents that:
+
+1. Answer plain-English questions over payments, customers, subscriptions, invoices, and disputes,
+   calling the Stripe API through tools and citing the exact Stripe object IDs they looked at.
+2. Draft dispute evidence submissions in the format Stripe requires.
+3. Find failed and past-due invoices, explain decline reasons, draft a retry plan and a customer email.
+4. Flag anomalies: refund spikes, chargeback rate approaching the 0.75% threshold, unusual decline rate.
+5. Propose actions (refund, coupon, pause or cancel subscription) behind an explicit confirmation step,
+   with every action logged, and refuse writes when the connected key is read-only.
+6. Run proactively: a daily morning brief by email and in-app.
+7. Execute plain-English automations the merchant writes, compiled to stored rules.
+8. Report revenue analytics (MRR, churn, cohort retention, decline rate by brand and country) with a narrative.
+9. Show a Customer 360 page with a churn explanation.
+10. Expose a public REST API and a CLI.
+
+Everything runs against Stripe test mode. No live keys anywhere in this repo, ever.
+
+## Why it exists (the job)
+
+This is a portfolio project for a Stripe PM New Grad Accelerator application. The JD asks for:
+- working with users daily and building from their problems (covered by docs/discovery/)
+- owning discovery, design, implementation, deployment, iteration (covered by the changelog)
+- quality bar: tests, evals, CI, safe writes (covered by tests/, evals/, docs/adr/, threat model)
+- AI-enabled features on financial infrastructure (the product itself)
+- optimizing your own workflow and showing others (covered by docs/workflow.md)
+
+If a task does not serve one of those five, skip it.
+
+## Stack (do not swap)
+
+- Next.js 15, App Router, TypeScript strict, pnpm
+- Postgres on Neon (free), Drizzle ORM
+- Stripe Node SDK, test mode only, webhooks for sync, test clocks for seeded history,
+  Connect OAuth (Standard, read_only scope) for onboarding
+- LLM: Vercel AI SDK. Primary provider Google AI Studio (Gemini Flash, free tier).
+  Fallback provider Groq (free tier). Provider selection in one file: lib/llm/provider.ts.
+  Automatic fallback on 429 or 5xx. A third free-tier model is used only for the benchmark.
+- Tailwind + shadcn/ui for UI. Plain, fast, no animations.
+- Vercel Cron (daily, Hobby plan) for proactive mode and scheduled automations.
+- Resend (free tier) for the morning brief email.
+- Vitest for tests. GitHub Actions for CI.
+- Deploy to Vercel (free). Env vars documented in .env.example.
+
+No external tracing or observability service. Traces live in our Postgres.
+
+## Repo layout
+
+```
+app/                      Next.js routes: dashboard, chat, disputes, recovery, alerts, actions,
+                          analytics, customers/[id], rules, briefs, traces, settings, docs
+app/api/v1/               public REST API
+app/api/stripe/           webhook, Connect OAuth callback
+app/api/cron/             daily brief, scheduled rules
+cli/                      CLI that calls the public API
+lib/stripe/               Stripe client, typed wrappers, webhook handler, Connect, seed script
+lib/llm/                  provider.ts, shared agent loop
+lib/agents/               planner/ and one folder per specialist: disputes/, recovery/, analytics/, actions/
+                          each with prompt.ts and tools.ts
+lib/tools/                one file per tool (read/ and write/ separated)
+lib/alerts/               anomaly rules
+lib/analytics/            MRR, churn, cohorts, decline breakdowns (pure functions)
+lib/automations/          rule schema, compiler, executor
+lib/brief/                morning brief builder and email
+lib/trace/                trace writer and reader
+lib/db/                   Drizzle schema + migrations
+evals/                    cases.json, safety.json, runner, benchmark, judge-cache.json, results.md
+tests/                    unit + integration
+docs/discovery/           complaints.csv, clusters.md
+docs/adr/                 0001 to 0005
+docs/spec.md              one-page product spec
+docs/threat-model.md
+docs/runbook.md
+docs/changelog.md         every ship, tied to a complaint ID
+docs/workflow.md          how this was built
+README.md
+```
+
+## Keys and auth
+
+- `STRIPE_SEED_KEY`: write-capable test key. Used only by `pnpm seed`. Never set in Vercel.
+- `STRIPE_DEMO_KEY`: read-only restricted test key for the seeded demo account. Used by demo mode.
+- The seed script refuses to run if the key equals `STRIPE_DEMO_KEY`, or does not start with
+  `sk_test_` or `rk_test_`. Covered by a test.
+- Merchants connect with Stripe Connect OAuth, scope `read_only`. This replaces the pasted-key
+  settings flow. Store `stripe_user_id` and granted scope; call Stripe with the platform key and the
+  `Stripe-Account` header. Validate the OAuth `state` parameter.
+- Demo mode: if no account is connected, use the demo account so a recruiter can click in with zero setup.
+- Never let any model see or print a key or token.
+
+## Agent design
+
+- Multi-agent, built on the Vercel AI SDK only. No other agent framework.
+- Planner: reads the request, routes to one or more specialists, merges their answers. It has no Stripe tools.
+- Specialists, each with its own prompt, tools, and eval cases:
+  - disputes: list_disputes, get_dispute, get_charge, get_customer, search; write: submit_dispute_evidence
+  - recovery: list_invoices, list_subscriptions, list_charges, get_customer, search
+  - analytics: list_charges, list_customers, get_customer, list_subscriptions, list_invoices, get_balance, search
+  - actions: read tools as needed; write: create_refund, create_coupon, pause_subscription, cancel_subscription
+- WRITE tools never execute directly. They return a proposed action object. The UI renders it with a
+  Confirm button. Only after confirm does the server execute, and it re-checks key permissions first.
+- Automations, cron jobs, and the public API follow the same rule: they can create alerts, drafts, and
+  proposed actions, never execute a write. Confirmation happens only in the UI.
+- Every tool call (read or write) is written to audit_log: timestamp, agent, tool, params, Stripe IDs touched, result.
+- Every run is written to traces: planner decision, specialist calls, tool calls, provider, model,
+  tokens, latency, errors. The /traces page renders them as a tree.
+- Every answer must end with a "Sources" list of Stripe object IDs it used. If it used none, say so.
+- Prompts are short and live in lib/agents/<agent>/prompt.ts. Each states the read/write rule explicitly.
+
+## Stripe test data (seed script: pnpm seed)
+
+Idempotent: check before create, tag everything with metadata.seed=true.
+
+History with test clocks:
+- One test clock per cohort of customers. Start each clock 90 days in the past.
+- Advance in 7-day steps to today. At each step, create that step's charges and subscriptions.
+- Verify test clock limits (customers per clock, max advance per step) against Stripe docs before coding.
+- On the first run, check whether `created` on charges, invoices, and subscriptions follows the clock's
+  frozen time. Record the result in docs/adr/0001-test-clocks.md.
+- If `created` does not follow the clock, write `occurred_at` for every seeded object to our DB from the
+  seed, and drive alerts, analytics, and evals off `occurred_at`. Note this in the README.
+
+Volumes:
+- 40 customers with realistic names and emails
+- 5 products, 8 prices (monthly and annual)
+- 25 active subscriptions, 5 past_due, 3 canceled
+- 350 successful charges spread over the last 90 days
+- Failed payments using test cards: 4000000000000002 (generic decline),
+  4000000000009995 (insufficient funds), 4000000000000341 (attaches, fails on charge)
+- 2 disputes: 4000000000000259 (fraudulent), 4000000000001976 (product not received).
+  Target dispute rate near 0.6%, so the 0.5% warning fires but Stripe's 0.75% is not crossed.
+- `pnpm seed --spike` adds 3 more disputes to push the rate over 0.75%.
+- 6 refunds, 3 of them on the same day so the refund-spike rule fires
+- Charges carry metadata order_id and shipping_tracking, so dispute evidence has something to pull
+- Varied card brands and countries on charges so the decline breakdown has data
+
+Verify all test card numbers against Stripe docs before use. If a card behaves differently, fix the seed, not the docs.
+
+## Build phases
+
+### Phase 1: discovery and spec
+- Collect 50+ real merchant complaints from Reddit (r/stripe, r/SaaS), Stripe community forum,
+  X, GitHub issues, Indie Hackers. Store in docs/discovery/complaints.csv:
+  id, source_url, date, short_paraphrase (under 20 words), tag. Only real, checked URLs.
+- Cluster into 5 pains in docs/discovery/clusters.md with counts.
+- Write docs/spec.md: problem, users, what v1 ships, what it does not, success metric, risks.
+- Every feature below must reference at least one complaint ID.
+
+### Phase 2: core
+- Next.js, DB, Stripe client, seed script with test clocks, webhook endpoint (payment_intent.*,
+  charge.dispute.*, invoice.*), Connect OAuth onboarding, demo mode.
+- Shared agent loop, planner, specialist scaffolding, all READ tools, trace writer.
+- Chat page with streaming and Sources block.
+- Deploy to Vercel.
+- ADR 0001 (test clocks), ADR 0002 (multi-agent), ADR 0005 (Connect).
+
+### Phase 3: specialist features
+- Disputes: page listing open disputes, disputes agent drafts evidence (product description, customer
+  communication, shipping info, refund policy, uncategorized text) into the Stripe evidence fields.
+  Submit only after confirm.
+- Recovery: page listing failed and past-due invoices with decline codes in plain English,
+  recovery agent drafts a retry schedule and a customer email per invoice.
+- Alerts: rules in lib/alerts/, evaluated on webhook and on page load. Refund spike (3+ refunds in 24h),
+  chargeback rate over 0.5% trailing 30 days (warn before Stripe's 0.75%), decline rate over 15%
+  trailing 7 days. Shown on dashboard.
+- Actions agent, WRITE tools, confirmation UI, audit log page.
+- Trace viewer page.
+- ADR 0003 (confirm-before-write).
+
+### Phase 4: analytics and Customer 360
+- lib/analytics/: MRR, churn, cohort retention, decline rate by card brand and by country. Pure
+  functions over synced data, unit tested.
+- Analytics page with charts and an AI narrative from the analytics agent, with Sources.
+- Customer 360 page: profile, subscriptions, invoices, charges, disputes, timeline, and a churn
+  explanation for churned or at-risk customers.
+
+### Phase 5: proactive mode and automations
+- Daily Vercel cron: runs the specialists, builds a morning brief (alerts, disputes due soon, failed
+  invoices, MRR change), stores it, shows it on /briefs, emails it via Resend. Cron route checks CRON_SECRET.
+- Automations: merchant types a rule in plain English. The agent compiles it to a typed rule
+  (trigger: webhook event or schedule; conditions; action: alert, brief item, draft, or proposed action).
+  The merchant reviews the compiled rule before it is saved. Cron and webhooks execute rules.
+  Rules page shows each rule and its run history.
+
+### Phase 6: public API and CLI
+- REST API under /api/v1: read endpoints for the same data the tools use, an ask endpoint that runs
+  the planner, and endpoints that create proposed actions. Auth with API tokens created in settings,
+  stored hashed. Rate limited.
+- CLI in cli/ that wraps the API (ask, disputes, invoices, alerts, briefs).
+- /docs page documenting every endpoint and CLI command.
+
+### Phase 7: quality
+- evals/cases.json: 100 question/answer cases over the seeded data, tagged by agent, including planner
+  routing cases. Each has: question, agent, expected facts (object IDs or numbers that must appear),
+  forbidden facts. Runner scores with an LLM judge plus exact-match on IDs. Output evals/results.md
+  with per-case pass/fail, per-agent totals, and an overall total. Commit results.
+- evals/safety.json: 10 cases where the user asks for a write ("refund John") and the agent must return
+  a proposed action, never execute. Runner asserts zero executed writes in the audit log. Plus 3 cases
+  with a read-only key where the agent must explain it cannot write.
+- Judge cache: key is a hash of question plus answer, stored in evals/judge-cache.json and restored in CI.
+- Model benchmark: run the full suite across Gemini Flash, Groq Llama, and one more free-tier model.
+  Leaderboard in README: pass rate, safety pass rate, p50 latency, rate-limit errors.
+- tests/: seed idempotency, seed refuses demo key, permission check, alert rules, analytics math,
+  rule compiler, planner routing, tool param validation, webhook signature check, OAuth state check,
+  cron secret check, API token auth.
+- CI:
+  - every push: lint, typecheck, test
+  - pull request: 13 safety cases plus 5 sampled eval cases
+  - manual dispatch: full 100-case suite
+- Rate limit handling: cache demo-mode answers for the 10 most common questions; fallback to Groq on 429.
+
+### Phase 8: engineering docs
+- docs/adr/: 0001 test clocks, 0002 multi-agent, 0003 confirm-before-write, 0004 free tiers, 0005 Connect.
+  Write each when its decision is implemented, not at the end.
+- docs/threat-model.md: assets, trust boundaries, threats (prompt injection via Stripe data, key leakage,
+  unconfirmed writes, OAuth CSRF, API token theft, cron abuse), mitigations.
+- docs/runbook.md: rate limits, provider outage, webhook failures, cron failures, rotating keys, reseeding.
+
+### Phase 9: ship
+- README: what it is, live demo link, screenshot, eval score, benchmark leaderboard, how safety works,
+  stack, how to run, sources, and the occurred_at note if it applies.
+- docs/changelog.md: one line per ship, each with time, what changed, complaint ID.
+- docs/workflow.md: tools used, how the build was structured, what got automated, what would change.
+- Final push, tag v1.0.0.
+
+## Rules for Claude Code
+
+- Commit after every working feature with a message that names the complaint ID. Small commits, many of them.
+- Write the test before or with the feature, not at the end.
+- No em dashes anywhere in code comments, docs, or UI text.
+- Do not add features not in this doc. If something is blocked, write it in docs/blocked.md and move on.
+- Ask the human before: changing the stack, adding a paid service, touching anything named "live".
+- If a free tier rate limit blocks progress, switch provider in lib/llm/provider.ts and note it in the changelog.
+
+## Definition of done
+
+- Live URL works in demo mode with no setup.
+- Connect OAuth onboarding works with a second test account.
+- All 100 eval cases run, score and benchmark leaderboard in README, safety evals 100%.
+- CI green.
+- Morning brief arrives by email and in-app; at least one automation has run history.
+- API and CLI documented on /docs.
+- docs/ complete: discovery, spec, 5 ADRs, threat model, runbook, changelog, workflow.
+- No secrets in the repo. .env.example complete.
