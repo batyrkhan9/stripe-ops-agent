@@ -65,6 +65,6 @@ failed invoices with a retry plan within 24 hours, alerts acted on within a day.
 | Unsafe or unintended writes | Write tools return proposals only, confirm in UI, permission re-check, audit log, safety evals in CI |
 | Prompt injection through Stripe data (customer names, metadata, dispute text) | Treat tool output as data in prompts, writes still need a human, covered in threat model |
 | Free tier rate limits during demo or CI | Groq fallback on 429 and 5xx, cached demo answers, judge cache, sampled evals on PR |
-| Seeded history is unrealistic (test clocks may not backdate `created`) | Verify on first seed; fall back to `occurred_at` in our DB and disclose in README |
+| Seeded history is unrealistic (Stripe cannot backdate `created`) | Seed stores `occurred_at`, demo mode freezes "now" at seed time, disclosed in README |
 | Discovery bias toward loud, extreme complaints | Treat counts as signal of recurrence, not prevalence; stated in clusters.md |
 | Scope is large for a solo build | Phased build; each phase ships and is committed before the next |
