@@ -409,6 +409,11 @@
   "reason": "The answer is empty and does not provide the requested tracking number.",
   "model": "gemini-3.1-flash-lite"
  },
+ "7cc492bec64c77ed5e58985a4502bdeffbe329771260277064c6242ce9194c7f": {
+  "verdict": "pass",
+  "reason": "The answer correctly states that Camila Torres's disputed charge has order ID KC-10300.",
+  "model": "openai/gpt-oss-20b"
+ },
  "7d22053e3480f46ad2abcc70b80cc867b59c25a809524957be662629e2af4431": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the next retry date as Sep 19.",
