@@ -127,3 +127,38 @@ export const alertEvents = pgTable(
   },
   (table) => [uniqueIndex("alert_events_account_rule_day").on(table.accountId, table.rule, table.dayKey)],
 );
+
+// Writes proposed by an agent or a page (ADR 0003). Nothing in Stripe changes until a merchant confirms in the UI;
+// status moves proposed -> executing -> executed or failed, or proposed -> canceled. The executing step is claimed
+// with a conditional update so a double click cannot run a write twice.
+export const proposedActions = pgTable("proposed_actions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  accountId: text("account_id").notNull(),
+  connectionId: uuid("connection_id"),
+  mode: text("mode").notNull(),
+  agent: text("agent").notNull(),
+  tool: text("tool").notNull(),
+  permission: text("permission").notNull(),
+  params: jsonb("params").notNull(),
+  summary: text("summary").notNull(),
+  details: text("details").array().notNull().default(sql`'{}'::text[]`),
+  confirmLabel: text("confirm_label").notNull(),
+  targetIds: text("target_ids").array().notNull().default(sql`'{}'::text[]`),
+  status: text("status").notNull().default("proposed"),
+  decidedAt: timestamp("decided_at", { withTimezone: true }),
+  result: jsonb("result"),
+  error: text("error"),
+});
+
+// Agent drafts a merchant edits before using: dispute evidence and recovery emails. Never sent by themselves.
+export const drafts = pgTable("drafts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  accountId: text("account_id").notNull(),
+  kind: text("kind").notNull(),
+  targetId: text("target_id").notNull(),
+  content: jsonb("content").notNull(),
+  provider: text("provider"),
+  modelId: text("model_id"),
+});

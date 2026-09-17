@@ -11,11 +11,13 @@ import {
   type ToolSet,
 } from "ai";
 import type Stripe from "stripe";
+import { proposeWrite, type ProposeContext, type ProposeOutput } from "@/lib/actions/propose";
 import { PROVIDER_OPTIONS, type ServedBy } from "@/lib/llm/provider";
 import { CARD_PAGE, PAGES, type Card, type CardsOutput, type NextAction } from "@/lib/cards/types";
 import { PRESENT_TOOLS } from "@/lib/tools/present";
 import { alertRulesForQuestion } from "@/lib/tools/present/show-alerts";
 import { READ_TOOLS } from "@/lib/tools/read";
+import { isWriteToolName, WRITE_TOOLS } from "@/lib/tools/write";
 import { executeReadTool, type AuditRecord, type ToolContext } from "@/lib/tools/types";
 import type { Span } from "@/lib/trace/recorder";
 import { TraceRecorder } from "@/lib/trace/recorder";
@@ -36,6 +38,8 @@ export type RunDeps = {
   // Model for the forced finish_answer call. Defaults to model.
   finishModel?: (onServed: (served: ServedBy) => void) => LanguageModelV4;
   audit: (record: AuditRecord) => Promise<void>;
+  // Where write tool calls store their proposals (ADR 0003). Nothing in here can execute a write.
+  writes: Pick<ProposeContext, "accountId" | "connectionId" | "permissions" | "saveProposal">;
   saveRun: (run: {
     runId: string;
     accountId: string;
@@ -55,9 +59,30 @@ const MAX_STEPS = 6;
 
 const ALL_TOOLS = { ...READ_TOOLS, ...PRESENT_TOOLS };
 
-export function buildTools(names: readonly AgentToolName[], ctx: ToolContext): ToolSet {
+type WriteBinding = Omit<ProposeContext, "stripe" | "now" | "agent" | "audit">;
+
+export function buildTools(names: readonly AgentToolName[], ctx: ToolContext, writes?: WriteBinding): ToolSet {
   return Object.fromEntries(
     names.map((name) => {
+      if (isWriteToolName(name)) {
+        const definition = WRITE_TOOLS[name];
+        return [
+          name,
+          tool({
+            description: definition.description,
+            inputSchema: definition.input,
+            // Proposes only. With no write binding the call is refused, so a misconfigured run cannot write either.
+            execute: async (input: unknown) => {
+              const started = Date.now();
+              const output: ProposeOutput = writes
+                ? await proposeWrite(definition, input, { ...writes, stripe: ctx.stripe, now: ctx.now, agent: ctx.agent, audit: ctx.audit })
+                : { status: "refused", reason: "read_only_key", message: "Writes are not available here." };
+              ctx.onToolResult?.({ tool: name, params: input, output, stripeIds: output.status === "proposed" ? output.target_ids : [], ok: output.status === "proposed", ms: Date.now() - started });
+              return output;
+            },
+          }),
+        ];
+      }
       const definition = ALL_TOOLS[name];
       return [
         name,
@@ -69,6 +94,20 @@ export function buildTools(names: readonly AgentToolName[], ctx: ToolContext): T
       ];
     }),
   );
+}
+
+export function actionCard(proposal: Extract<ProposeOutput, { status: "proposed" }>): Card {
+  return {
+    kind: "action",
+    id: proposal.proposal_id,
+    title: proposal.summary,
+    amount: "",
+    status: proposal.demo ? "Demo, cannot be confirmed" : "Waiting for confirmation",
+    details: proposal.details,
+    note: proposal.demo ? "Nothing changed. The demo account is read-only." : "Nothing has changed yet.",
+    urgent: false,
+    action: { label: "Review and confirm", href: `/actions?proposal=${proposal.proposal_id}#${proposal.proposal_id}` },
+  };
 }
 
 const OPEN_DISPUTE = /needs_response|under_review/;
@@ -114,6 +153,7 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
   const toolsCalled: string[] = [];
   const cardIds: string[] = [];
   let shownCardKind: Card["kind"] | null = null;
+  const writeBinding: WriteBinding = { ...deps.writes, mode: deps.mode };
   const declaredIds: string[] = [];
   let plan: Plan | null = null;
   let sources: Sources | null = null;
@@ -143,6 +183,7 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
           let llmStarted = Date.now();
 
           const cardSource: string[] = [];
+          const proposalCards: Card[] = [];
           const ctx: ToolContext = {
             stripe: deps.stripe,
             agent,
@@ -151,6 +192,11 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
             onToolResult: (result) => {
               toolsCalled.push(result.tool);
               result.stripeIds.forEach((id) => toolIds.add(id));
+              if (result.ok && isWriteToolName(result.tool)) {
+                const proposal = result.output as Extract<ProposeOutput, { status: "proposed" }>;
+                proposalCards.push(actionCard(proposal));
+                cardIds.push(...proposal.target_ids);
+              }
               if (result.ok && (specialist.cards === "disputes" || specialist.cards === "invoices")) {
                 cardSource.push(...cardIdsFrom(specialist.cards, result.tool, result.output));
               }
@@ -173,7 +219,7 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
             }),
             instructions: `${specialist.prompt}\n\n${sharedRules({ now: deps.now, mode: deps.mode })}`,
             messages: modelMessages,
-            tools: buildTools(specialist.tools, ctx),
+            tools: buildTools(specialist.tools, ctx, writeBinding),
             stopWhen: isStepCount(MAX_STEPS),
             // The last step cannot call tools, so the specialist always ends with an answer.
             prepareStep: ({ stepNumber }) => (stepNumber >= MAX_STEPS - 1 ? { toolChoice: "none" as const } : undefined),
@@ -214,6 +260,11 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
 
           // Cards are built by code from what the specialist looked up. Asking the model to call show_* tools
           // was unreliable: gpt-oss wrote the calls into the answer as text (evals/format-results.md).
+          if (proposalCards.length) {
+            // Proposals come first: they are what the merchant asked for.
+            shownCardKind ??= "action";
+            writer.write({ type: "data-cards", data: { cards: proposalCards } });
+          }
           const ids = [...new Set(cardSource)].slice(0, 10);
           const alertRules = specialist.cards === "alerts" ? alertRulesForQuestion(question) : [];
           if (alertRules.length) {
@@ -295,7 +346,9 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
         }
       }
 
-      sources = buildSources({ answer, toolIds, toolsCalled, cardIds, declaredIds });
+      // With cards or proposals shown, Sources cite exactly their objects. The finish model's declared IDs are used
+      // only for freeform answers: it once cited a different charge of the same customer than the refund proposed.
+      sources = buildSources({ answer, toolIds, toolsCalled, cardIds, declaredIds: cardIds.length ? [] : declaredIds });
       writer.write({ type: "data-sources", data: sources });
       writer.write({ type: "finish" });
     },

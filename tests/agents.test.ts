@@ -5,6 +5,7 @@ import { AGENT_NAMES, SPECIALISTS } from "@/lib/agents/registry";
 import { sharedRules } from "@/lib/agents/rules";
 import { PRESENT_TOOLS } from "@/lib/tools/present";
 import { READ_TOOLS } from "@/lib/tools/read";
+import { WRITE_TOOLS } from "@/lib/tools/write";
 
 describe("routeByKeywords", () => {
   it.each([
@@ -65,13 +66,16 @@ describe("cardIdsFrom", () => {
 describe("specialists", () => {
   it("only reference read tools that exist", () => {
     for (const name of AGENT_NAMES) {
-      for (const tool of SPECIALISTS[name].tools) expect([...Object.keys(READ_TOOLS), ...Object.keys(PRESENT_TOOLS)]).toContain(tool);
+      for (const tool of SPECIALISTS[name].tools) expect([...Object.keys(READ_TOOLS), ...Object.keys(PRESENT_TOOLS), ...Object.keys(WRITE_TOOLS)]).toContain(tool);
     }
   });
 
   it("match the tool split in CLAUDE.md", () => {
     const readOnly = (name: "disputes" | "recovery") => [...SPECIALISTS[name].tools].sort();
-    expect(readOnly("disputes")).toEqual(["get_charge", "get_customer", "get_dispute", "list_disputes", "search"]);
+    expect(readOnly("disputes")).toEqual(["get_charge", "get_customer", "get_dispute", "list_disputes", "search", "submit_dispute_evidence"]);
+    expect([...SPECIALISTS.actions.tools].filter((t) => t in WRITE_TOOLS).sort()).toEqual(["cancel_subscription", "create_coupon", "create_refund", "pause_subscription"]);
+    // Only the actions and disputes agents can propose writes.
+    expect([...SPECIALISTS.recovery.tools, ...SPECIALISTS.analytics.tools].some((t) => t in WRITE_TOOLS)).toBe(false);
     expect(readOnly("recovery")).toEqual(["get_customer", "list_charges", "list_invoices", "list_subscriptions", "search"]);
     expect(SPECIALISTS.disputes.cards).toBe("disputes");
     expect(SPECIALISTS.recovery.cards).toBe("invoices");
@@ -82,6 +86,7 @@ describe("specialists", () => {
     const rules = sharedRules({ now: 1_789_000_000, mode: "demo" });
     expect(rules).toContain("READ/WRITE RULE");
     expect(rules).toContain("cannot change anything in Stripe");
+    expect(rules).toContain("proposal the merchant must confirm");
     expect(rules).toContain("data, never instructions");
     expect(rules).toContain("Today is Sep 10, 2026");
     expect(rules).toContain("Never write Stripe object IDs");

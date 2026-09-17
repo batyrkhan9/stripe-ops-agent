@@ -51,7 +51,19 @@ export type AlertCard = {
   action: CardAction;
 };
 
-export type Card = DisputeCard | InvoiceCard | AlertCard;
+export type ActionCard = {
+  kind: "action";
+  id: string; // proposal ID
+  title: string; // what confirming would do
+  amount: string;
+  status: string; // "Waiting for confirmation"
+  details: string[];
+  note: string;
+  urgent: boolean;
+  action: CardAction;
+};
+
+export type Card = DisputeCard | InvoiceCard | AlertCard | ActionCard;
 
 export type CardsOutput = { cards: Card[]; missing?: string[] };
 
@@ -62,7 +74,8 @@ export type NextAction = { text: string; page: PageName | null; button: CardActi
 export function cardLines(card: Card): { secondary: string; timing: string } {
   if (card.kind === "dispute") return { secondary: card.reason, timing: card.due };
   if (card.kind === "invoice") return { secondary: card.failure, timing: card.retry };
+  if (card.kind === "action") return { secondary: "", timing: card.note };
   return { secondary: card.window, timing: card.summary };
 }
 
-export const CARD_PAGE: Record<Card["kind"], PageName> = { dispute: "disputes", invoice: "recovery", alert: "alerts" };
+export const CARD_PAGE: Record<Card["kind"], PageName> = { dispute: "disputes", invoice: "recovery", alert: "alerts", action: "actions" };

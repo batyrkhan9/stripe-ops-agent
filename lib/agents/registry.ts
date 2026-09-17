@@ -1,5 +1,6 @@
 import type { PresentToolName } from "@/lib/tools/present";
 import type { ReadToolName } from "@/lib/tools/read";
+import type { WriteToolName } from "@/lib/tools/write";
 import { ACTIONS_PROMPT } from "./actions/prompt";
 import { ACTIONS_TOOLS } from "./actions/tools";
 import { ANALYTICS_PROMPT } from "./analytics/prompt";
@@ -12,7 +13,7 @@ import { RECOVERY_TOOLS } from "./recovery/tools";
 export const AGENT_NAMES = ["disputes", "recovery", "analytics", "actions"] as const;
 export type AgentName = (typeof AGENT_NAMES)[number];
 
-export type AgentToolName = ReadToolName | PresentToolName;
+export type AgentToolName = ReadToolName | PresentToolName | WriteToolName;
 
 // cards: which objects the run renders as cards after the answer, built by code from the specialist's tool results.
 export const SPECIALISTS: Record<AgentName, { prompt: string; tools: readonly AgentToolName[]; summary: string; cards: "disputes" | "invoices" | "alerts" | null }> = {
