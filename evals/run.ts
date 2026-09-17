@@ -60,12 +60,41 @@ async function runCase(testCase: EvalCase, anchor: number, cache: JudgeCache): P
   const { agent, finish } = models();
   const failures: string[] = [];
   const modelsUsed = new Set<string>();
-  const track = (factory: ModelFactory): ModelFactory => (onServed) =>
-    factory((s) => {
+  let waitedMs = 0;
+  // Records the HTTP status of every call that failed outright. With a single model there is no fallback, so
+  // without this a rate limit would look like the model giving no answer.
+  // Per-minute limits are waited out and retried inside the case (up to 3 times), so a single model is measured on
+  // its answers, not on how fast one answer's calls arrive. Each wait still counts as a rate-limit error.
+  // Daily limits are not retried here; the case is left for a later resume.
+  const withRetry = async <T>(call: () => PromiseLike<T>): Promise<T> => {
+    for (let attempt = 1; ; attempt++) {
+      try {
+        return await call();
+      } catch (error) {
+        const status = (error as { statusCode?: number }).statusCode;
+        const message = error instanceof Error ? error.message : String(error);
+        failures.push(`${status ?? "no status"}: ${message.slice(0, 160)}`);
+        const daily = /per day|\bTPD\b|\bRPD\b/i.test(message);
+        if (status !== 429 || daily || attempt > 3) throw error;
+        const hinted = Number(message.match(/try again in ([\d.]+)s/)?.[1]);
+        const wait = Math.min(Number.isFinite(hinted) ? hinted * 1000 + 1000 : 20_000, 65_000);
+        waitedMs += wait;
+        await new Promise((r) => setTimeout(r, wait));
+      }
+    }
+  };
+  const track = (factory: ModelFactory): ModelFactory => (onServed) => {
+    const model = factory((s) => {
       failures.push(...s.failures);
       modelsUsed.add(s.modelId);
       onServed(s);
     });
+    return {
+      ...model,
+      doGenerate: (options) => withRetry(() => model.doGenerate(options)),
+      doStream: (options) => withRetry(() => model.doStream(options)),
+    };
+  };
   const started = Date.now();
   const base = {
     id: testCase.id,
@@ -75,7 +104,10 @@ async function runCase(testCase: EvalCase, anchor: number, cache: JudgeCache): P
     finishedAt: "",
   };
   const messages: AgentUIMessage[] = [{ id: "q", role: "user", parts: [{ type: "text", text: testCase.question }] }];
-  const rateLimits = () => failures.filter((f) => /429|413/.test(f)).length;
+  const rateLimits = () => failures.filter((f) => /\b(429|413)\b|rate limit|quota|too large/i.test(f)).length;
+  // A 429 can clear later, so the case reruns on resume. A 413 (one request over the per-minute token limit) cannot
+  // succeed on retry, so the case stays failed and the error is counted.
+  const retryable = () => failures.some((f) => /\b429\b|rate limit|quota/i.test(f) && !/\b413\b|too large/i.test(f));
 
   if (testCase.kind === "routing") {
     const plan = await planRoute(track(agent)(() => undefined), await convertToModelMessages(messages), testCase.question);
@@ -91,7 +123,8 @@ async function runCase(testCase: EvalCase, anchor: number, cache: JudgeCache): P
       stripeWrites: [],
       models: [...modelsUsed],
       rateLimitErrors: rateLimits() + (limited ? 1 : 0),
-      latencyMs: Date.now() - started,
+      // Time spent waiting out rate limits is not the model's latency.
+    latencyMs: Date.now() - started - waitedMs,
       error: plan.source === "keywords" ? `planner fell back to keywords: ${plan.error ?? plan.reason}` : undefined,
       finishedAt: new Date().toISOString(),
     };
@@ -144,7 +177,8 @@ async function runCase(testCase: EvalCase, anchor: number, cache: JudgeCache): P
 
   let judgeResult: CaseResult["judge"];
   let status: CaseResult["status"] = checks.every((c) => c.pass) ? "pass" : "fail";
-  if (noAnswer && limited > 0) status = "rate_limited";
+  if (noAnswer && retryable()) status = "rate_limited";
+  else if (noAnswer && limited > 0) checks.push({ check: "provider_limit", pass: false, detail: failures.at(-1)?.slice(0, 160) });
   else if (testCase.kind !== "safety") {
     const verdict = await judge(testCase, shown, cache);
     if ("error" in verdict) {
@@ -167,8 +201,9 @@ async function runCase(testCase: EvalCase, anchor: number, cache: JudgeCache): P
     judge: judgeResult,
     models: [...modelsUsed],
     rateLimitErrors: limited,
-    latencyMs: Date.now() - started,
-    error: runError,
+    // Time spent waiting out rate limits is not the model's latency.
+    latencyMs: Date.now() - started - waitedMs,
+    error: [runError, ...failures.slice(-2)].filter(Boolean).join(" | ").slice(0, 400) || undefined,
     finishedAt: new Date().toISOString(),
   };
 }
