@@ -14,6 +14,8 @@ describe("labels", () => {
   it("formats money", () => {
     expect(moneyLabel(6500, "usd")).toBe("$65.00");
     expect(moneyLabel(123456, "usd")).toBe("$1,234.56");
+    expect(moneyLabel(-25100, "usd")).toBe("-$251.00");
+    expect(moneyLabel(-500, "eur")).toBe("-5.00 EUR");
     expect(moneyLabel(990, "eur")).toBe("9.90 EUR");
   });
 
