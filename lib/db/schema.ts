@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { boolean, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import type { KeyPermissions } from "@/lib/stripe/permissions";
 
 export const auditLog = pgTable("audit_log", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -10,6 +11,19 @@ export const auditLog = pgTable("audit_log", {
   params: jsonb("params").notNull(),
   stripeIds: text("stripe_ids").array().notNull().default(sql`'{}'::text[]`),
   result: jsonb("result"),
+});
+
+// A merchant's pasted restricted key (ADR 0005). The key is encrypted at rest and cleared on disconnect.
+// The browser holds only a signed connection ID cookie.
+export const connections = pgTable("connections", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  keyCiphertext: text("key_ciphertext"),
+  keyLast4: text("key_last4").notNull(),
+  accountId: text("account_id"),
+  permissions: jsonb("permissions").$type<KeyPermissions>().notNull(),
+  checkedAt: timestamp("checked_at", { withTimezone: true }).notNull(),
+  disconnectedAt: timestamp("disconnected_at", { withTimezone: true }),
 });
 
 // Verified webhook events, deduplicated by Stripe event ID. account_id is null for events on the

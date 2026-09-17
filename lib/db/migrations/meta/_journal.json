@@ -22,6 +22,13 @@
       "when": 1789620982108,
       "tag": "0002_stripe_events",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789622798232,
+      "tag": "0003_connections",
+      "breakpoints": true
     }
   ]
 }

@@ -6,8 +6,8 @@ finish and commit a phase before starting the next.
 
 ## What this is
 
-A deployed web app where a Stripe merchant connects an account through Stripe Connect OAuth
-(read-only) and gets a team of AI agents that:
+A deployed web app where a Stripe merchant connects a test account by pasting a restricted key
+(read-only unless they grant writes) and gets a team of AI agents that:
 
 1. Answer plain-English questions over payments, customers, subscriptions, invoices, and disputes,
    calling the Stripe API through tools and citing the exact Stripe object IDs they looked at.
@@ -40,7 +40,7 @@ If a task does not serve one of those five, skip it.
 - Next.js 15, App Router, TypeScript strict, pnpm
 - Postgres on Neon (free), Drizzle ORM
 - Stripe Node SDK, test mode only, webhooks for sync, seeded history dated via `occurred_at`,
-  Connect OAuth (Standard, read_only scope) for onboarding
+  restricted keys pasted by the merchant for onboarding (not Connect OAuth, see ADR 0005)
 - LLM: Vercel AI SDK. Primary provider Google AI Studio (Gemini Flash, free tier).
   Fallback provider Groq (free tier). Provider selection in one file: lib/llm/provider.ts.
   Automatic fallback on 429 or 5xx. A third free-tier model is used only for the benchmark.
@@ -58,10 +58,11 @@ No external tracing or observability service. Traces live in our Postgres.
 app/                      Next.js routes: dashboard, chat, disputes, recovery, alerts, actions,
                           analytics, customers/[id], rules, briefs, traces, settings, docs
 app/api/v1/               public REST API
-app/api/stripe/           webhook, Connect OAuth callback
+app/api/stripe/           webhook
 app/api/cron/             daily brief, scheduled rules
 cli/                      CLI that calls the public API
-lib/stripe/               Stripe client, typed wrappers, webhook handler, Connect, seed script
+lib/stripe/               Stripe client, typed wrappers, webhook handler, key permissions, account resolution, seed
+lib/crypto/               encryption for stored keys, cookie signing
 lib/llm/                  provider.ts, shared agent loop
 lib/agents/               planner/ and one folder per specialist: disputes/, recovery/, analytics/, actions/
                           each with prompt.ts and tools.ts
@@ -91,11 +92,20 @@ README.md
 - `STRIPE_DEMO_KEY`: read-only restricted test key for the seeded demo account. Used by demo mode.
 - The seed script refuses to run if the key equals `STRIPE_DEMO_KEY`, or does not start with
   `sk_test_` or `rk_test_`. Covered by a test.
-- Merchants connect with Stripe Connect OAuth, scope `read_only` by default. This replaces the
-  pasted-key settings flow. Store `stripe_user_id` and granted scope; call Stripe with the platform
-  key and the `Stripe-Account` header. Validate the OAuth `state` parameter.
-- Writes are opt-in: a merchant can reconnect with scope `read_write` from settings. Confirmed writes
-  execute only when the stored scope is `read_write`. Demo mode and `read_only` accounts always refuse.
+- Merchants connect by pasting a restricted test key (`rk_test_`) on /settings (ADR 0005). Connect OAuth
+  was dropped: Stripe allows `read_only` scope only for Extensions, and the token exchange needs the
+  platform's full secret key on the server. Full secret keys and live keys are refused.
+- On save, lib/stripe/permissions.ts probes the key without changing data: reads by listing, writes by
+  calls that must fail with 404 or 400 when permitted and 403 when not. Keys missing any read the tools
+  need are rejected. Write permissions are stored per resource (refunds, coupons, subscriptions, disputes).
+- The key is stored AES-256-GCM encrypted (`KEY_ENCRYPTION_SECRET`) and cleared on disconnect. The browser
+  holds only an HMAC-signed connection ID cookie (`SESSION_SECRET`), HttpOnly, SameSite=Lax.
+- lib/stripe/account.ts `resolveAccount` is the only place that picks the Stripe client for a request.
+  Anything that does not check out falls back to the read-only demo account.
+- Writes are opt-in by granting write permissions on the key. Confirmed writes execute only if the stored
+  permission for that resource is true and a fresh probe still agrees. Demo mode always refuses.
+- Connected accounts do not send webhooks to us (the key cannot register endpoints read-only), so their
+  alerts are evaluated on page load and by cron. Webhooks cover the demo account.
 - Demo mode: if no account is connected, use the demo account so a recruiter can click in with zero setup.
 - Never let any model see or print a key or token.
 
@@ -170,11 +180,11 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 
 ### Phase 2: core
 - Next.js, DB, Stripe client, seed script, webhook endpoint (payment_intent.*,
-  charge.dispute.*, invoice.*), Connect OAuth onboarding, demo mode.
+  charge.dispute.*, invoice.*), key paste onboarding with permission check, demo mode.
 - Shared agent loop, planner, specialist scaffolding, all READ tools, trace writer.
 - Chat page with streaming and Sources block.
 - Deploy to Vercel.
-- ADR 0001 (test clocks), ADR 0002 (multi-agent), ADR 0005 (Connect).
+- ADR 0001 (test clocks), ADR 0002 (multi-agent), ADR 0005 (restricted keys instead of Connect OAuth).
 
 ### Phase 3: specialist features
 - Disputes: page listing open disputes, disputes agent drafts evidence (product description, customer
@@ -226,7 +236,8 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 - Model benchmark: run the full suite across Gemini Flash, Groq Llama, and one more free-tier model.
   Leaderboard in README: pass rate, safety pass rate, p50 latency, rate-limit errors.
 - tests/: seed idempotency, seed refuses demo key, permission check, alert rules, analytics math,
-  rule compiler, planner routing, tool param validation, webhook signature check, OAuth state check,
+  rule compiler, planner routing, tool param validation, webhook signature check, key permission probes,
+  key encryption and cookie signing, account resolution,
   cron secret check, API token auth.
 - CI:
   - every push: lint, typecheck, test
@@ -235,10 +246,10 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 - Rate limit handling: cache demo-mode answers for the 10 most common questions; fallback to Groq on 429.
 
 ### Phase 8: engineering docs
-- docs/adr/: 0001 test clocks, 0002 multi-agent, 0003 confirm-before-write, 0004 free tiers, 0005 Connect.
+- docs/adr/: 0001 test clocks, 0002 multi-agent, 0003 confirm-before-write, 0004 free tiers, 0005 restricted keys instead of Connect OAuth.
   Write each when its decision is implemented, not at the end.
 - docs/threat-model.md: assets, trust boundaries, threats (prompt injection via Stripe data, key leakage,
-  unconfirmed writes, OAuth CSRF, API token theft, cron abuse), mitigations.
+  unconfirmed writes, stored merchant key theft, forged session cookie, API token theft, cron abuse), mitigations.
 - docs/runbook.md: rate limits, provider outage, webhook failures, cron failures, rotating keys, reseeding.
 
 ### Phase 9: ship
@@ -266,7 +277,7 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 ## Definition of done
 
 - Live URL works in demo mode with no setup.
-- Connect OAuth onboarding works with a second test account, read_only and read_write.
+- Key paste onboarding works with a second test account, with a read-only key and with a write key.
 - All 100 eval cases run, score and benchmark leaderboard in README, safety evals 100%.
 - CI green.
 - Morning brief arrives by email and in-app; at least one automation has run history.
