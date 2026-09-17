@@ -6,7 +6,7 @@ import { visibleAnswerText } from "@/lib/agents/present";
 import { runAgentChat } from "@/lib/agents/run";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
 import type { Sources } from "@/lib/agents/sources";
-import type { Card, NextAction } from "@/lib/cards/types";
+import { cardLines, type Card, type NextAction } from "@/lib/cards/types";
 import { createDb } from "@/lib/db/client";
 import { auditLog, seedRuns } from "@/lib/db/schema";
 import { agentModel, finishModel } from "@/lib/llm/provider";
@@ -112,7 +112,7 @@ async function main() {
       "```",
       ...(r.rawText !== r.answer.text ? ["", "Model text before rendering:", "", "```text", r.rawText, "```"] : []),
       "",
-      `Cards: ${r.answer.cards.map((c) => `${c.title} ${c.amount}${c.kind === "dispute" ? ` ${c.due}` : ` ${c.failure}`}`).join("; ") || "none"}`,
+      `Cards: ${r.answer.cards.map((c) => `${c.title} ${c.amount} ${c.kind === "dispute" ? c.due : cardLines(c).secondary}`).join("; ") || "none"}`,
       "",
       `Next action: ${r.answer.nextAction ? `${r.answer.nextAction.text}${r.answer.nextAction.button ? ` [${r.answer.nextAction.button.label}]` : ""}` : "none"}`,
     ]),

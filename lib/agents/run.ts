@@ -12,8 +12,9 @@ import {
 } from "ai";
 import type Stripe from "stripe";
 import { PROVIDER_OPTIONS, type ServedBy } from "@/lib/llm/provider";
-import { PAGES, type CardsOutput, type NextAction } from "@/lib/cards/types";
+import { CARD_PAGE, PAGES, type Card, type CardsOutput, type NextAction } from "@/lib/cards/types";
 import { PRESENT_TOOLS } from "@/lib/tools/present";
+import { alertRulesForQuestion } from "@/lib/tools/present/show-alerts";
 import { READ_TOOLS } from "@/lib/tools/read";
 import { executeReadTool, type AuditRecord, type ToolContext } from "@/lib/tools/types";
 import type { Span } from "@/lib/trace/recorder";
@@ -112,7 +113,7 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
   const toolIds = new Set<string>();
   const toolsCalled: string[] = [];
   const cardIds: string[] = [];
-  let shownCardKind: "dispute" | "invoice" | null = null;
+  let shownCardKind: Card["kind"] | null = null;
   const declaredIds: string[] = [];
   let plan: Plan | null = null;
   let sources: Sources | null = null;
@@ -150,7 +151,9 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
             onToolResult: (result) => {
               toolsCalled.push(result.tool);
               result.stripeIds.forEach((id) => toolIds.add(id));
-              if (result.ok && specialist.cards) cardSource.push(...cardIdsFrom(specialist.cards, result.tool, result.output));
+              if (result.ok && (specialist.cards === "disputes" || specialist.cards === "invoices")) {
+                cardSource.push(...cardIdsFrom(specialist.cards, result.tool, result.output));
+              }
               trace.record("tool", result.tool, {
                 parentId: specialistSpan.id,
                 input: result.params,
@@ -212,14 +215,26 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
           // Cards are built by code from what the specialist looked up. Asking the model to call show_* tools
           // was unreliable: gpt-oss wrote the calls into the answer as text (evals/format-results.md).
           const ids = [...new Set(cardSource)].slice(0, 10);
-          if (specialist.cards && ids.length) {
+          const alertRules = specialist.cards === "alerts" ? alertRulesForQuestion(question) : [];
+          if (alertRules.length) {
+            // Alert cards come from the same rules as the dashboard, for rate, refund, and decline questions.
+            const output = (await executeReadTool(PRESENT_TOOLS.show_alerts, { rules: alertRules }, { ...ctx, agent: `${agent}:cards` })) as {
+              cards?: Card[];
+              stripe_ids?: string[];
+            };
+            if (output.cards?.length) {
+              cardIds.push(...(output.stripe_ids ?? []));
+              shownCardKind ??= "alert";
+              writer.write({ type: "data-cards", data: { cards: output.cards } });
+            }
+          } else if ((specialist.cards === "disputes" || specialist.cards === "invoices") && ids.length) {
             const definition = specialist.cards === "disputes" ? PRESENT_TOOLS.show_disputes : PRESENT_TOOLS.show_invoices;
             const input = specialist.cards === "disputes" ? { dispute_ids: ids } : { invoice_ids: ids };
             const output = (await executeReadTool(definition, input, { ...ctx, agent: `${agent}:cards` })) as Partial<CardsOutput>;
             const cards = output.cards ?? [];
             if (cards.length) {
               cardIds.push(...cards.map((card) => card.id));
-              shownCardKind = cards[0]!.kind;
+              shownCardKind ??= cards[0]!.kind;
               writer.write({ type: "data-cards", data: { cards } });
             }
           }
@@ -248,7 +263,7 @@ export function runAgentChat(messages: AgentUIMessage[], deps: RunDeps) {
             // the model sometimes mistypes one character of a real ID.
             declaredIds.push(...output.source_ids.filter((id) => toolIds.has(id)));
             // When cards were shown, the next action happens on their page, whatever the model picked.
-            const cardPage = shownCardKind === "dispute" ? "disputes" : shownCardKind === "invoice" ? "recovery" : null;
+            const cardPage = shownCardKind ? CARD_PAGE[shownCardKind] : null;
             const page = cardPage ?? output.page;
             const button = page ? { label: PAGES[page].label, href: PAGES[page].href } : null;
             writer.write({ type: "data-next", data: { text: output.text, page, button } });

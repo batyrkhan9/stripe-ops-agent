@@ -1,9 +1,25 @@
 import Stripe from "stripe";
 
-const HANDLED_PREFIXES = ["payment_intent.", "charge.dispute.", "invoice."] as const;
+// charge.refunded and refund.* were added for the refund spike alert.
+const HANDLED_PREFIXES = ["payment_intent.", "charge.dispute.", "invoice.", "refund."] as const;
+const HANDLED_TYPES = ["charge.refunded"] as const;
 
 export function isHandledEventType(type: string): boolean {
-  return HANDLED_PREFIXES.some((prefix) => type.startsWith(prefix));
+  return HANDLED_PREFIXES.some((prefix) => type.startsWith(prefix)) || (HANDLED_TYPES as readonly string[]).includes(type);
+}
+
+// Events that can move an alert rule's value: a new dispute, a charge attempt that succeeded or failed, a refund.
+const ALERT_EVENT_TYPES = [
+  "charge.dispute.created",
+  "charge.dispute.closed",
+  "payment_intent.succeeded",
+  "payment_intent.payment_failed",
+  "charge.refunded",
+  "refund.created",
+] as const;
+
+export function shouldCheckAlerts(type: string): boolean {
+  return (ALERT_EVENT_TYPES as readonly string[]).includes(type);
 }
 
 export type StoreEvent = (event: Stripe.Event) => Promise<"stored" | "duplicate">;

@@ -15,9 +15,9 @@ export type AgentName = (typeof AGENT_NAMES)[number];
 export type AgentToolName = ReadToolName | PresentToolName;
 
 // cards: which objects the run renders as cards after the answer, built by code from the specialist's tool results.
-export const SPECIALISTS: Record<AgentName, { prompt: string; tools: readonly AgentToolName[]; summary: string; cards: "disputes" | "invoices" | null }> = {
+export const SPECIALISTS: Record<AgentName, { prompt: string; tools: readonly AgentToolName[]; summary: string; cards: "disputes" | "invoices" | "alerts" | null }> = {
   disputes: { prompt: DISPUTES_PROMPT, tools: DISPUTES_TOOLS, summary: "disputes, chargebacks, evidence, deadlines", cards: "disputes" },
   recovery: { prompt: RECOVERY_PROMPT, tools: RECOVERY_TOOLS, summary: "failed payments, declines, open or past-due invoices, dunning", cards: "invoices" },
-  analytics: { prompt: ANALYTICS_PROMPT, tools: ANALYTICS_TOOLS, summary: "revenue, volume, refunds, customers, subscriptions, balance, rates", cards: null },
+  analytics: { prompt: ANALYTICS_PROMPT, tools: ANALYTICS_TOOLS, summary: "revenue, volume, refunds, customers, subscriptions, balance, rates", cards: "alerts" },
   actions: { prompt: ACTIONS_PROMPT, tools: ACTIONS_TOOLS, summary: "requests to refund, create a coupon, pause or cancel a subscription", cards: null },
 };
