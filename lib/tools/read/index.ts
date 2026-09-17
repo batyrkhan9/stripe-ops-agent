@@ -2,6 +2,7 @@ import { getBalance } from "./get-balance";
 import { getCharge } from "./get-charge";
 import { getCustomer } from "./get-customer";
 import { getDispute } from "./get-dispute";
+import { getMetrics } from "./get-metrics";
 import { listCharges } from "./list-charges";
 import { listCustomers } from "./list-customers";
 import { listDisputes } from "./list-disputes";
@@ -19,6 +20,7 @@ export const READ_TOOLS = {
   list_disputes: listDisputes,
   get_dispute: getDispute,
   get_balance: getBalance,
+  get_metrics: getMetrics,
   search,
 } as const;
 
