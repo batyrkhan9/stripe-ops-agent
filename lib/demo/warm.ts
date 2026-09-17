@@ -5,6 +5,7 @@ import { config } from "dotenv";
 import { desc, isNotNull } from "drizzle-orm";
 import { runAgentChat } from "@/lib/agents/run";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
+import { saveProposal } from "@/lib/actions/store";
 import { createDb } from "@/lib/db/client";
 import { auditLog, seedRuns } from "@/lib/db/schema";
 import { agentModel, finishModel } from "@/lib/llm/provider";
@@ -53,6 +54,7 @@ async function main() {
       audit: async (record) => {
         await db.insert(auditLog).values({ accountId, agent: record.agent, tool: record.tool, params: record.params ?? {}, stripeIds: record.stripeIds, result: record.result as object });
       },
+      writes: { accountId: accountId, connectionId: null, permissions: null, saveProposal: (proposal) => saveProposal(db, proposal) },
       saveRun: async (r) => {
         runOk = r.status === "ok";
       },

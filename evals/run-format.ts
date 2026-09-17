@@ -7,6 +7,7 @@ import { runAgentChat } from "@/lib/agents/run";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
 import type { Sources } from "@/lib/agents/sources";
 import { cardLines, type Card, type NextAction } from "@/lib/cards/types";
+import { saveProposal } from "@/lib/actions/store";
 import { createDb } from "@/lib/db/client";
 import { auditLog, seedRuns } from "@/lib/db/schema";
 import { agentModel, finishModel } from "@/lib/llm/provider";
@@ -44,6 +45,7 @@ async function main() {
       audit: async (record) => {
         await db.insert(auditLog).values({ accountId: "eval:format", agent: record.agent, tool: record.tool, params: record.params ?? {}, stripeIds: record.stripeIds, result: record.result as object });
       },
+      writes: { accountId: "eval:format", connectionId: null, permissions: null, saveProposal: (proposal) => saveProposal(db, proposal) },
       saveRun: async (r) => {
         spans = r.spans;
         routed = r.plan?.agents.join("+") ?? "";

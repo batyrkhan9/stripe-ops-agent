@@ -1,4 +1,5 @@
 import { createUIMessageStreamResponse } from "ai";
+import { saveProposal } from "@/lib/actions/store";
 import { createAuditWriter } from "@/lib/audit/log";
 import { lastUserText, runAgentChat } from "@/lib/agents/run";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
@@ -42,6 +43,12 @@ export async function POST(request: Request) {
     model: agentModel,
     finishModel,
     audit: createAuditWriter(accountId),
+    writes: {
+      accountId,
+      connectionId: account.connection?.id ?? null,
+      permissions: account.connection?.permissions ?? null,
+      saveProposal: (proposal) => saveProposal(getDb(), proposal),
+    },
     saveRun: async (run) => {
       runOk = run.status === "ok";
       await saveRun(run);

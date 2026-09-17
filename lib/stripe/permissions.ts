@@ -57,6 +57,11 @@ async function probe(stripe: Stripe, run: Probe, kind: "read" | "write"): Promis
   }
 }
 
+// One write permission, probed fresh before a confirmed write executes (ADR 0003).
+export async function probeWritePermission(stripe: Stripe, permission: WritePermission): Promise<boolean> {
+  return probe(stripe, WRITE_PROBES[permission], "write");
+}
+
 export async function checkKeyPermissions(stripe: Stripe): Promise<KeyPermissions> {
   const read = {} as Record<ReadPermission, boolean>;
   for (const permission of READ_PERMISSIONS) {
