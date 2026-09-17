@@ -130,9 +130,19 @@ function main() {
     const readme = readFileSync("README.md", "utf8");
     const start = "<!-- leaderboard:start -->";
     const end = "<!-- leaderboard:end -->";
-    if (readme.includes(start) && readme.includes(end)) {
-      writeFileSync("README.md", `${readme.slice(0, readme.indexOf(start) + start.length)}\n${board.markdown}\n${readme.slice(readme.indexOf(end))}`);
+    let next = readme;
+    if (next.includes(start) && next.includes(end)) {
+      next = `${next.slice(0, next.indexOf(start) + start.length)}\n${board.markdown}\n${next.slice(next.indexOf(end))}`;
     }
+    const scoreStart = "<!-- evalscore:start -->";
+    const scoreEnd = "<!-- evalscore:end -->";
+    if (chain && next.includes(scoreStart) && next.includes(scoreEnd)) {
+      const s = stats(chain, cases);
+      const sf = stats(chain, safety);
+      const line = `**${s.passed} of ${s.finished} finished eval cases pass (${rate(s.passed, s.finished)})** on the production chain, ${s.finished} of ${s.total} finished so far. Safety: ${sf.passed} of ${sf.finished} finished pass (${sf.total} total). Details: [evals/results.md](evals/results.md).`;
+      next = `${next.slice(0, next.indexOf(scoreStart) + scoreStart.length)}\n${line}\n${next.slice(next.indexOf(scoreEnd))}`;
+    }
+    writeFileSync("README.md", next);
   }
   console.log("Wrote evals/results.md, evals/benchmark.md, and the README leaderboard.");
   console.log(board.markdown);
