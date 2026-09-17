@@ -6,8 +6,10 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 
 export function moneyLabel(minor: number | null | undefined, currency: string | null | undefined): string {
   if (minor == null) return "";
-  const amount = (minor / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  return (currency ?? "usd").toLowerCase() === "usd" ? `$${amount}` : `${amount} ${(currency ?? "").toUpperCase()}`;
+  // The sign goes before the currency symbol: a negative test balance rendered as "$-251.00".
+  const sign = minor < 0 ? "-" : "";
+  const amount = (Math.abs(minor) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (currency ?? "usd").toLowerCase() === "usd" ? `${sign}$${amount}` : `${sign}${amount} ${(currency ?? "").toUpperCase()}`;
 }
 
 export function dateLabel(unix: number | null | undefined, now?: number): string {
