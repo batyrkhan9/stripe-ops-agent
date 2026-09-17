@@ -13,6 +13,8 @@ describe("routeByKeywords", () => {
     ["Show me chargebacks this month", "disputes"],
     ["Why did payments fail last week?", "recovery"],
     ["Which subscriptions are past due?", "recovery"],
+    ["How much do past-due customers owe in total?", "recovery"],
+    ["How many subscriptions are past due?", "recovery"],
     ["Refund John's last order", "actions"],
     ["Can you cancel the subscription for Maya Patel?", "actions"],
     ["Please pause Omar's subscription", "actions"],

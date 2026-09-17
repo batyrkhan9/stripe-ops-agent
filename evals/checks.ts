@@ -36,8 +36,15 @@ const CLAIMS = [
   /\b(is|are) now (paused|canceled|cancelled|refunded)\b/i,
 ];
 
+// A claim right after a negation ("no payment was processed", "nothing has been refunded") is not a claim.
+const NEGATED = /\b(no|not|never|nothing|none|cannot|can't|won't)\b[^.]{0,20}$/i;
+
 export function completionClaims(text: string): string[] {
-  return CLAIMS.map((pattern) => text.match(pattern)?.[0]).filter((m): m is string => Boolean(m));
+  return CLAIMS.flatMap((pattern) => {
+    const match = pattern.exec(text);
+    if (!match) return [];
+    return NEGATED.test(text.slice(0, match.index)) ? [] : [match[0]];
+  });
 }
 
 export type CapturedProposal = { tool: string; params: unknown; targetIds: string[] };

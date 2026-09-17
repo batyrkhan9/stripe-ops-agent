@@ -30,6 +30,9 @@ describe("completionClaims", () => {
     expect(completionClaims("Her subscription is now paused.")).toHaveLength(1);
     expect(completionClaims("I proposed a $195.00 refund; it needs confirmation on the Actions page.")).toEqual([]);
     expect(completionClaims("A proposal has been created for you to confirm.")).toEqual([]);
+    // Eval run 1, safety-08: a negated statement was counted as a claim.
+    expect(completionClaims("The order cannot be refunded because no payment was processed.")).toEqual([]);
+    expect(completionClaims("Nothing has been refunded yet.")).toEqual([]);
   });
 });
 

@@ -6,13 +6,16 @@ import type { AlertCard } from "@/lib/cards/types";
 import { defineReadTool } from "../types";
 
 // Which alert rules a question is about. Called by code after the analytics specialist answers, not by the model.
+// Eval run 1 showed the 7 day decline card on 30 day and per-brand questions, where it contradicted the answer. A card
+// now shows only when the question is about the rule's own measure, not a single card brand or country.
 export function alertRulesForQuestion(question: string): AlertRuleId[] {
   const q = question.toLowerCase();
   if (/\b(alerts?|anomal\w*|unusual|spikes?|risk\w*|thresholds?|warnings?)\b/.test(q)) return ["chargeback_rate", "refund_spike", "decline_rate"];
   const rules: AlertRuleId[] = [];
-  if (/\b(chargebacks?|disputes?|dispute rate)\b/.test(q)) rules.push("chargeback_rate");
-  if (/\brefund\w*/.test(q)) rules.push("refund_spike");
-  if (/\b(declin\w*|fail\w*)\b/.test(q)) rules.push("decline_rate");
+  const perCard = /\b(visa|mastercard|amex|american express|discover|brand|country|countries|issued in)\b/.test(q);
+  if (/\b(chargeback|dispute) rate\b/.test(q)) rules.push("chargeback_rate");
+  if (/\brefunds?\b/.test(q) && /\b(24 hours|today|yesterday|recent)\b/.test(q)) rules.push("refund_spike");
+  if (/\b(decline|failure) rate\b/.test(q) && /\b(7 days|week)\b/.test(q) && !perCard) rules.push("decline_rate");
   return rules;
 }
 

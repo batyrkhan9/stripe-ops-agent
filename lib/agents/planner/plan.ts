@@ -17,6 +17,8 @@ export function routeByKeywords(question: string): AgentName[] {
     /^(please\s+)?(refund|cancel|pause|resume|create|give|issue|apply)\b/.test(q) ||
     /\b(can|could|would) you\b.*\b(refund|cancel|pause|coupon|discount)\b|\bplease\b.*\b(refund|cancel|pause|coupon|discount)\b/.test(q);
   if (asksForChange) return ["actions"];
+  // Eval run 1: counts of past-due or failed items were routed to analytics. They belong to recovery unless they ask for a rate.
+  if (/past.?due|unpaid|overdue|open invoice|\bowe/.test(q) && !/\brate\b/.test(q)) return ["recovery"];
   if (/\b(rate|ratio|mrr|revenue|volume|how many|how much|total|average|trend|churn)\b/.test(q)) return ["analytics"];
   if (/disput|chargeback|evidence|inquiry/.test(q)) return ["disputes"];
   if (/fail|declin|past.?due|dunning|retry|unpaid|overdue|open invoice/.test(q)) return ["recovery"];
