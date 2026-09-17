@@ -93,3 +93,16 @@ export const seededObjects = pgTable(
   },
   (table) => [primaryKey({ columns: [table.stripeId, table.kind] })],
 );
+
+// Demo-mode answers to the questions in lib/demo/questions.ts, stored as the UI stream chunks of one clean run.
+// The key hashes the question, the demo anchor, and the prompt version, so reseeding or changing a prompt
+// makes old rows unreachable instead of wrong.
+export const demoAnswers = pgTable("demo_answers", {
+  key: text("key").primaryKey(),
+  question: text("question").notNull(),
+  anchorAt: timestamp("anchor_at", { withTimezone: true }).notNull(),
+  promptVersion: text("prompt_version").notNull(),
+  chunks: jsonb("chunks").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+

@@ -138,6 +138,7 @@ describe("list_charges totals", () => {
       disputed: 1,
       gross_succeeded: ["$20.00"],
       refunded: ["$5.00"],
+      refunded_charges: 1,
       decline_reasons: [{ reason: "Not enough money in the account", count: 1, retry: "later", customer_action: "Top up the account or use another card" }],
     });
     expect(output.charges).toHaveLength(2);

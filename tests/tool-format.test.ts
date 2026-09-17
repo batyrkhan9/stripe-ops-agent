@@ -30,7 +30,7 @@ describe("businessMetadata", () => {
 });
 
 describe("formatCharge", () => {
-  it("labels amounts and dates, exposes decline codes, and uses the intended date", () => {
+  it("labels amounts and dates, explains declines in plain English, and uses the intended date", () => {
     const charge = {
       id: CH,
       created: 1_789_000_000,
@@ -52,7 +52,7 @@ describe("formatCharge", () => {
       id: CH,
       amount: "$129.00",
       date: "Aug 29",
-      failure: { code: "card_declined", decline_code: "insufficient_funds" },
+      failure: { reason: "Not enough money in the account", retry: "later", customer_action: "Top up the account or use another card" },
       card: { brand: "visa", country: "US" },
       metadata: { order_id: "KC-10001" },
     });

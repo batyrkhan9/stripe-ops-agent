@@ -75,13 +75,19 @@ describe("disputeCard", () => {
 });
 
 describe("finish_answer", () => {
-  it("maps a page to a button and strips IDs from the visible sentence", async () => {
+  it("rejects a next action that names Stripe IDs, so the call is retried", async () => {
+    await expect(
+      finishAnswer.run({ next_action: "Draft evidence for du_1UGX7p3FpwYTqedqcy6JowYK before Sep 25.", page: "disputes", source_ids: [] }, {} as ToolContext),
+    ).rejects.toThrow(/not Stripe IDs/);
+  });
+
+  it("maps a page to a button", async () => {
     const output = await finishAnswer.run(
-      { next_action: "Draft evidence for du_1UGX7p3FpwYTqedqcy6JowYK before Sep 25.", page: "disputes", source_ids: ["du_1"] },
+      { next_action: "Draft evidence for Ethan Nguyen's $65.00 dispute before Sep 25.", page: "disputes", source_ids: ["du_1"] },
       {} as ToolContext,
     );
     expect(output).toEqual({
-      text: "Draft evidence for before Sep 25.",
+      text: "Draft evidence for Ethan Nguyen's $65.00 dispute before Sep 25.",
       page: "disputes",
       button: { label: "Open disputes", href: "/disputes" },
       source_ids: ["du_1"],

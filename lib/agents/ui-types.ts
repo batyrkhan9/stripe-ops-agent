@@ -13,5 +13,7 @@ export type AgentUIMessage = UIMessage<
     next: NextAction;
     cards: { cards: Card[] };
     served: { provider: string; modelId: string; fellBack: boolean; failures: string[] };
+    // Present only when the answer is replayed from the demo cache.
+    cached: { savedAt: string };
   }
 >;

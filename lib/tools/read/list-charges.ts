@@ -1,8 +1,7 @@
 import type Stripe from "stripe";
 import { z } from "zod";
 import { moneyLabel } from "@/lib/format/human";
-import { explainDecline } from "@/lib/stripe/declines";
-import { formatCharge } from "../format";
+import { declineFields, formatCharge } from "../format";
 import { collectByDate, defineReadTool } from "../types";
 import { days, limit, stripeId } from "./schemas";
 
@@ -18,7 +17,7 @@ async function withCustomers(stripe: Stripe, charges: Stripe.Charge[]): Promise<
 export const listCharges = defineReadTool({
   name: "list_charges",
   description:
-    "List charges, newest first, with totals across all matching charges (counts by status, disputed count, gross and refunded amounts). Use for payment volume, failures, decline reasons, and rates. Returned rows include customer name and email.",
+    "List charges, newest first, with totals across all matching charges (counts by status, disputed count, gross and refunded amounts, number of refunded charges). Use for payment volume, failures, decline reasons, and rates. Returned rows include customer name and email.",
   input: z.object({
     days,
     status: z.enum(["succeeded", "failed", "all"]).default("all"),
@@ -48,9 +47,11 @@ export const listCharges = defineReadTool({
         disputed: matching.filter((c) => c.disputed).length,
         gross_succeeded: byCurrency(succeeded, (c) => c.amount),
         refunded: byCurrency(succeeded, (c) => c.amount_refunded),
+        // A "how many refunds" question had no count to answer from.
+        refunded_charges: succeeded.filter((c) => c.amount_refunded > 0).length,
         decline_reasons: Object.entries(declineCodes).map(([code, count]) => {
-          const explained = explainDecline(code);
-          return { reason: explained.meaning, count, retry: explained.retry, customer_action: explained.customerAction };
+          const { reason, ...advice } = declineFields(code);
+          return { reason, count, ...advice };
         }),
       },
       charges: (await withCustomers(stripe, matching.slice(0, input.limit))).map(formatCharge),

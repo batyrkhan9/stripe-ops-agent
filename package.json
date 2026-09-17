@@ -13,7 +13,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "seed": "tsx lib/stripe/seed/index.ts",
-    "eval:format": "tsx evals/run-format.ts"
+    "eval:format": "tsx evals/run-format.ts",
+    "demo:warm": "tsx lib/demo/warm.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.74",

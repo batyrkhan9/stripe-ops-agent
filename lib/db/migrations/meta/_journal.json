@@ -36,6 +36,13 @@
       "when": 1789627191480,
       "tag": "0004_agent_traces",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789630228683,
+      "tag": "0005_demo_answers",
+      "breakpoints": true
     }
   ]
 }

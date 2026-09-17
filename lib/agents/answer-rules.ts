@@ -1,11 +1,12 @@
 import type { Sources } from "@/lib/agents/sources";
 import type { Card, NextAction, PageName } from "@/lib/cards/types";
-import { leadParagraph } from "@/lib/agents/present";
+import { leadParagraph } from "./present";
 import { stripeIdsIn } from "@/lib/tools/format";
 
 export { leadParagraph };
 
-// Deterministic checks for the answer format rules in lib/agents/rules.ts.
+// Deterministic checks for the answer format rules in lib/agents/rules.ts. Used by the format evals and as the
+// quality gate before a demo answer is cached (lib/demo/answer-cache.ts).
 
 export type CapturedAnswer = {
   text: string;
@@ -89,6 +90,10 @@ export function checkAnswerRules(answer: CapturedAnswer, expect: FormatExpectati
   const tables = markdownTables(answer.text);
   const badTable = tables.find((t) => t.rows < 3 || t.columns > 4);
   add("tables_3_rows_4_columns", !badTable, badTable ? `table with ${badTable.rows} rows and ${badTable.columns} columns` : undefined);
+
+  // snake_case words are Stripe codes like insufficient_funds; rule 3 asks for the plain reason.
+  const codes = answer.text.match(/\b[a-z]+(?:_[a-z]+)+\b/g) ?? [];
+  add("no_raw_codes", codes.length === 0, `raw codes in body: ${[...new Set(codes)].join(", ")}`);
 
   const bold = boldCount(answer.text);
   add("bold_at_most_once", bold <= 1, `${bold} bold spans`);

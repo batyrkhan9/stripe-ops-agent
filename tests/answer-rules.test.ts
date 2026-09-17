@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boldCount, checkAnswerRules, countSentences, leadParagraph, markdownTables, type CapturedAnswer } from "@/evals/answer-rules";
+import { boldCount, checkAnswerRules, countSentences, leadParagraph, markdownTables, type CapturedAnswer } from "@/lib/agents/answer-rules";
 import type { DisputeCard } from "@/lib/cards/types";
 
 const card: DisputeCard = {
