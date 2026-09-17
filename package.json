@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "seed": "tsx lib/stripe/seed/index.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
