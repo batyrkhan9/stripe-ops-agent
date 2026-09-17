@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "seed": "tsx lib/stripe/seed/index.ts"
+    "seed": "tsx lib/stripe/seed/index.ts",
+    "eval:format": "tsx evals/run-format.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.74",
@@ -29,6 +30,8 @@
     "radix-ui": "^1.6.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "server-only": "^0.0.1",
     "shadcn": "^4.21.0",
     "stripe": "^22.6.2",

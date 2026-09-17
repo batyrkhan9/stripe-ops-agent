@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { dateLabel, dueLabel, moneyLabel, titleCase } from "@/lib/format/human";
 
 // Compact, model-friendly views of Stripe objects. Keeps token use low on free tiers and drops
 // fields the agent does not need. Amounts are converted from minor units.
@@ -24,8 +25,9 @@ export function effectiveTime(object: WithDates): number {
   return Number.isFinite(seeded) && seeded > 0 ? seeded : object.created;
 }
 
-export const iso = (unix: number | null | undefined) => (unix ? new Date(unix * 1000).toISOString() : null);
-const money = (minor: number | null | undefined) => (minor == null ? null : Math.round(minor) / 100);
+// Tools return labels, not raw numbers: a bare 195 was read by the model as $1.95 (evals/format-results.md).
+export const day = (unix: number | null | undefined) => (unix ? dateLabel(unix, Math.floor(Date.now() / 1000)) : null);
+const money = (minor: number | null | undefined, currency: string | null | undefined) => (minor == null ? null : moneyLabel(minor, currency));
 const idOf = (value: string | { id: string } | null | undefined) => (value == null ? null : typeof value === "string" ? value : value.id);
 
 // When a list call expands the customer, include name and email so the model does not need a
@@ -48,10 +50,9 @@ export function formatCharge(charge: Stripe.Charge) {
   const card = charge.payment_method_details?.card;
   return {
     id: charge.id,
-    date: iso(effectiveTime(charge)),
+    date: day(effectiveTime(charge)),
     status: charge.status,
-    amount: money(charge.amount),
-    currency: charge.currency,
+    amount: money(charge.amount, charge.currency),
     ...customerFields(charge.customer),
     description: charge.description,
     card: card ? { brand: card.brand, country: card.country } : undefined,
@@ -60,7 +61,7 @@ export function formatCharge(charge: Stripe.Charge) {
         ? { code: charge.failure_code, decline_code: charge.outcome?.reason ?? null, message: charge.failure_message }
         : undefined,
     disputed: charge.disputed || undefined,
-    refunded_amount: charge.amount_refunded ? money(charge.amount_refunded) : undefined,
+    refunded_amount: charge.amount_refunded ? money(charge.amount_refunded, charge.currency) : undefined,
     payment_intent: idOf(charge.payment_intent),
     metadata: businessMetadata(charge.metadata),
   };
@@ -71,7 +72,7 @@ export function formatCustomer(customer: Stripe.Customer) {
     id: customer.id,
     name: customer.name,
     email: customer.email,
-    date: iso(effectiveTime(customer)),
+    date: day(effectiveTime(customer)),
     delinquent: customer.delinquent || undefined,
     metadata: businessMetadata(customer.metadata),
   };
@@ -83,24 +84,23 @@ export function formatSubscription(subscription: Stripe.Subscription) {
     id: subscription.id,
     status: subscription.status,
     ...customerFields(subscription.customer),
-    started: iso(effectiveTime(subscription)),
-    canceled_at: iso(canceledAt),
+    started: day(effectiveTime(subscription)),
+    canceled_at: day(canceledAt),
     cancel_at_period_end: subscription.cancel_at_period_end || undefined,
     paused: subscription.pause_collection ? true : undefined,
     items: subscription.items.data.map((item) => ({
       price: item.price.id,
       product: idOf(item.price.product),
-      amount: money(item.price.unit_amount),
-      currency: item.price.currency,
+      amount: money(item.price.unit_amount, item.price.currency),
       interval: item.price.recurring?.interval,
-      current_period_end: iso(item.current_period_end),
+      current_period_end: day(item.current_period_end),
     })),
     latest_invoice:
       subscription.latest_invoice && typeof subscription.latest_invoice !== "string"
         ? {
             id: subscription.latest_invoice.id,
             status: subscription.latest_invoice.status,
-            amount_remaining: money(subscription.latest_invoice.amount_remaining),
+            amount_remaining: money(subscription.latest_invoice.amount_remaining, subscription.latest_invoice.currency),
             attempt_count: subscription.latest_invoice.attempt_count,
           }
         : idOf(subscription.latest_invoice),
@@ -114,39 +114,38 @@ export function formatInvoice(invoice: Stripe.Invoice) {
     ...customerFields(invoice.customer),
     subscription: idOf(invoice.parent?.subscription_details?.subscription),
     billing_reason: invoice.billing_reason,
-    date: iso(effectiveTime(invoice)),
-    currency: invoice.currency,
-    amount_due: money(invoice.amount_due),
-    amount_paid: money(invoice.amount_paid),
-    amount_remaining: money(invoice.amount_remaining),
+    date: day(effectiveTime(invoice)),
+    amount_due: money(invoice.amount_due, invoice.currency),
+    amount_paid: money(invoice.amount_paid, invoice.currency),
+    amount_remaining: money(invoice.amount_remaining, invoice.currency),
     attempt_count: invoice.attempt_count,
-    next_payment_attempt: iso(invoice.next_payment_attempt),
-    due_date: iso(invoice.due_date),
+    next_payment_attempt: day(invoice.next_payment_attempt),
+    due_date: day(invoice.due_date),
   };
 }
 
-export function formatDispute(dispute: Stripe.Dispute, withEvidence = false) {
+export function formatDispute(dispute: Stripe.Dispute, options: { now: number; withEvidence?: boolean }) {
+  const withEvidence = options.withEvidence ?? false;
   const evidence = withEvidence
     ? Object.fromEntries(Object.entries(dispute.evidence ?? {}).filter(([, value]) => value !== null && value !== ""))
     : undefined;
   return {
     id: dispute.id,
     status: dispute.status,
-    reason: dispute.reason,
-    amount: money(dispute.amount),
-    currency: dispute.currency,
+    reason: titleCase(dispute.reason),
+    amount: money(dispute.amount, dispute.currency),
     charge: idOf(dispute.charge),
     ...(dispute.charge && typeof dispute.charge !== "string"
       ? { ...customerFields(dispute.charge.customer), order: businessMetadata(dispute.charge.metadata) }
       : {}),
-    date: iso(effectiveTime(dispute)),
-    evidence_due_by: iso(dispute.evidence_details?.due_by),
+    date: day(effectiveTime(dispute)),
+    deadline: /needs_response/.test(dispute.status) ? dueLabel(dispute.evidence_details?.due_by, options.now) : undefined,
     evidence_submitted: (dispute.evidence_details?.submission_count ?? 0) > 0,
     evidence: evidence && Object.keys(evidence).length ? evidence : withEvidence ? {} : undefined,
   };
 }
 
 export function formatBalance(balance: Stripe.Balance) {
-  const sums = (entries: Stripe.Balance.Available[]) => entries.map((b) => ({ amount: money(b.amount), currency: b.currency }));
+  const sums = (entries: Stripe.Balance.Available[]) => entries.map((b) => money(b.amount, b.currency));
   return { available: sums(balance.available), pending: sums(balance.pending) };
 }

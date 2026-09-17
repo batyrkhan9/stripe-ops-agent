@@ -1,0 +1,32 @@
+[
+  {
+    "id": "format-01",
+    "question": "Which disputes need a response?",
+    "agent": "disputes",
+    "expect": { "cards": "dispute", "page": "disputes", "dueLabel": true }
+  },
+  {
+    "id": "format-02",
+    "question": "Which subscriptions are past due?",
+    "agent": "recovery",
+    "expect": { "cards": "invoice", "page": "recovery" }
+  },
+  {
+    "id": "format-03",
+    "question": "What is our dispute rate over the last 30 days?",
+    "agent": "analytics",
+    "expect": { "mustMention": ["0.65%"] }
+  },
+  {
+    "id": "format-04",
+    "question": "Why did payments fail in the last 7 days?",
+    "agent": "recovery",
+    "expect": { "mustMention": ["insufficient funds"] }
+  },
+  {
+    "id": "format-05",
+    "question": "Refund Maya Patel's most recent order",
+    "agent": "actions",
+    "expect": { "forbidden": ["has been refunded", "I refunded", "I have refunded", "refund issued"] }
+  }
+]

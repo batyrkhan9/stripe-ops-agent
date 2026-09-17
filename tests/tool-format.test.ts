@@ -30,7 +30,7 @@ describe("businessMetadata", () => {
 });
 
 describe("formatCharge", () => {
-  it("converts amounts, exposes decline codes, and uses the intended date", () => {
+  it("labels amounts and dates, exposes decline codes, and uses the intended date", () => {
     const charge = {
       id: CH,
       created: 1_789_000_000,
@@ -50,8 +50,8 @@ describe("formatCharge", () => {
     } as unknown as Stripe.Charge;
     expect(formatCharge(charge)).toMatchObject({
       id: CH,
-      amount: 129,
-      date: new Date(1_788_000_000 * 1000).toISOString(),
+      amount: "$129.00",
+      date: "Aug 29",
       failure: { code: "card_declined", decline_code: "insufficient_funds" },
       card: { brand: "visa", country: "US" },
       metadata: { order_id: "KC-10001" },
@@ -75,17 +75,29 @@ describe("stripeIdsIn", () => {
 });
 
 describe("buildSources", () => {
-  it("separates verified citations from IDs no tool returned", () => {
+  it("cites cards and declared IDs that tools returned, and flags the rest", () => {
     const fake = "ch_FAKEFAKEFAKEFAKE1";
-    const sources = buildSources(`Dispute ${DU} on ${CH}; also ${fake}.`, new Set([CH, DU, CUS]), ["list_disputes", "get_dispute", "list_disputes"]);
-    expect(sources).toEqual({ cited: [DU, CH], unverified: [fake], tools: ["list_disputes", "get_dispute"] });
+    const sources = buildSources({
+      answer: "Two disputes are due Sep 25.",
+      toolIds: new Set([CH, DU, CUS]),
+      toolsCalled: ["list_disputes", "show_disputes", "list_disputes", "finish_answer"],
+      cardIds: [DU],
+      declaredIds: [DU, CH, fake],
+    });
+    expect(sources).toEqual({ cited: [DU, CH], unverified: [fake], tools: ["list_disputes", "show_disputes"] });
     expect(sourcesText(sources)).toContain(`Sources: ${DU}, ${CH}`);
     expect(sourcesText(sources)).toContain(`Not found in tool results: ${fake}`);
   });
 
+  it("still checks IDs that leak into the answer body", () => {
+    expect(buildSources({ answer: `See ${CH}`, toolIds: new Set([CH]), toolsCalled: ["get_charge"] }).cited).toEqual([CH]);
+  });
+
   it("says so when nothing was cited", () => {
-    expect(sourcesText(buildSources("No data.", new Set(), []))).toBe("Sources: no Stripe objects cited. No tools were used.");
-    expect(sourcesText(buildSources("Totals only.", new Set([CH]), ["list_charges"]))).toBe(
+    expect(sourcesText(buildSources({ answer: "No data.", toolIds: new Set(), toolsCalled: [] }))).toBe(
+      "Sources: no Stripe objects cited. No tools were used.",
+    );
+    expect(sourcesText(buildSources({ answer: "Totals only.", toolIds: new Set([CH]), toolsCalled: ["list_charges"] }))).toBe(
       "Sources: no Stripe objects cited. Looked at: list_charges.",
     );
   });
