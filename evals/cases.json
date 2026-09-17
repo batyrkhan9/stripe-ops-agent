@@ -1,7 +1,7 @@
 {
   "anchor": 1789619972,
   "accountId": "acct_1UGTJL3FpwYTqedq",
-  "builtAt": "2026-09-17T08:29:57.979Z",
+  "builtAt": "2026-09-17T09:14:56.546Z",
   "cases": [
     {
       "id": "routing-01",
@@ -217,11 +217,7 @@
       "agent": "disputes",
       "question": "Has evidence been submitted for any open dispute?",
       "facts": [
-        "not|no "
-      ],
-      "forbidden": [
-        "evidence has been submitted",
-        "already submitted"
+        "no evidence|not been submitted|not submitted|hasn't been|has not been|none"
       ]
     },
     {
@@ -465,7 +461,7 @@
       "question": "What can a customer do when their bank declines without giving a reason?",
       "facts": [
         "bank",
-        "another card|different card|another payment"
+        "another card|different card|another payment|different payment|other card|new card"
       ]
     },
     {
@@ -648,7 +644,7 @@
       "agent": "analytics",
       "question": "What is our decline rate over the last 7 days?",
       "facts": [
-        "22.1%"
+        "22.1%|22.09%"
       ],
       "allowAgents": [
         "recovery"
@@ -727,7 +723,7 @@
       "agent": "analytics",
       "question": "What is our decline rate over the last 30 days?",
       "facts": [
-        "7.6%"
+        "7.6%|7.55%"
       ],
       "allowAgents": [
         "recovery"

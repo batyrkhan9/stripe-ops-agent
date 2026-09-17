@@ -76,9 +76,13 @@ describe("alertRulesForQuestion", async () => {
   const { alertRulesForQuestion } = await import("@/lib/tools/present/show-alerts");
   it("maps rate, refund, and decline questions to their rules", () => {
     expect(alertRulesForQuestion("What is our dispute rate over the last 30 days?")).toEqual(["chargeback_rate"]);
-    expect(alertRulesForQuestion("How many refunds did we issue?")).toEqual(["refund_spike"]);
-    expect(alertRulesForQuestion("Why did payments fail in the last 7 days?")).toEqual(["decline_rate"]);
+    expect(alertRulesForQuestion("How many refunds did we issue in the last 24 hours?")).toEqual(["refund_spike"]);
+    expect(alertRulesForQuestion("What is our decline rate over the last 7 days?")).toEqual(["decline_rate"]);
     expect(alertRulesForQuestion("Anything unusual this week?")).toHaveLength(3);
     expect(alertRulesForQuestion("How much revenue did we collect?")).toEqual([]);
+    // Cards must not contradict the window or scope of the question.
+    expect(alertRulesForQuestion("What is our decline rate over the last 30 days?")).toEqual([]);
+    expect(alertRulesForQuestion("What is the decline rate for Mastercard this week?")).toEqual([]);
+    expect(alertRulesForQuestion("How much failed to collect in the last 7 days?")).toEqual([]);
   });
 });

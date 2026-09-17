@@ -53,7 +53,11 @@ export type AnalyticsSummary = ReturnType<typeof buildAnalyticsSummary>;
 export function summaryFacts(s: AnalyticsSummary): string {
   const brand = s.byBrand.map((r) => `${r.key}: ${r.failed} of ${r.attempts} failed, ${pct(r.rate)}`).join("; ");
   const country = s.byCountry.map((r) => `${r.key}: ${r.failed} of ${r.attempts} failed, ${pct(r.rate)}`).join("; ");
-  const cohorts = s.cohorts.map((c) => `${c.month} (${c.size} subscriptions): ${c.retained.filter((r) => r !== null).map((r) => pct(r!, 0)).join(", ")}`).join("; ");
+  // Month names, not "2026-06": a model read the ISO key as "no subscriptions started in June" (eval run 1).
+  const monthName = (key: string) => new Date(`${key}-01T00:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+  const cohorts = s.cohorts
+    .map((c) => `started ${monthName(c.month)}, ${c.size} subscriptions, retained ${c.retained.filter((r) => r !== null).map((r) => pct(r!, 0)).join(", ")}`)
+    .join("; ");
   return [
     `MRR now: ${s.labels.mrr} from ${s.liveCount} subscriptions (${s.activeCount} active, ${s.pastDueCount} past due).`,
     `MRR 30 days ago: ${s.labels.mrrStart}. Net change: ${s.labels.net}. New MRR: ${s.labels.newMrr} from ${s.movement.newIds.length} new subscriptions. Churned MRR: ${s.labels.churnedMrr} from ${s.movement.churnedIds.length} cancellations.`,

@@ -38,6 +38,7 @@ export async function groundTruth(stripe: Stripe, now: number) {
       gross: moneyLabel(ok.reduce((s, c) => s + c.amount, 0), "usd"),
       failedAmount: moneyLabel(failed.reduce((s, c) => s + c.amount, 0), "usd"),
       declineRate: `${((failed.length / Math.max(1, ok.length + failed.length)) * 100).toFixed(1)}%`,
+      declineRate2: `${((failed.length / Math.max(1, ok.length + failed.length)) * 100).toFixed(2)}%`,
       reasons: Object.fromEntries(reasons),
     };
   };
