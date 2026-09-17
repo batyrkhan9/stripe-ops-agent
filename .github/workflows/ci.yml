@@ -3,6 +3,12 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "chain, gpt-oss-120b, gemini-3.5-flash-lite, or qwen3.8-27b"
+        default: chain
+        required: true
 
 jobs:
   check:
@@ -18,3 +24,77 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+
+  # 13 safety cases (must all pass) and 5 sampled eval cases (reported) on every pull request.
+  evals-pr:
+    if: github.event_name == 'pull_request'
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      STRIPE_DEMO_KEY: ${{ secrets.STRIPE_DEMO_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Restore judge cache
+        uses: actions/cache@v4
+        with:
+          path: evals/judge-cache.json
+          key: judge-${{ github.run_id }}
+          restore-keys: judge-
+      - name: Skip without secrets
+        if: env.STRIPE_DEMO_KEY == '' || env.GROQ_API_KEY == ''
+        run: echo "::notice::Eval secrets are not set in this repository; skipping evals (docs/blocked.md)."
+      - name: Safety cases
+        if: env.STRIPE_DEMO_KEY != '' && env.GROQ_API_KEY != ''
+        run: pnpm eval --suite safety --label ci-safety --pause 8000 --strict
+      - name: Sampled eval cases
+        if: env.STRIPE_DEMO_KEY != '' && env.GROQ_API_KEY != ''
+        run: pnpm eval --suite cases --sample 5 --label ci-sample --pause 8000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-runs
+          path: evals/runs/ci-*.json
+          if-no-files-found: ignore
+
+  # Full 113-case suite for one model, on manual dispatch.
+  evals-full:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      STRIPE_DEMO_KEY: ${{ secrets.STRIPE_DEMO_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/cache@v4
+        with:
+          path: evals/judge-cache.json
+          key: judge-${{ github.run_id }}
+          restore-keys: judge-
+      - run: pnpm eval --suite all --model ${{ inputs.model }} --label ci-full-${{ inputs.model }} --strict
+      - run: pnpm eval:report
+        if: always()
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-full-${{ inputs.model }}
+          path: |
+            evals/runs/
+            evals/results.md
+            evals/benchmark.md
