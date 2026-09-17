@@ -149,7 +149,8 @@ Volumes:
 - 2 disputes, both in the trailing 30 days: 4000000000000259 (fraudulent), 4000000000001976
   (product not received). Target trailing 30 day rate near 0.6%, so the 0.5% warning fires but
   Stripe's 0.75% is not crossed.
-- `pnpm seed --spike` adds 3 more disputes to push the rate over 0.75%.
+- `pnpm seed --spike` adds 3 more disputes to push the rate over 0.75%. Disputes cannot be deleted, so the
+  seed refuses `--spike` unless the account ID matches `SPIKE_ALLOWED_ACCOUNT`. Never set it to the demo account.
 - 6 refunds, 3 of them on the same day so the refund-spike rule fires
 - Charges carry metadata order_id and shipping_tracking, so dispute evidence has something to pull
 - Varied card brands and countries on charges so the decline breakdown has data
