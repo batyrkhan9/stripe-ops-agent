@@ -1,10 +1,9 @@
-import { Placeholder } from "@/components/placeholder";
+import { Chat } from "@/components/chat/chat";
+import { getActiveAccount } from "@/lib/stripe/active-account";
 
-export default function ChatPage() {
-  return (
-    <Placeholder
-      title="Chat"
-      description="Ask questions about payments, customers, subscriptions, invoices, and disputes. Every answer lists its Stripe sources."
-    />
-  );
+export const dynamic = "force-dynamic";
+
+export default async function ChatPage() {
+  const account = await getActiveAccount();
+  return <Chat mode={account.mode} />;
 }

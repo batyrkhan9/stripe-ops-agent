@@ -29,6 +29,13 @@
       "when": 1789622798232,
       "tag": "0003_connections",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789627191480,
+      "tag": "0004_agent_traces",
+      "breakpoints": true
     }
   ]
 }

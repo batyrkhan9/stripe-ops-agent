@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { boolean, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, integer, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import type { KeyPermissions } from "@/lib/stripe/permissions";
 
 export const auditLog = pgTable("audit_log", {
@@ -11,6 +11,36 @@ export const auditLog = pgTable("audit_log", {
   params: jsonb("params").notNull(),
   stripeIds: text("stripe_ids").array().notNull().default(sql`'{}'::text[]`),
   result: jsonb("result"),
+});
+
+// One row per chat request: the planner's routing and the outcome. Spans hold the steps inside it.
+export const agentRuns = pgTable("agent_runs", {
+  id: uuid("id").primaryKey(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  accountId: text("account_id").notNull(),
+  question: text("question").notNull(),
+  plan: jsonb("plan"),
+  status: text("status").notNull(),
+  error: text("error"),
+  latencyMs: integer("latency_ms").notNull(),
+  sources: jsonb("sources"),
+});
+
+export const traceSpans = pgTable("trace_spans", {
+  id: uuid("id").primaryKey(),
+  runId: uuid("run_id").notNull().references(() => agentRuns.id, { onDelete: "cascade" }),
+  parentId: uuid("parent_id"),
+  kind: text("kind").notNull(),
+  name: text("name").notNull(),
+  provider: text("provider"),
+  modelId: text("model_id"),
+  input: jsonb("input"),
+  output: jsonb("output"),
+  inputTokens: integer("input_tokens"),
+  outputTokens: integer("output_tokens"),
+  startedAt: timestamp("started_at", { withTimezone: true }).notNull(),
+  latencyMs: integer("latency_ms").notNull(),
+  error: text("error"),
 });
 
 // A merchant's pasted restricted key (ADR 0005). The key is encrypted at rest and cleared on disconnect.
@@ -26,8 +56,8 @@ export const connections = pgTable("connections", {
   disconnectedAt: timestamp("disconnected_at", { withTimezone: true }),
 });
 
-// Verified webhook events, deduplicated by Stripe event ID. account_id is null for events on the
-// platform's own account (the demo account) and set for Connect accounts.
+// Verified webhook events, deduplicated by Stripe event ID. account_id is null for events on the demo
+// account itself and set only if Stripe sends an event on behalf of another account.
 export const stripeEvents = pgTable("stripe_events", {
   id: text("id").primaryKey(),
   type: text("type").notNull(),

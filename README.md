@@ -31,8 +31,9 @@ What the seed targets:
 
 Design experiments on 2026-09-17 (test clocks, dispute cards, past_due flows) left objects in the demo
 account that are not part of the seed. They are tagged `seed_key=experiment` where Stripe allows it. The
-agent sees them through the Stripe API; demo alerts, analytics, and evals read `seeded_objects` and
-ignore them.
+agent's list and search tools skip tagged leftovers, and demo alerts, analytics, and evals read
+`seeded_objects`, so none of them count toward rates or totals. The untaggable subscriptions below can still
+appear in subscription lists as `incomplete_expired`.
 
 | Object | Count | Notes |
 |---|---:|---|
