@@ -3,7 +3,7 @@
  "model": "qwen3.8-27b",
  "anchor": 1789619972,
  "startedAt": "2026-09-17T08:33:54.950Z",
- "updatedAt": "2026-09-17T08:39:21.271Z",
+ "updatedAt": "2026-09-17T09:02:53.002Z",
  "results": {
   "routing-01": {
    "id": "routing-01",
@@ -385,7 +385,7 @@
    "agent": "disputes",
    "kind": "answer",
    "question": "Which disputes need a response?",
-   "finishedAt": "2026-09-17T08:37:03.218Z",
+   "finishedAt": "2026-09-17T08:44:17.185Z",
    "status": "pass",
    "checks": [
     {
@@ -420,28 +420,29 @@
    "routed": [
     "disputes"
    ],
-   "answer": "Two disputes need a response, both due Sep 25, in 8 days: Ethan Nguyen's $65.00 charge disputed as fraudulent, and Camila Torres's $28.00 charge for product not received. Each already has order and shipping tracking attached to the charge plus the customer's history and any refunds to draw evidence from.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 and Camila Torres's $28.00 disputes before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "You have 2 disputes needing a response, both due Sep 25, in 8 days: one for Ethan Nguyen's $65.00 fraudulent payment and one for Camila Torres's $28.00 product not received claim.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nOn the Disputes page, submit evidence for Ethan Nguyen's $65.00 fraud dispute and Camila Torres's $28.00 product-not-received dispute before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies the response deadline of Sep 25.",
+    "reason": "The answer correctly identifies the response deadline for both disputes.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 4391
+   "rateLimitErrors": 2,
+   "latencyMs": 4460.285714999998,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-02": {
    "id": "disputes-02",
    "agent": "disputes",
    "kind": "answer",
    "question": "Which dispute is due soonest?",
-   "finishedAt": "2026-09-17T08:37:18.093Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:45:05.152Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -449,13 +450,11 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:Sep 25|September 25",
-     "pass": false,
-     "detail": "missing \"Sep 25|September 25\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -463,36 +462,35 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty and fails to provide the requested information."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "Both open disputes are due Sep 25, in 8 days, so they're tied for the soonest deadline: Ethan Nguyen's $65.00 fraudulent dispute and Camila Torres's $28.00 product not received dispute.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather and submit evidence for Ethan Nguyen's $65.00 fraudulent dispute and Camila Torres's $28.00 product-not-received dispute before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and fails to provide the requested information.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies September 25 as the soonest due date.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 2868,
-   "error": "No output generated. Check the stream for errors."
+   "rateLimitErrors": 3,
+   "latencyMs": 5380.857144000001,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-03": {
    "id": "disputes-03",
    "agent": "disputes",
    "kind": "answer",
    "question": "When is evidence due for Ethan Nguyen's dispute?",
-   "finishedAt": "2026-09-17T08:37:32.674Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:45:51.793Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -500,8 +498,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:Sep 25|September 25",
@@ -523,29 +520,29 @@
    "routed": [
     "disputes"
    ],
-   "answer": "Ethan Nguyen's dispute is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "Ethan Nguyen's dispute evidence is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather and submit evidence for Ethan Nguyen's dispute before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies the due date as September 25.",
+    "reason": "The answer correctly identifies the deadline as Sep 25.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 2578,
-   "error": "An error occurred."
+   "rateLimitErrors": 3,
+   "latencyMs": 5225.571429000003,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-04": {
    "id": "disputes-04",
    "agent": "disputes",
    "kind": "answer",
    "question": "What is Camila Torres's dispute about?",
-   "finishedAt": "2026-09-17T08:37:45.844Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:48:12.923Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -553,18 +550,15 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:not received|never arrived|didn't arrive|did not arrive",
-     "pass": false,
-     "detail": "missing \"not received|never arrived|didn't arrive|did not arrive\""
+     "pass": true
     },
     {
      "check": "source:du_1UGX7p3FpwYTqedqqJArppnd",
-     "pass": false,
-     "detail": "not cited in Sources"
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -572,36 +566,35 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "Camila Torres is disputing a $28.00 charge for a ceramic dripper (order KC-10300) as \"product not received\" — she's saying she never got what she paid for, but your records show it shipped with tracking 1ZKC473508949907, which you can use as delivery evidence before the deadline.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit tracking number 1ZKC473508949907 as delivery evidence for Camila Torres's $28.00 dispute before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies that the dispute reason is \"product not received.\"",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 1167,
-   "error": "No output generated. Check the stream for errors."
+   "rateLimitErrors": 7,
+   "latencyMs": 8972.714288000017,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-05": {
    "id": "disputes-05",
    "agent": "disputes",
    "kind": "answer",
    "question": "How much money is currently in dispute?",
-   "finishedAt": "2026-09-17T08:38:00.194Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:48:57.697Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -609,13 +602,11 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:$93.00",
-     "pass": false,
-     "detail": "missing \"$93.00\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -623,36 +614,35 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer lists the individual disputes but fails to provide the total amount requested by the merchant."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "You have $93.00 currently in dispute across two open cases, both due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather and submit evidence for both open disputes before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer lists the individual disputes but fails to provide the total amount requested by the merchant.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the total disputed amount as $93.00 and provides accurate supporting details.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 2346,
-   "error": "An error occurred."
+   "rateLimitErrors": 3,
+   "latencyMs": 3770.0000010000003,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-06": {
    "id": "disputes-06",
    "agent": "disputes",
    "kind": "answer",
    "question": "Which order is the fraudulent dispute for?",
-   "finishedAt": "2026-09-17T08:38:14.263Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:49:45.261Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -660,8 +650,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:KC-10299",
@@ -679,29 +668,29 @@
    "routed": [
     "disputes"
    ],
-   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "The fraudulent dispute is for order KC-10299, a $65.00 charge from Ethan Nguyen, due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather and submit evidence for the $65.00 dispute on order KC-10299 (Ethan Nguyen) before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies order KC-10299 as the one associated with the fraudulent dispute.",
+    "reason": "The answer correctly identifies the fraudulent dispute for order KC-10299.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 2064,
-   "error": "An error occurred."
+   "rateLimitErrors": 3,
+   "latencyMs": 4288.571430000004,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-07": {
    "id": "disputes-07",
    "agent": "disputes",
    "kind": "answer",
    "question": "What is the tracking number for the product not received dispute?",
-   "finishedAt": "2026-09-17T08:38:26.706Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:50:57.181Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -709,13 +698,11 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:1ZKC473508949907",
-     "pass": false,
-     "detail": "missing \"1ZKC473508949907\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -723,86 +710,82 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty and does not provide the requested tracking number."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "The product not received dispute for Camila Torres on order KC-10300 has the tracking number 1ZKC473508949907. It's due Sep 25, in 8 days, and evidence has not yet been submitted.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence with tracking number 1ZKC473508949907 for the product not received dispute from Camila Torres (order KC-10300) before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and does not provide the requested tracking number.",
-    "model": "gemini-3.1-flash-lite",
-    "cached": true
-   },
-   "models": [
-    "qwen/qwen3.8-27b"
-   ],
-   "rateLimitErrors": 0,
-   "latencyMs": 437,
-   "error": "No output generated. Check the stream for errors."
-  },
-  "disputes-08": {
-   "id": "disputes-08",
-   "agent": "disputes",
-   "kind": "answer",
-   "question": "What did Ethan Nguyen buy in the order he disputed?",
-   "finishedAt": "2026-09-17T08:38:41.324Z",
-   "status": "fail",
-   "checks": [
-    {
-     "check": "routing",
-     "pass": true
-    },
-    {
-     "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
-    },
-    {
-     "check": "fact:pour-over kettle",
-     "pass": false,
-     "detail": "missing \"pour-over kettle\""
-    },
-    {
-     "check": "sources_verified",
-     "pass": true
-    },
-    {
-     "check": "judge",
-     "pass": false,
-     "detail": "The answer failed to identify the item (pour-over kettle) that Ethan Nguyen purchased."
-    }
-   ],
-   "routed": [
-    "disputes"
-   ],
-   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
-   "proposals": [],
-   "stripeWrites": [],
-   "judge": {
-    "verdict": "fail",
-    "reason": "The answer failed to identify the item (pour-over kettle) that Ethan Nguyen purchased.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the tracking number required by the ground truth.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 2608,
-   "error": "An error occurred."
+   "rateLimitErrors": 6,
+   "latencyMs": 5562.71428700001,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
+  },
+  "disputes-08": {
+   "id": "disputes-08",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What did Ethan Nguyen buy in the order he disputed?",
+   "finishedAt": "2026-09-17T08:52:15.706Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:pour-over kettle",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Ethan Nguyen bought a pour-over kettle, listed as order KC-10299 for $65.00.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nRespond to Ethan Nguyen's dispute on the $65.00 pour-over kettle order (KC-10299) by submitting your proof of purchase and delivery evidence.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the pour-over kettle as the item purchased in the disputed order.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 5,
+   "latencyMs": 6602.000001000008,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-09": {
    "id": "disputes-09",
    "agent": "disputes",
    "kind": "answer",
    "question": "How much is Ethan Nguyen disputing?",
-   "finishedAt": "2026-09-17T08:38:54.650Z",
+   "finishedAt": "2026-09-17T08:54:29.262Z",
    "status": "fail",
    "checks": [
     {
@@ -811,8 +794,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:$65.00",
@@ -826,35 +808,35 @@
     {
      "check": "judge",
      "pass": false,
-     "detail": "The answer is empty and does not state the required amount of $65.00."
+     "detail": "The assistant failed to provide the specific amount requested and instead directed the user to look it up themselves."
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "<tool_call>\n<function=list_disputes>\n<parameter=limit>\n25\n</parameter>\n<parameter=status>\nall\n</parameter>\n</function>\n</tool_call>\nCheck the disputes page for the open dispute filed by Ethan Nguyen to confirm the exact amount being disputed.",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "fail",
-    "reason": "The answer is empty and does not state the required amount of $65.00.",
-    "model": "openai/gpt-oss-20b",
+    "reason": "The assistant failed to provide the specific amount requested and instead directed the user to look it up themselves.",
+    "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 1323,
-   "error": "An error occurred."
+   "rateLimitErrors": 7,
+   "latencyMs": 7918.5714310000185,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-10": {
    "id": "disputes-10",
    "agent": "disputes",
    "kind": "answer",
    "question": "How many open disputes do we have?",
-   "finishedAt": "2026-09-17T08:39:08.874Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:55:15.252Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -862,8 +844,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:2|two",
@@ -881,28 +862,28 @@
    "routed": [
     "disputes"
    ],
-   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "You have 2 open disputes, both needing a response by Sep 25 in 8 days: a $65.00 fraudulent charge from Ethan Nguyen and a $28.00 product-not-received claim from Camila Torres.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather and submit evidence for the $65.00 Ethan Nguyen and $28.00 Camila Torres disputes before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies two open disputes as requested.",
+    "reason": "The answer correctly identifies the number of open disputes and provides relevant details.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 2221,
-   "error": "An error occurred."
+   "rateLimitErrors": 3,
+   "latencyMs": 4890.714286000002,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
   },
   "disputes-11": {
    "id": "disputes-11",
    "agent": "disputes",
    "kind": "answer",
    "question": "What card did Camila Torres use for the disputed order?",
-   "finishedAt": "2026-09-17T08:39:21.271Z",
+   "finishedAt": "2026-09-17T08:56:39.401Z",
    "status": "fail",
    "checks": [
     {
@@ -911,8 +892,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:2685",
@@ -926,7 +906,344 @@
     {
      "check": "judge",
      "pass": false,
-     "detail": "The answer is empty and does not provide the requested card information."
+     "detail": "The answer failed to provide the specific card digits (2685) requested by the ground truth."
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Camila Torres used a Visa card for the disputed order.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather the Visa card authorization and delivery confirmation for Camila Torres's disputed order to prepare your evidence response.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "fail",
+    "reason": "The answer failed to provide the specific card digits (2685) requested by the ground truth.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 4,
+   "latencyMs": 16654.571430000004,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
+  },
+  "disputes-12": {
+   "id": "disputes-12",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "When was the charge that Camila Torres disputed made?",
+   "finishedAt": "2026-09-17T08:57:39.531Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 4|September 4",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The charge Camila Torres disputed for $28.00 was made on Sep 4.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\ngather evidence and respond to Camila Torres's dispute for the $28.00 charge made on Sep 4 before the response deadline\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the date of the charge as September 4.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 4,
+   "latencyMs": 5181.142859,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
+  },
+  "disputes-13": {
+   "id": "disputes-13",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Has evidence been submitted for any open dispute?",
+   "finishedAt": "2026-09-17T08:58:32.020Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:not|no ",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "forbidden:evidence has been submitted",
+     "pass": true
+    },
+    {
+     "check": "forbidden:already submitted",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "No, evidence has not been submitted for either of your two open disputes.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nDo you have an answer?\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly states that no evidence has been submitted and provides the status of the open disputes.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 3,
+   "latencyMs": 9736.428573999998,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
+  },
+  "disputes-14": {
+   "id": "disputes-14",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What evidence would help with Camila Torres's product not received dispute?",
+   "finishedAt": "2026-09-17T08:59:44.849Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:tracking",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The strongest evidence you already have is shipping tracking number 1ZKC473508949907 on order KC-10300 — if the carrier shows delivery, that directly refutes the \"not received\" claim. You can also include the product description (1x Ceramic dripper), her name and email, and the shipping date from the charge.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit the UPS tracking number 1ZKC473508949907 for order KC-10300 as evidence in Camila Torres's dispute before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies that the tracking number is the evidence needed for the dispute.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 4,
+   "latencyMs": 6104.000001999993,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
+  },
+  "disputes-15": {
+   "id": "disputes-15",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What reason did the bank give for the $65.00 dispute?",
+   "finishedAt": "2026-09-17T09:00:32.041Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:fraud",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The bank flagged the $65.00 charge from Ethan Nguyen as fraudulent, and the response is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather and submit evidence (delivery confirmation, Ethan Nguyen's prior purchase history, IP/device data) for the $65.00 fraudulent dispute before the Sep 25 deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies \"fraudulent\" as the reason for the dispute.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 4,
+   "latencyMs": 4235.571429999996,
+   "error": "429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on input tokens per minute (ITPM): Lim"
+  },
+  "disputes-16": {
+   "id": "disputes-16",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Which disputes were opened in the last 30 days?",
+   "finishedAt": "2026-09-17T09:02:20.313Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Ethan Nguyen",
+     "pass": true
+    },
+    {
+     "check": "fact:Camila Torres",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Two disputes were opened in the last 30 days, both still needing a response with deadlines due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for both open disputes before the Sep 25 response deadline to avoid automatic losses.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies both Ethan Nguyen and Camila Torres as the disputes opened in the last 30 days.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 5,
+   "latencyMs": 4626,
+   "error": "429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Lim | 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Lim"
+  },
+  "disputes-17": {
+   "id": "disputes-17",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What is the order ID on Camila Torres's disputed charge?",
+   "finishedAt": "2026-09-17T09:02:31.676Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "An error occurred."
+    },
+    {
+     "check": "fact:KC-10300",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 1939,
+   "error": "An error occurred. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Li | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+  },
+  "disputes-18": {
+   "id": "disputes-18",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "How many days do I have left to respond to disputes?",
+   "finishedAt": "2026-09-17T09:02:37.056Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:8 days|eight days",
+     "pass": false,
+     "detail": "missing \"8 days|eight days\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
     }
    ],
    "routed": [
@@ -935,18 +1252,160 @@
    "answer": "\n",
    "proposals": [],
    "stripeWrites": [],
-   "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and does not provide the requested card information.",
-    "model": "gemini-3.1-flash-lite",
-    "cached": true
-   },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 393,
-   "error": "No output generated. Check the stream for errors."
+   "rateLimitErrors": 2,
+   "latencyMs": 376,
+   "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+  },
+  "disputes-19": {
+   "id": "disputes-19",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Is there an open dispute from Ethan Nguyen?",
+   "finishedAt": "2026-09-17T09:02:42.395Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:$65.00",
+     "pass": false,
+     "detail": "missing \"$65.00\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 337,
+   "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+  },
+  "disputes-20": {
+   "id": "disputes-20",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Summarize the fraudulent dispute",
+   "finishedAt": "2026-09-17T09:02:47.767Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:Ethan Nguyen",
+     "pass": false,
+     "detail": "missing \"Ethan Nguyen\""
+    },
+    {
+     "check": "fact:$65.00",
+     "pass": false,
+     "detail": "missing \"$65.00\""
+    },
+    {
+     "check": "fact:Sep 25|September 25",
+     "pass": false,
+     "detail": "missing \"Sep 25|September 25\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "qwen/qwen3.8-27b"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 367,
+   "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+  },
+  "recovery-01": {
+   "id": "recovery-01",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Which subscriptions are past due?",
+   "finishedAt": "2026-09-17T09:02:53.002Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:Tomas Kowalski",
+     "pass": false,
+     "detail": "missing \"Tomas Kowalski\""
+    },
+    {
+     "check": "fact:Ella Novak",
+     "pass": false,
+     "detail": "missing \"Ella Novak\""
+    },
+    {
+     "check": "fact:Arjun Mehta",
+     "pass": false,
+     "detail": "missing \"Arjun Mehta\""
+    },
+    {
+     "check": "fact:Owen Davies",
+     "pass": false,
+     "detail": "missing \"Owen Davies\""
+    },
+    {
+     "check": "fact:Camila Torres",
+     "pass": false,
+     "detail": "missing \"Camila Torres\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [],
+   "rateLimitErrors": 3,
+   "latencyMs": 231,
+   "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
   }
  }
 }
