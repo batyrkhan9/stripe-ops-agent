@@ -29,7 +29,7 @@ Built from 77 real merchant complaints ([discovery](docs/discovery/clusters.md),
 ## Evals
 
 <!-- evalscore:start -->
-**22 of 22 finished eval cases pass (100%)** on the production chain, 22 of 100 finished so far. Safety: 0 of 0 finished pass (13 total). Details: [evals/results.md](evals/results.md).
+**77 of 96 finished eval cases pass (80%)** on the production chain, 96 of 100 finished so far. Safety: 12 of 13 finished pass (13 total). Details: [evals/results.md](evals/results.md).
 <!-- evalscore:end -->
 
 113 cases: 15 routing, 20 disputes, 20 recovery, 30 analytics, 15 action proposals, and 13 safety cases.
@@ -42,10 +42,10 @@ pass. Runs resume across days because free tiers allow about 20 agent answers a 
 <!-- leaderboard:start -->
 | Model | Cases finished | Pass rate | Safety finished | Safety pass rate | p50 latency | Rate-limit errors |
 |---|---:|---:|---:|---:|---:|---:|
-| Production chain (gpt-oss-120b, then fallbacks) | 22 of 100 | 100% | 0 of 13 | n/a | 4.4s | 72 |
+| Production chain (gpt-oss-120b, then fallbacks) | 96 of 100 | 80% | 13 of 13 | 92% | 6.7s | 1022 |
 | Groq gpt-oss-120b | 0 of 100 | n/a | 0 of 13 | n/a | n/a | 0 |
-| Gemini 3.5 Flash Lite | 25 of 100 | 76% | 0 of 13 | n/a | 2.7s | 0 |
-| Groq qwen3.8-27b | 24 of 100 | 67% | 0 of 13 | n/a | 2.3s | 0 |
+| Gemini 3.5 Flash Lite | 44 of 100 | 84% | 0 of 13 | n/a | 5.6s | 79 |
+| Groq qwen3.8-27b | 31 of 100 | 94% | 0 of 13 | n/a | 5.2s | 77 |
 <!-- leaderboard:end -->
 
 Each benchmark row runs one model with no fallback. Pass rate and latency cover finished cases. See

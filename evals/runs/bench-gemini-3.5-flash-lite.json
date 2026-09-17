@@ -3,7 +3,7 @@
  "model": "gemini-3.5-flash-lite",
  "anchor": 1789619972,
  "startedAt": "2026-09-17T08:34:14.972Z",
- "updatedAt": "2026-09-17T08:39:07.276Z",
+ "updatedAt": "2026-09-17T09:12:41.141Z",
  "results": {
   "routing-01": {
    "id": "routing-01",
@@ -386,7 +386,7 @@
    "agent": "disputes",
    "kind": "answer",
    "question": "Which disputes need a response?",
-   "finishedAt": "2026-09-17T08:36:57.590Z",
+   "finishedAt": "2026-09-17T08:44:38.878Z",
    "status": "pass",
    "checks": [
     {
@@ -421,28 +421,29 @@
    "routed": [
     "disputes"
    ],
-   "answer": "You have two open disputes that need a response, both due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for the two disputes due on September 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "You have two open disputes that need a response.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen and Camila Torres's disputes by September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies the response deadline for both disputes.",
+    "reason": "The answer correctly identifies September 25 as the due date for the pending disputes.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "gemini-3.5-flash-lite"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 4072
+   "rateLimitErrors": 2,
+   "latencyMs": 4879,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
   },
   "disputes-02": {
    "id": "disputes-02",
    "agent": "disputes",
    "kind": "answer",
    "question": "Which dispute is due soonest?",
-   "finishedAt": "2026-09-17T08:37:08.879Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:44:50.578Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -450,13 +451,11 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:Sep 25|September 25",
-     "pass": false,
-     "detail": "missing \"Sep 25|September 25\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -464,33 +463,33 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty and fails to provide the requested date."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "The dispute from Ethan Nguyen for $65.00 due Sep 25, in 8 days is due soonest, alongside the dispute from Camila Torres.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute before it is due on September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and fails to provide the requested date.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies September 25 as the date for the earliest disputes.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
-   "models": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
    "rateLimitErrors": 0,
-   "latencyMs": 1287,
-   "error": "No output generated. Check the stream for errors."
+   "latencyMs": 6695
   },
   "disputes-03": {
    "id": "disputes-03",
    "agent": "disputes",
    "kind": "answer",
    "question": "When is evidence due for Ethan Nguyen's dispute?",
-   "finishedAt": "2026-09-17T08:37:25.493Z",
+   "finishedAt": "2026-09-17T08:45:21.114Z",
    "status": "pass",
    "checks": [
     {
@@ -521,27 +520,28 @@
    "routed": [
     "disputes"
    ],
-   "answer": "Evidence for Ethan Nguyen's dispute is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's dispute by September 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "Evidence for Ethan Nguyen's dispute is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's dispute by September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies the due date for the specified dispute.",
+    "reason": "The answer correctly identifies the due date as September 25 and provides the requested information.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "gemini-3.5-flash-lite"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 6612
+   "rateLimitErrors": 1,
+   "latencyMs": 5533,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
   },
   "disputes-04": {
    "id": "disputes-04",
    "agent": "disputes",
    "kind": "answer",
    "question": "What is Camila Torres's dispute about?",
-   "finishedAt": "2026-09-17T08:37:39.368Z",
+   "finishedAt": "2026-09-17T08:45:52.167Z",
    "status": "pass",
    "checks": [
     {
@@ -572,7 +572,7 @@
    "routed": [
     "disputes"
    ],
-   "answer": "Camila Torres filed a dispute for $28.00 due to product not received, and the response is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence to respond to Camila Torres's dispute for $28.00 by Sep 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "Camila Torres filed a dispute for $28.00 due to product not received, and the response is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Camila Torres's $28.00 dispute before Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
@@ -585,30 +585,27 @@
     "gemini-3.5-flash-lite"
    ],
    "rateLimitErrors": 0,
-   "latencyMs": 3873
+   "latencyMs": 26049
   },
   "disputes-05": {
    "id": "disputes-05",
    "agent": "disputes",
    "kind": "answer",
    "question": "How much money is currently in dispute?",
-   "finishedAt": "2026-09-17T08:37:50.483Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:46:22.440Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
-     "pass": false,
-     "detail": "routed to analytics, expected disputes"
+     "pass": true
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:$93.00",
-     "pass": false,
-     "detail": "missing \"$93.00\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -616,34 +613,35 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty and does not provide the requested dispute amount."
+     "pass": true
     }
    ],
    "routed": [
-    "analytics"
+    "disputes"
    ],
-   "answer": "\n",
+   "answer": "You have a total of $93.00 currently in dispute across two open cases.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for the $93.00 in open disputes\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and does not provide the requested dispute amount.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the total disputed amount as $93.00 and provides relevant details.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
-   "models": [],
-   "rateLimitErrors": 0,
-   "latencyMs": 1109,
-   "error": "No output generated. Check the stream for errors."
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 5268,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
   },
   "disputes-06": {
    "id": "disputes-06",
    "agent": "disputes",
    "kind": "answer",
    "question": "Which order is the fraudulent dispute for?",
-   "finishedAt": "2026-09-17T08:38:03.183Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:46:31.547Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -651,8 +649,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:KC-10299",
@@ -670,12 +667,12 @@
    "routed": [
     "disputes"
    ],
-   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "The fraudulent dispute is for Ethan Nguyen's order KC-10299, totaling $65.00 and due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute due Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies order KC-10299 as the one associated with the fraudulent dispute.",
+    "reason": "The answer correctly identifies the order ID associated with the fraudulent dispute.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
@@ -683,16 +680,15 @@
     "gemini-3.5-flash-lite"
    ],
    "rateLimitErrors": 0,
-   "latencyMs": 2695,
-   "error": "An error occurred."
+   "latencyMs": 4104
   },
   "disputes-07": {
    "id": "disputes-07",
    "agent": "disputes",
    "kind": "answer",
    "question": "What is the tracking number for the product not received dispute?",
-   "finishedAt": "2026-09-17T08:38:14.258Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:47:20.985Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -700,13 +696,11 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:1ZKC473508949907",
-     "pass": false,
-     "detail": "missing \"1ZKC473508949907\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -714,33 +708,34 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty and does not provide the requested tracking number."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "The tracking number for Camila Torres on the product not received dispute is 1ZKC473508949907.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nProvide tracking number 1ZKC473508949907 to Camila Torres for the dispute.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and does not provide the requested tracking number.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the tracking number for the specified dispute.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
-   "models": [],
-   "rateLimitErrors": 0,
-   "latencyMs": 1071,
-   "error": "No output generated. Check the stream for errors."
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 4433,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
   },
   "disputes-08": {
    "id": "disputes-08",
    "agent": "disputes",
    "kind": "answer",
    "question": "What did Ethan Nguyen buy in the order he disputed?",
-   "finishedAt": "2026-09-17T08:38:29.774Z",
+   "finishedAt": "2026-09-17T08:47:31.534Z",
    "status": "pass",
    "checks": [
     {
@@ -767,12 +762,12 @@
    "routed": [
     "disputes"
    ],
-   "answer": "Ethan Nguyen bought one pour-over kettle in the order he disputed.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's disputed pour-over kettle order\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "Ethan Nguyen bought a pour-over kettle for $65.00 in the order he disputed.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies the item purchased and includes the required context.",
+    "reason": "The answer correctly identifies the item purchased and includes the required information.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
@@ -780,14 +775,14 @@
     "gemini-3.5-flash-lite"
    ],
    "rateLimitErrors": 0,
-   "latencyMs": 5508
+   "latencyMs": 5545
   },
   "disputes-09": {
    "id": "disputes-09",
    "agent": "disputes",
    "kind": "answer",
    "question": "How much is Ethan Nguyen disputing?",
-   "finishedAt": "2026-09-17T08:38:43.818Z",
+   "finishedAt": "2026-09-17T08:47:43.121Z",
    "status": "pass",
    "checks": [
     {
@@ -814,12 +809,12 @@
    "routed": [
     "disputes"
    ],
-   "answer": "Ethan Nguyen is disputing $65.00 for the charge made on Sep 10.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute before the response deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "Ethan Nguyen is disputing $65.00 for order KC-10299, which is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute before it is due on September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "pass",
-    "reason": "The answer correctly identifies the dispute amount and aligns with the ground truth.",
+    "reason": "The answer correctly identifies the dispute amount as $65.00.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
@@ -827,15 +822,15 @@
     "gemini-3.5-flash-lite"
    ],
    "rateLimitErrors": 0,
-   "latencyMs": 4027
+   "latencyMs": 6585
   },
   "disputes-10": {
    "id": "disputes-10",
    "agent": "disputes",
    "kind": "answer",
    "question": "How many open disputes do we have?",
-   "finishedAt": "2026-09-17T08:38:55.247Z",
-   "status": "fail",
+   "finishedAt": "2026-09-17T08:48:34.890Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -843,13 +838,11 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "No output generated. Check the stream for errors."
+     "pass": true
     },
     {
      "check": "fact:2|two",
-     "pass": false,
-     "detail": "missing \"2|two\""
+     "pass": true
     },
     {
      "check": "sources_verified",
@@ -857,35 +850,34 @@
     },
     {
      "check": "judge",
-     "pass": false,
-     "detail": "The answer is empty and does not provide the requested information."
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "You have 2 open disputes that need a response, both due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for the two open disputes due September 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
-    "verdict": "fail",
-    "reason": "The answer is empty and does not provide the requested information.",
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the number of open disputes and provides the requested information.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
    "models": [
     "gemini-3.5-flash-lite"
    ],
-   "rateLimitErrors": 0,
-   "latencyMs": 1426,
-   "error": "No output generated. Check the stream for errors."
+   "rateLimitErrors": 2,
+   "latencyMs": 6767,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
   },
   "disputes-11": {
    "id": "disputes-11",
    "agent": "disputes",
    "kind": "answer",
    "question": "What card did Camila Torres use for the disputed order?",
-   "finishedAt": "2026-09-17T08:39:07.276Z",
+   "finishedAt": "2026-09-17T08:48:45.639Z",
    "status": "fail",
    "checks": [
     {
@@ -894,8 +886,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:2685",
@@ -909,18 +900,18 @@
     {
      "check": "judge",
      "pass": false,
-     "detail": "The answer is empty and does not provide the requested card information."
+     "detail": "The answer failed to identify the specific card ending in 2685 as required by the ground truth."
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\n",
+   "answer": "Camila Torres used a Visa card for the disputed order of $28.00.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Camila Torres's $28.00 dispute\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
    "judge": {
     "verdict": "fail",
-    "reason": "The answer is empty and does not provide the requested card information.",
+    "reason": "The answer failed to identify the specific card ending in 2685 as required by the ground truth.",
     "model": "gemini-3.1-flash-lite",
     "cached": false
    },
@@ -928,8 +919,1116 @@
     "gemini-3.5-flash-lite"
    ],
    "rateLimitErrors": 0,
-   "latencyMs": 2027,
-   "error": "An error occurred."
+   "latencyMs": 5744
+  },
+  "disputes-12": {
+   "id": "disputes-12",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "When was the charge that Camila Torres disputed made?",
+   "finishedAt": "2026-09-17T08:49:36.002Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 4|September 4",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Camila Torres disputed the charge of $28.00 that was made on Sep 4.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Camila Torres's $28.00 dispute before the response deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the date of the charge as Sep 4.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 5360,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "disputes-13": {
+   "id": "disputes-13",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Has evidence been submitted for any open dispute?",
+   "finishedAt": "2026-09-17T08:49:45.092Z",
+   "status": "fail",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:not|no ",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "forbidden:evidence has been submitted",
+     "pass": false,
+     "detail": "contains \"evidence has been submitted\""
+    },
+    {
+     "check": "forbidden:already submitted",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "No evidence has been submitted for either of the two open disputes, and both are due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for the disputes involving customer VH5HDvKIR3rlQY and customer VH5H3k2jK1RTw9 before September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly states that no evidence has been submitted while providing the relevant details for the open disputes.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 4085
+  },
+  "disputes-14": {
+   "id": "disputes-14",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What evidence would help with Camila Torres's product not received dispute?",
+   "finishedAt": "2026-09-17T08:50:39.211Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:tracking",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "To respond to Camila Torres's $28.00 dispute due Sep 25, in 8 days, you can provide the tracking number 1ZKC473508949907 and the product description for order KC-10300.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit tracking number 1ZKC473508949907 and the product description for Camila Torres's $28.00 dispute due Sep 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies that providing the tracking number is the evidence needed for the dispute.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 9116,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "disputes-15": {
+   "id": "disputes-15",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What reason did the bank give for the $65.00 dispute?",
+   "finishedAt": "2026-09-17T08:50:47.266Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:fraud",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The bank gave fraudulent as the reason for Ethan Nguyen's $65.00 dispute, which is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute before Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the dispute reason as fraud.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": true
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 3053
+  },
+  "disputes-16": {
+   "id": "disputes-16",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Which disputes were opened in the last 30 days?",
+   "finishedAt": "2026-09-17T08:51:37.238Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Ethan Nguyen",
+     "pass": true
+    },
+    {
+     "check": "fact:Camila Torres",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "There are two open disputes from Ethan Nguyen and Camila Torres that were opened in the last 30 days and both need a response.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence to respond to the disputes from Ethan Nguyen and Camila Torres.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies both disputes as required by the ground truth.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 4968,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "disputes-17": {
+   "id": "disputes-17",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What is the order ID on Camila Torres's disputed charge?",
+   "finishedAt": "2026-09-17T08:51:46.529Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:KC-10300",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The order ID on Camila Torres's disputed charge is KC-10300.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Camila Torres's disputed charge.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the order ID and provides relevant context.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 4285
+  },
+  "disputes-18": {
+   "id": "disputes-18",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "How many days do I have left to respond to disputes?",
+   "finishedAt": "2026-09-17T08:52:36.118Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:8 days|eight days",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "You have 8 days left to respond to both open disputes, with both deadlines due Sep 25.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for the two disputes due Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the 8-day deadline and provides the relevant dispute details.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 4582,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "disputes-19": {
+   "id": "disputes-19",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Is there an open dispute from Ethan Nguyen?",
+   "finishedAt": "2026-09-17T08:52:47.207Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:$65.00",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Yes, you have an open dispute from Ethan Nguyen for $65.00 due Sep 25, in 8 days, regarding a fraudulent claim.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence to respond to Ethan Nguyen's $65.00 dispute before Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the open dispute from Ethan Nguyen and confirms the amount of $65.00.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 6084
+  },
+  "disputes-20": {
+   "id": "disputes-20",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Summarize the fraudulent dispute",
+   "finishedAt": "2026-09-17T08:53:37.839Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Ethan Nguyen",
+     "pass": true
+    },
+    {
+     "check": "fact:$65.00",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 25|September 25",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Ethan Nguyen filed a fraudulent dispute for $65.00 regarding order KC-10299, which is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute before Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the customer, amount, and due date specified in the ground truth.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 5627,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-01": {
+   "id": "recovery-01",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Which subscriptions are past due?",
+   "finishedAt": "2026-09-17T08:53:48.941Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Tomas Kowalski",
+     "pass": true
+    },
+    {
+     "check": "fact:Ella Novak",
+     "pass": true
+    },
+    {
+     "check": "fact:Arjun Mehta",
+     "pass": true
+    },
+    {
+     "check": "fact:Owen Davies",
+     "pass": true
+    },
+    {
+     "check": "fact:Camila Torres",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "You have 5 past-due subscriptions with open invoices totaling $75.00.\nCamila Torres $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 19 camila.torres@example.com\nArjun Mehta $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 18 arjun.mehta@example.com\nOwen Davies $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 18 owen.davies@example.com\nElla Novak $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 19 ella.novak@example.com\nTomas Kowalski $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 19 tomas.kowalski@example.com\nSend emails to the five customers with past-due subscriptions totaling $75.00 to prompt payment updates.\nCards: Camila Torres $15.00 The bank declined without giving a reason; Arjun Mehta $15.00 The bank declined without giving a reason; Owen Davies $15.00 The bank declined without giving a reason; Ella Novak $15.00 The bank declined without giving a reason; Tomas Kowalski $15.00 The bank declined without giving a reason",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies all five customers with past-due subscriptions.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 6100
+  },
+  "recovery-02": {
+   "id": "recovery-02",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Why did payments fail in the last 7 days?",
+   "finishedAt": "2026-09-17T08:54:40.160Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:insufficient funds|not enough money",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "Payments failed in the last 7 days due to insufficient funds and generic bank declines, and you can retry them later once customers fund their accounts or contact their banks.\n\n* Not enough money in the account: 9 failures\n* The bank declined without giving a reason: 10 failures\nRetry the 19 failed payments from the last 7 days after customers update their payment methods.",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies insufficient funds as a cause for the failures and provides the requested context.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 6214,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-03": {
+   "id": "recovery-03",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How many payments failed in the last 7 days?",
+   "finishedAt": "2026-09-17T08:54:50.973Z",
+   "status": "fail",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:19",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "There were 19 payments that failed in the last 7 days, totaling $1,667.00.\nDecline rate 22.09% Warning Last 7 days 19 of 86 charge attempts failed, 22.09%, over the 15.00% threshold. Threshold: over 15.00%\nSet up Smart Retries to recover the 19 failed payments totaling $1,667.00.\nCards: Decline rate 22.09% Last 7 days",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the 19 failed payments as requested by the ground truth.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 5810
+  },
+  "recovery-04": {
+   "id": "recovery-04",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How much in payments failed in the last 7 days?",
+   "finishedAt": "2026-09-17T08:55:21.783Z",
+   "status": "fail",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:$1,847.00",
+     "pass": false,
+     "detail": "missing \"$1,847.00\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": false,
+     "detail": "The answer provides an incorrect total amount ($1,617.00) instead of the ground truth ($1,847.00)."
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "A total of $1,617.00 across 19 failed payments occurred in the last 7 days.\nDecline rate 22.09% Warning Last 7 days 19 of 86 charge attempts failed, 22.09%, over the 15.00% threshold. Threshold: over 15.00%\nRetry the 19 failed payments totaling $1,617.00 from the last 7 days\nCards: Decline rate 22.09% Last 7 days",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "fail",
+    "reason": "The answer provides an incorrect total amount ($1,617.00) instead of the ground truth ($1,847.00).",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 5807,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-05": {
+   "id": "recovery-05",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Which invoices are unpaid?",
+   "finishedAt": "2026-09-17T08:55:38.035Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Tomas Kowalski",
+     "pass": true
+    },
+    {
+     "check": "fact:Ella Novak",
+     "pass": true
+    },
+    {
+     "check": "fact:Arjun Mehta",
+     "pass": true
+    },
+    {
+     "check": "fact:Owen Davies",
+     "pass": true
+    },
+    {
+     "check": "fact:Camila Torres",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "You have five open invoices currently waiting for payment.\nArjun Mehta $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 18 arjun.mehta@example.com\nOwen Davies $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 18 owen.davies@example.com\nElla Novak $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 19 ella.novak@example.com\nCamila Torres $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 19 camila.torres@example.com\nTomas Kowalski $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 19 tomas.kowalski@example.com\nSend the payment reminder emails for the five open invoices.\nCards: Arjun Mehta $15.00 The bank declined without giving a reason; Owen Davies $15.00 The bank declined without giving a reason; Ella Novak $15.00 The bank declined without giving a reason; Camila Torres $15.00 The bank declined without giving a reason; Tomas Kowalski $15.00 The bank declined without giving a reason",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies all five customers with unpaid invoices as required by the ground truth.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 11248
+  },
+  "recovery-06": {
+   "id": "recovery-06",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How much do past-due customers owe in total?",
+   "finishedAt": "2026-09-17T08:55:46.801Z",
+   "status": "fail",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:$75.00",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "Your past-due customers owe a total of $75.00 across 5 subscriptions.\n\n* Camila Torres owes $15.00\n* Arjun Mehta owes $15.00\n* Owen Davies owes $15.00\n* Ella Novak owes $15.00\nSend payment recovery emails to Camila Torres, Arjun Mehta, Owen Davies, and Ella Novak for their past-due subscriptions totaling $75.00.",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the total past-due amount of $75.00.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 3764
+  },
+  "recovery-07": {
+   "id": "recovery-07",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Why did Tomas Kowalski's payment fail?",
+   "finishedAt": "2026-09-17T08:57:20.035Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:bank|generic",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "Tomas Kowalski has three failed payments, and all of them were declined because his bank refused the charge without providing a specific reason. Retrying automatically may not work, so he should contact his bank or use another card.\nEmail Tomas Kowalski to ask him to contact his bank or update his payment method for his failed payments.",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the reason for the failure as a bank-related issue.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 48229,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-08": {
+   "id": "recovery-08",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How much does Ella Novak owe?",
+   "finishedAt": "2026-09-17T08:57:29.837Z",
+   "status": "fail",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:$15.00",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "Ella Novak currently owes $15.00 on an open invoice for a subscription update.\nEmail Ella Novak about the $15.00 past-due invoice.",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the amount owed and provides a helpful next action.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 4797
+  },
+  "recovery-09": {
+   "id": "recovery-09",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "When will Arjun Mehta's invoice be retried?",
+   "finishedAt": "2026-09-17T08:58:04.140Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 18|September 18",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "Arjun Mehta's open invoice for $15.00 will be retried on Sep 18.\nArjun Mehta $15.00 Open The bank declined without giving a reason Retry after a few days. Call the bank or use another card. 1 attempt Next retry Sep 18 arjun.mehta@example.com\nRetry Arjun Mehta's $15.00 invoice on Sep 18\nCards: Arjun Mehta $15.00 The bank declined without giving a reason",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the retry date as Sep 18.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 9299,
+   "error": "429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-10": {
+   "id": "recovery-10",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Does Owen Davies have an open invoice?",
+   "finishedAt": "2026-09-17T09:00:11.836Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "An error occurred."
+    },
+    {
+     "check": "fact:$15.00",
+     "pass": false,
+     "detail": "missing \"$15.00\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 7,
+   "latencyMs": 2692,
+   "error": "An error occurred. | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-11": {
+   "id": "recovery-11",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How many failed payments were for insufficient funds in the last 7 days?",
+   "finishedAt": "2026-09-17T09:03:18.940Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:9",
+     "pass": false,
+     "detail": "missing \"9\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [],
+   "rateLimitErrors": 12,
+   "latencyMs": 2101,
+   "error": "No output generated. Check the stream for errors. | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-12": {
+   "id": "recovery-12",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How many payments did banks decline without a reason in the last 7 days?",
+   "finishedAt": "2026-09-17T09:06:26.224Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:10",
+     "pass": false,
+     "detail": "missing \"10\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [],
+   "rateLimitErrors": 12,
+   "latencyMs": 2279,
+   "error": "No output generated. Check the stream for errors. | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-13": {
+   "id": "recovery-13",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Should I retry payments that failed for insufficient funds?",
+   "finishedAt": "2026-09-17T09:09:33.513Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:later|few days|after|wait",
+     "pass": false,
+     "detail": "missing \"later|few days|after|wait\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [],
+   "rateLimitErrors": 12,
+   "latencyMs": 2284,
+   "error": "No output generated. Check the stream for errors. | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
+  },
+  "recovery-14": {
+   "id": "recovery-14",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "How many failed payments were there in the last 30 days?",
+   "finishedAt": "2026-09-17T09:12:41.141Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": false,
+     "detail": "routed to analytics, expected recovery"
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:25",
+     "pass": false,
+     "detail": "missing \"25\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [],
+   "rateLimitErrors": 12,
+   "latencyMs": 2622,
+   "error": "No output generated. Check the stream for errors. | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/ | 429: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/"
   }
  }
 }
