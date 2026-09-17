@@ -254,8 +254,7 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 - Push to GitHub after every commit.
 - At the end of every phase, before committing, write docs/learn/<phase>.md: a plain-English explanation of
   what was built, why, and how the pieces connect, at most 20 lines, for someone who has never seen the code.
-  Then ask the human 3 questions about it and wait for answers before continuing. If an answer is wrong,
-  explain that part again.
+  Do not quiz the human or wait; continue with the next phase.
 - Never add Co-Authored-By or any attribution lines to commits or PRs.
 - Real keys go only in .env.local. .env.example holds placeholders and is committed.
 - Write the test before or with the feature, not at the end.
