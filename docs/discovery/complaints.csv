@@ -1,0 +1,81 @@
+id,source_url,date,short_paraphrase,tag
+C001,https://www.indiehackers.com/post/first-dispute-in-stripe-ebf9a690f8,2023-06-13,Customer filed chargeback after simply changing their mind despite a 30 day refund guarantee,disputes
+C002,https://www.indiehackers.com/post/how-to-protect-saas-from-card-testing-attack-5bb21e38ec,2023-06-19,Stolen card testing spotted only by eyeballing signups; had to pause payments and buy Radar,anomalies_fraud
+C003,https://wordpress.org/support/topic/horrible-vulnerable-to-fraudulent-charges-and-penalized-with-fees/,2023-09-07,"Over 150 stolen card orders, canceled orders not refunded, then lost disputes cost a 15 dollar fee each",disputes
+C004,https://wordpress.org/support/topic/stripe-payments-not-syncing/,2023-10-14,"Stripe takes payments but accounts do not update, so customers pay twice and the merchant absorbs the fees",api_webhooks
+C005,https://news.ycombinator.com/item?id=38363066,2023-11-21,Stripe forced a 46000 dollar refund out of the merchant's business account,refunds
+C006,https://x.com/bruno_simon/status/1736779692697391163,2023-12-18,Fraud wave left 171K of stolen card payments on account and returning it was difficult,anomalies_fraud
+C007,https://wordpress.org/support/topic/fraud-card-testing-wihtout-wc-orders/,2024-01-01,Thousands of stolen cards were tested through the gateway with no store orders created to flag it,anomalies_fraud
+C008,https://wordpress.org/support/topic/how-to-retry-payment-error-with-subscription/,2024-02-07,"No charge was attempted when trials ended, and the merchant cannot work out how to retry those payments",dunning_churn
+C009,https://wordpress.org/support/topic/issues-with-refund-in-stripe-2/,2024-02-22,Refunds that are correct in Stripe show in the store as roughly triple the real amount,refunds
+C010,https://news.ycombinator.com/item?id=40513782,2024-05-29,Account deemed restricted business; support gave no specific violation or chance to fix it,support
+C011,https://news.ycombinator.com/item?id=40529033,2024-05-30,Closed account could not migrate recurring subscriptions because Stripe refused to export card data,other
+C012,https://news.ycombinator.com/item?id=40614788,2024-06-08,150k in sales held for over a year with only canned support replies,payouts_holds
+C013,https://wordpress.org/support/topic/cant-refund-an-order-with-stripe/,2024-06-19,Refunding an order through Stripe suddenly fails with a generic gateway error after an update,refunds
+C014,https://wordpress.org/support/topic/stripe-failing-webhook-endpoint/,2024-06-22,"Stripe warns a failing webhook endpoint will be disabled, and the merchant cannot understand or fix it",api_webhooks
+C015,https://wordpress.org/support/topic/woocommerce-payments-dispute-not-loaded/,2024-06-24,Merchant who had challenged disputes before suddenly cannot open a new dispute to respond to it,disputes
+C016,https://wordpress.org/support/topic/matching-stripe-payouts-to-woocommerce-invoice-numbers-for-accurate-accounting/,2024-07-15,"Payouts are batched and net of fees, so the accountant cannot match them to invoice numbers",reporting_analytics
+C017,https://x.com/0xKofi/status/1820599259248664877,2024-08-05,Payouts paused for business review; promised two day reply still missing after two weeks,support
+C018,https://news.ycombinator.com/item?id=41352572,2024-08-25,"MRR shown in Stripe dashboards is not exposed via API, so external metrics are wrong",reporting_analytics
+C019,https://news.ycombinator.com/item?id=41353764,2024-08-26,Stripe dashboard MRR runs 1 to 2 percent high and every tool reports a different number,reporting_analytics
+C020,https://wordpress.org/support/topic/be-cautious-of-woopayment-scam-we-lost-several-disputes/,2024-10-02,Store loses dispute after dispute on fraud claims while customers keep the product,disputes
+C021,https://news.ycombinator.com/item?id=41756047,2024-10-06,Cards of long standing subscribers suddenly fail with generic card_declined codes and Stripe support cannot help,declines
+C022,https://wordpress.org/support/topic/stripe-fees-not-accurately-shown-when-an-upsell-is-purchased/,2024-10-12,"Store only records the Stripe fee for the first charge, so totals synced to Xero do not match",fees
+C023,https://github.com/woocommerce/woocommerce-gateway-stripe/issues/3556,2024-10-29,"After losing a dispute on one subscription renewal, a separate renewal order also flipped to failed with no explanation",disputes
+C024,https://wordpress.org/support/topic/recurring-payments-with-debit-fails/,2025-01-23,"Every recurring payment from one bank's debit cards fails with do_not_honor, and neither bank nor Stripe explains why",declines
+C025,https://wordpress.org/support/topic/woopayments-cant-get-payout-from-stripe-express/,2025-02-07,"Two weeks in, thousands of dollars show as available but payout scheduling is unavailable",payouts_holds
+C026,https://wordpress.org/support/topic/stay-away-75/,2025-02-11,Large balance held while WooPayments and Stripe each say the other one has to release the payout,support
+C027,https://github.com/woocommerce/woocommerce-gateway-stripe/issues/3921,2025-02-19,"Renewal orders randomly never charge and failed payment retries never fire, now over ten orders a day",dunning_churn
+C028,https://www.reddit.com/r/stripe/comments/1itn3i7/hacked_on_stripe41k_gone_no_real_help_from/,2025-02-20,"Attacker linked fake Express accounts to a platform, drained balance and charged users; 41K lost",anomalies_fraud
+C029,https://www.reddit.com/r/stripe/comments/1itn3i7/hacked_on_stripe41k_gone_no_real_help_from/mdqs7db/,2025-02-20,Merchant asked Stripe for help investigating the account takeover and got no response,support
+C030,https://news.ycombinator.com/item?id=43417418,2025-03-19,Dispute process gives merchants no visibility and banks reject solid documentation anyway,disputes
+C031,https://x.com/ArtemR/status/1902446906640605657,2025-03-19,New extra fee to counter disputes while banks reverse legitimate charges regardless of evidence,fees
+C032,https://wordpress.org/support/topic/charge-refunded-webhook-from-stripe-is-not-working/,2025-04-03,Refund made in the Stripe dashboard never reached the store because the charge.refunded event was missing,refunds
+C033,https://news.ycombinator.com/item?id=43581680,2025-04-04,Marketplace funds held for 120 days with no stated reason and no deductions owed,payouts_holds
+C034,https://wordpress.org/support/topic/failed-payments-8/,2025-04-30,"Many payments fail as generic_decline, and customer retries return an unexplained unknown parameter error",declines
+C035,https://news.ycombinator.com/item?id=44176700,2025-06-04,Customer falsely claims cancellation in chargeback; merchant cannot prove a negative and pays fees twice,disputes
+C036,https://www.reddit.com/r/stripe/comments/1l82u4r/stripe_doesnt_refund_fees_on_refunds/,2025-06-10,"Processing fees are not returned on refunds, eroding margin when courses change or cancel",fees
+C037,https://x.com/gregisenberg/status/1936933708499402847,2025-06-22,"Disputes mean lost product, fees, and tedious evidence uploads judged by an uninformed bank",disputes
+C038,https://wordpress.org/support/topic/hundreds-of-empty-customer-records-in-stripe/,2025-06-28,"Hundreds of empty Stripe customers appear daily from card testing, with no failed orders to reveal it",anomalies_fraud
+C039,https://x.com/YDaftary/status/1940079030868251103,2025-07-01,A single dispute led Stripe to hold 450K of a merchant's revenue,payouts_holds
+C040,https://www.reddit.com/r/stripe/comments/1m87g8o/decline_reasons_anything_we_can_do_to_reduce/,2025-07-24,Nonprofit finds insufficient funds dominates recurring donation failures and does not know how to reduce it,declines
+C041,https://news.ycombinator.com/item?id=45252513,2025-09-15,"Chargeback fee is charged regardless of outcome plus another fee to respond, so fighting rarely pays",fees
+C042,https://www.reddit.com/r/stripe/comments/1nhoo1t/stripe_defaults_for_leave_subscription_past_due/,2025-09-15,Inconsistent default settings for canceling versus leaving subscriptions past due confuse merchants and customers,dunning_churn
+C043,https://wordpress.org/support/topic/high-failure-and-blocking-rate-on-subscription-renewals-using-stripe-link-and-c/,2025-11-05,"Many subscription renewals declined or blocked by Stripe, yet the retries keep hitting blocked payment methods",failed_payments
+C044,https://www.reddit.com/r/stripe/comments/1opu2rt/customers_pay_the_past_due_invoices_after_the/,2025-11-06,Customers pay retry email invoices after the subscription was already canceled and receive nothing,dunning_churn
+C045,https://www.reddit.com/r/stripe/comments/1oqqaya/what_is_the_point_in_even_disputing_chargebacks/,2025-11-07,Merchant won a chargeback but kept only 35 percent of the amount after fees,fees
+C046,https://www.reddit.com/r/stripe/comments/1oqqaya/what_is_the_point_in_even_disputing_chargebacks/nnudjcq/,2025-11-08,Won disputes still count toward the merchant dispute rate,disputes
+C047,https://wordpress.org/support/topic/sudden-increase-in-link-generic-declines-november-2025/,2025-11-18,"Sudden spike in Link generic declines loses orders, and Stripe only says it passes on the bank response",declines
+C048,https://www.reddit.com/r/stripe/comments/1p0ylad/my_website_has_been_down_since_august_but_stripe/,2025-11-19,"Dormant site was hit by card testing for months, noticed only after dispute emails arrived",anomalies_fraud
+C049,https://wordpress.org/support/topic/woopayments-stripe-payouts-suspended-under-review/,2025-12-08,"Payouts suspended under review, the schedule is forced to manual, and the merchant has no way to pay out",payouts_holds
+C050,https://www.reddit.com/r/stripe/comments/1q08j2n/should_i_cancel_my_customers_past_due/,2025-12-31,Past due subscriptions with dead cards keep generating failing invoices for years; unclear if it hurts reputation,dunning_churn
+C051,https://www.reddit.com/r/stripe/comments/1q4iecw/high_rate_of_insufficient_funds_declined_cards_in/,2026-01-05,Many checkout attempts declined for insufficient funds; commenters suspect card testing,declines
+C052,https://wordpress.org/support/topic/subscriptions-not-taking-payment-and-not-renewing/,2026-01-31,"Renewals sit in pending payment, subscriptions go on hold, and neither merchant nor customer gets notified",dunning_churn
+C053,https://www.reddit.com/r/stripe/comments/1rpeoc3/stripe_is_declining_50_of_my_orders/,2026-03-09,Clothing store sees about half of its orders declined with no clear reason,declines
+C054,https://www.reddit.com/r/stripe/comments/1s2wp37/80_of_my_stripe_payments_are_failing/,2026-03-25,"About 80 percent of payments fail, mostly at trial to paid conversion, from insufficient funds",failed_payments
+C055,https://www.reddit.com/r/stripe/comments/1skgiix/stripe_dispute_team_is_useless/,2026-04-13,"Lost an 8k dispute, mostly Amex, despite submitting customer usage documents; Stripe did not help",disputes
+C056,https://www.reddit.com/r/stripe/comments/1thlvtr/payouts_paused/omnv9nx/,2026-05-19,"Payouts paused, then account banned as high risk; funds returned only after about 160 days",payouts_holds
+C057,https://www.reddit.com/r/stripe/comments/1to4eej/stripe_closed_but_customer_refunds_stuck_after_30/,2026-05-26,"After account closure, 8k in customer refunds stuck over 30 days with circular support replies",refunds
+C058,https://www.reddit.com/r/stripe/comments/1tpvtkp/all_offsession_payments_are_rejected_with_network/,2026-05-28,Every off session charge on saved cards fails with network decline code 59 and no explanation,declines
+C059,https://www.reddit.com/r/stripe/comments/1trd7ec/unusually_high_number_of_payment_declines_help/,2026-05-29,Recurring charges on the same card get declined as high risk; retries and invoices also fail,declines
+C060,https://www.reddit.com/r/stripe/comments/1ty8se7/stripe_mrr_calculation/,2026-06-06,Cannot reproduce the dashboard MRR figure from exported subscriptions; manual sum overshoots by thousands,reporting_analytics
+C061,https://www.reddit.com/r/stripe/comments/1u2mfx0/amex_chargeback_through_stripe_lost_because/,2026-06-11,Lost an Amex chargeback with strong proof of stay only because the evidence deadline was missed,disputes
+C062,https://www.reddit.com/r/stripe/comments/1u2mfx0/amex_chargeback_through_stripe_lost_because/or0nmr7/,2026-06-11,"Searching a bank payment reference in Stripe returned nothing, so the disputed payment was hard to identify",dashboard_search
+C063,https://news.ycombinator.com/item?id=48571804,2026-06-17,Payments already refunded still turned into disputes; early fraud warning window feels opaque,refunds
+C064,https://www.reddit.com/r/stripe/comments/1ubdovz/stripe_dispute_rate_jumped_because_of_2_customers/,2026-06-21,"Two customers disputed four renewals each in one week, spiking a small merchant's dispute rate",anomalies_fraud
+C065,https://www.reddit.com/r/stripe/comments/1ubdovz/stripe_dispute_rate_jumped_because_of_2_customers/osvubad/,2026-06-21,A small rise in disputes led to a 50 percent reserve and later full account closure,payouts_holds
+C066,https://github.com/woocommerce/woocommerce-gateway-stripe/issues/5691,2026-07-02,"Customers are charged but orders stay pending and get auto canceled, so staff must fix them by hand",api_webhooks
+C067,https://www.reddit.com/r/stripe/comments/1uqqlwa/how_do_you_reconcile_net_across_stripe_other/ow9vaxm/,2026-07-08,Reconciling Stripe with other platforms requires a hand built spreadsheet and hours every quarter,reporting_analytics
+C068,https://www.reddit.com/r/stripe/comments/1v3k80n/got_my_first_chargeback_on_a_599_subscription_and/oz4r6uh/,2026-07-22,Flat dispute fee dwarfs a 5.99 subscription; customer disputes at zero risk despite usage logs,fees
+C069,https://www.reddit.com/r/stripe/comments/1v5ea7u/help_can_a_customer_continue_to_dispute_the_same/,2026-07-24,Customer kept filing new disputes on the same charge after the merchant won earlier ones,disputes
+C070,https://www.reddit.com/r/stripe/comments/1v7917p/psa_if_you_pay_commissions_or_revenue_share_off/ozylkok/,2026-07-26,"Pulling data by created date missed late refunds, breaking already paid creator revenue share numbers",reporting_analytics
+C071,https://www.reddit.com/r/stripe/comments/1vfdcm8/the_dispute_fee_policy_is_the_real_problem_not/,2026-08-04,"Stripe keeps the dispute fee even when the merchant wins, and a lost dispute costs two fees plus goods",fees
+C072,https://www.reddit.com/r/stripe/comments/1vi0fax/losing_every_stripe_chargeback_for_not_as/,2026-08-07,Video course seller keeps losing not as described chargebacks because matching content is hard to prove,disputes
+C073,https://news.ycombinator.com/item?id=49327619,2026-08-17,Stripe Billing fees keep creeping up while migrating subscriptions elsewhere is very hard,fees
+C074,https://github.com/woocommerce/woocommerce-gateway-stripe/issues/5822,2026-08-18,"Stripe fee and net payout never get recorded for Checkout session orders, which breaks accounting sync",reporting_analytics
+C075,https://www.reddit.com/r/stripe/comments/1vfdcm8/the_dispute_fee_policy_is_the_real_problem_not/p4f00d8/,2026-08-18,Lost a dispute even with a screenshot of the customer admitting they forgot to cancel,disputes
+C076,https://www.reddit.com/r/stripe/comments/1w3aupn/stripe_closed_our_account_as_high_risk_0_disputes/,2026-08-31,Small card game shop closed as high risk despite zero disputes or chargebacks,payouts_holds
+C077,https://www.reddit.com/r/stripe/comments/1w3aupn/stripe_closed_our_account_as_high_risk_0_disputes/,2026-08-31,Chat support repeatedly gave non answers or closed tickets when asked why the account was closed,support
+C078,https://www.reddit.com/r/stripe/comments/1wd7mb1/customer_got_a_7000_refund_then_won_a_6000/,2026-09-11,"Customer got a partial refund, then won a chargeback on the same charge, recovering more than paid",refunds
+C079,https://www.reddit.com/r/stripe/comments/1wgzli4/so_i_have_to_pay_a_15_fine_because_a_customer/,2026-09-15,Merchant charged a 15 dollar fee for a customer dispute despite using recommended fraud settings,fees
+C080,https://www.reddit.com/r/stripe/comments/1wh541z/i_dont_understand_the_dispute_inquiry_how_to/pa0rkoj/,2026-09-15,"For a dispute inquiry the dashboard offered only a full refund, not a way to submit evidence",disputes
