@@ -1,7 +1,11 @@
+import { after } from "next/server";
 import type Stripe from "stripe";
+import { checkAlerts } from "@/lib/alerts/check";
 import { getDb } from "@/lib/db";
 import { stripeEvents } from "@/lib/db/schema";
-import { handleWebhook } from "@/lib/stripe/webhook";
+import { getDemoContext } from "@/lib/demo/context";
+import { createStripeClient } from "@/lib/stripe/client";
+import { handleWebhook, shouldCheckAlerts } from "@/lib/stripe/webhook";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +22,16 @@ async function storeEvent(event: Stripe.Event) {
     })
     .onConflictDoNothing()
     .returning({ id: stripeEvents.id });
+  if (inserted.length > 0 && !event.account && shouldCheckAlerts(event.type)) {
+    // The endpoint is registered on the demo account only (connected keys cannot register one), so alerts are
+    // re-evaluated for the demo account at demo time, after Stripe has its 200.
+    after(async () => {
+      const demo = await getDemoContext();
+      await checkAlerts({ db: getDb(), stripe: createStripeClient(process.env.STRIPE_DEMO_KEY, "STRIPE_DEMO_KEY"), accountId: demo.accountId, now: demo.now, trigger: "webhook" }).catch(
+        (error: unknown) => console.error("webhook alert check failed", error),
+      );
+    });
+  }
   return inserted.length > 0 ? "stored" : "duplicate";
 }
 

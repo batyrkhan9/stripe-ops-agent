@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { describe, expect, it, vi } from "vitest";
-import { handleWebhook, isHandledEventType, type StoreEvent } from "@/lib/stripe/webhook";
+import { handleWebhook, isHandledEventType, shouldCheckAlerts, type StoreEvent } from "@/lib/stripe/webhook";
 
 const SECRET = "whsec_test_secret";
 
@@ -31,10 +31,25 @@ describe("isHandledEventType", () => {
     expect(isHandledEventType("invoice.payment_failed")).toBe(true);
   });
 
+  it("accepts refund events for the refund spike alert", () => {
+    expect(isHandledEventType("charge.refunded")).toBe(true);
+    expect(isHandledEventType("refund.created")).toBe(true);
+  });
+
   it("rejects everything else", () => {
     expect(isHandledEventType("charge.succeeded")).toBe(false);
     expect(isHandledEventType("invoice_payment.paid")).toBe(false);
     expect(isHandledEventType("customer.created")).toBe(false);
+  });
+});
+
+describe("shouldCheckAlerts", () => {
+  it("re-evaluates alerts only for events that change a rule's value", () => {
+    expect(shouldCheckAlerts("charge.dispute.created")).toBe(true);
+    expect(shouldCheckAlerts("payment_intent.payment_failed")).toBe(true);
+    expect(shouldCheckAlerts("refund.created")).toBe(true);
+    expect(shouldCheckAlerts("invoice.finalized")).toBe(false);
+    expect(shouldCheckAlerts("charge.dispute.updated")).toBe(false);
   });
 });
 

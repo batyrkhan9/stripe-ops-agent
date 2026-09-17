@@ -1,4 +1,5 @@
 import { finishAnswer } from "./finish-answer";
+import { showAlerts } from "./show-alerts";
 import { showDisputes } from "./show-disputes";
 import { showInvoices } from "./show-invoices";
 
@@ -6,6 +7,7 @@ import { showInvoices } from "./show-invoices";
 export const PRESENT_TOOLS = {
   show_disputes: showDisputes,
   show_invoices: showInvoices,
+  show_alerts: showAlerts,
   finish_answer: finishAnswer,
 } as const;
 

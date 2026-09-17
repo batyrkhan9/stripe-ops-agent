@@ -30,7 +30,8 @@ export function invoiceCard(invoice: Stripe.Invoice, now: number, failedCharge?:
       nextAttempt ? `Next retry ${dateLabel(nextAttempt, now)}` : invoice.status === "open" ? "No retry scheduled" : "",
       customer?.email ?? "",
     ].filter(Boolean),
-    urgent: invoice.status === "open" && (invoice.attempt_count ?? 0) > 0,
+    // Urgent when retrying cannot work or has already failed three times; a first decline usually recovers.
+    urgent: invoice.status === "uncollectible" || (Boolean(error) && decline.retry === "no") || (invoice.attempt_count ?? 0) >= 3,
     action: { label: "Plan recovery", href: `/recovery?invoice=${invoice.id}` },
   };
 }

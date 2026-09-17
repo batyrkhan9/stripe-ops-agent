@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { boolean, integer, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, doublePrecision, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import type { KeyPermissions } from "@/lib/stripe/permissions";
 
 export const auditLog = pgTable("audit_log", {
@@ -106,3 +106,24 @@ export const demoAnswers = pgTable("demo_answers", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+// Alert rules that fired (lib/alerts), one row per rule per account per day of "now" (demo time in demo mode).
+export const alertEvents = pgTable(
+  "alert_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    accountId: text("account_id").notNull(),
+    rule: text("rule").notNull(),
+    dayKey: text("day_key").notNull(),
+    severity: text("severity").notNull(),
+    value: doublePrecision("value").notNull(),
+    valueLabel: text("value_label").notNull(),
+    summary: text("summary").notNull(),
+    stripeIds: text("stripe_ids").array().notNull().default(sql`'{}'::text[]`),
+    firstTrigger: text("first_trigger").notNull(),
+    lastTrigger: text("last_trigger").notNull(),
+    evaluations: integer("evaluations").notNull().default(1),
+    firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).notNull().defaultNow(),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("alert_events_account_rule_day").on(table.accountId, table.rule, table.dayKey)],
+);

@@ -75,7 +75,7 @@ describe("specialists", () => {
     expect(readOnly("recovery")).toEqual(["get_customer", "list_charges", "list_invoices", "list_subscriptions", "search"]);
     expect(SPECIALISTS.disputes.cards).toBe("disputes");
     expect(SPECIALISTS.recovery.cards).toBe("invoices");
-    expect(SPECIALISTS.analytics.cards).toBeNull();
+    expect(SPECIALISTS.analytics.cards).toBe("alerts");
   });
 
   it("state the read/write rule and the data-not-instructions rule in every prompt", () => {
