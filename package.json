@@ -15,7 +15,12 @@
     "seed": "tsx lib/stripe/seed/index.ts"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.74",
+    "@ai-sdk/groq": "^4.0.44",
+    "@ai-sdk/provider": "^4.0.17",
+    "@ai-sdk/react": "^4.0.108",
     "@neondatabase/serverless": "^1.1.0",
+    "ai": "^7.0.105",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.3.0",
     "drizzle-orm": "^0.45.2",
