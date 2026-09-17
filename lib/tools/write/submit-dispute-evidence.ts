@@ -17,6 +17,17 @@ export const EVIDENCE_FIELDS = [
 ] as const;
 export type EvidenceField = (typeof EVIDENCE_FIELDS)[number];
 
+export const EVIDENCE_LABELS: Record<EvidenceField, string> = {
+  product_description: "Product description",
+  uncategorized_text: "Rebuttal and customer communication",
+  refund_policy_disclosure: "Refund policy disclosure",
+  customer_name: "Customer name",
+  customer_email_address: "Customer email",
+  shipping_carrier: "Shipping carrier",
+  shipping_tracking_number: "Tracking number",
+  shipping_date: "Ship date",
+};
+
 // Drafts mark facts only the merchant knows as "[fill in: ...]". Submitting one would send the placeholder to the bank.
 export const PLACEHOLDER = /\[fill in[^\]]*\]/i;
 
@@ -33,13 +44,13 @@ export const submitDisputeEvidence = defineWriteTool({
     const filled = EVIDENCE_FIELDS.filter((f) => fields[f]?.trim());
     if (!filled.length) throw new ProposalRejected("Add evidence before submitting.");
     const placeholders = filled.filter((f) => PLACEHOLDER.test(fields[f]!));
-    if (placeholders.length) throw new ProposalRejected(`Replace the [fill in] placeholders in: ${placeholders.map(titleCase).join(", ")}.`);
+    if (placeholders.length) throw new ProposalRejected(`Replace the [fill in] placeholders in: ${placeholders.map((f) => EVIDENCE_LABELS[f]).join(", ")}.`);
     const charge = typeof dispute.charge === "string" ? null : dispute.charge;
     const customer = charge?.customer && typeof charge.customer !== "string" && !charge.customer.deleted ? charge.customer : null;
     const money = moneyLabel(dispute.amount, dispute.currency);
     return {
       summary: `Submit evidence for ${customer?.name ?? "the customer"}'s ${money} ${titleCase(dispute.reason).toLowerCase()} dispute`,
-      details: [dueLabel(dispute.evidence_details?.due_by, now), `${filled.length} fields: ${filled.map(titleCase).join(", ")}`, "Submission is final; Stripe sends it to the bank"],
+      details: [dueLabel(dispute.evidence_details?.due_by, now), `${filled.length} fields: ${filled.map((f) => EVIDENCE_LABELS[f]).join(", ")}`, "Submission is final; Stripe sends it to the bank"],
       targetIds: [dispute.id, ...(charge ? [charge.id] : [])],
       confirmLabel: `Confirm submission for ${money} dispute`,
     };

@@ -27,8 +27,8 @@ export function disputeCard(dispute: Stripe.Dispute, now: number): DisputeCard {
       (d): d is string => Boolean(d),
     ),
     action: needsResponse
-      ? { label: "Draft evidence", href: `/disputes?dispute=${dispute.id}` }
-      : { label: "View dispute", href: `/disputes?dispute=${dispute.id}` },
+      ? { label: "Draft evidence", href: `/disputes?dispute=${dispute.id}#detail` }
+      : { label: "View dispute", href: `/disputes?dispute=${dispute.id}#detail` },
   };
 }
 
