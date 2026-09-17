@@ -126,6 +126,7 @@ function main() {
       board.markdown,
       "",
       "Free tiers limit how much of the suite a model can finish in a day: Groq allows 200,000 tokens a day per model, about 20 agent answers.",
+      "The single-model rows on 2026-09-17 started before the run 1 fixes (routing prompt, alert cards, grading) and continued after them, so their early and late cases ran on different code. Rerun with `--fresh` for a clean comparison.",
       "Runs resume where they stopped: `pnpm eval --model <name>`, then `pnpm eval:report`.",
       "",
       `Run files: ${runs.map((r) => `\`evals/runs/${r}.json\``).join(", ")}.`,

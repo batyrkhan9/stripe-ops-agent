@@ -45,7 +45,7 @@ pass. Runs resume across days because free tiers allow about 20 agent answers a 
 | Production chain (gpt-oss-120b, then fallbacks) | 93 of 100 | 95% | 12 of 13 | 100% | 7.5s | 986 |
 | Groq gpt-oss-120b | 0 of 100 | n/a | 0 of 13 | n/a | n/a | 0 |
 | Gemini 3.5 Flash Lite | 44 of 100 | 84% | 0 of 13 | n/a | 5.6s | 79 |
-| Groq qwen3.8-27b | 31 of 100 | 94% | 0 of 13 | n/a | 5.2s | 77 |
+| Groq qwen3.8-27b | 32 of 100 | 94% | 0 of 13 | n/a | 5.2s | 86 |
 <!-- leaderboard:end -->
 
 Each benchmark row runs one model with no fallback. Pass rate and latency cover finished cases. See

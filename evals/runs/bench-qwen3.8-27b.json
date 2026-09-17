@@ -3,7 +3,7 @@
  "model": "qwen3.8-27b",
  "anchor": 1789619972,
  "startedAt": "2026-09-17T08:33:54.950Z",
- "updatedAt": "2026-09-17T09:02:53.002Z",
+ "updatedAt": "2026-09-17T09:47:46.456Z",
  "results": {
   "routing-01": {
    "id": "routing-01",
@@ -1185,8 +1185,8 @@
    "agent": "disputes",
    "kind": "answer",
    "question": "What is the order ID on Camila Torres's disputed charge?",
-   "finishedAt": "2026-09-17T09:02:31.676Z",
-   "status": "rate_limited",
+   "finishedAt": "2026-09-17T09:46:39.955Z",
+   "status": "pass",
    "checks": [
     {
      "check": "routing",
@@ -1194,8 +1194,7 @@
     },
     {
      "check": "answered",
-     "pass": false,
-     "detail": "An error occurred."
+     "pass": true
     },
     {
      "check": "fact:KC-10300",
@@ -1204,32 +1203,43 @@
     {
      "check": "sources_verified",
      "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
     }
    ],
    "routed": [
     "disputes"
    ],
-   "answer": "\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\n\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "answer": "Camila Torres's disputed charge carries order ID KC-10300.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nGather evidence for order KC-10300 and submit a response to Camila Torres's dispute before the deadline.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
    "proposals": [],
    "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly states that Camila Torres's disputed charge has order ID KC-10300.",
+    "model": "openai/gpt-oss-20b",
+    "cached": false
+   },
    "models": [
     "qwen/qwen3.8-27b"
    ],
-   "rateLimitErrors": 2,
-   "latencyMs": 1939,
-   "error": "An error occurred. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Li | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+   "rateLimitErrors": 3,
+   "latencyMs": 4417,
+   "error": "429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Lim | 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Lim"
   },
   "disputes-18": {
    "id": "disputes-18",
    "agent": "disputes",
    "kind": "answer",
    "question": "How many days do I have left to respond to disputes?",
-   "finishedAt": "2026-09-17T09:02:37.056Z",
+   "finishedAt": "2026-09-17T09:47:25.432Z",
    "status": "rate_limited",
    "checks": [
     {
      "check": "routing",
-     "pass": true
+     "pass": false,
+     "detail": "routed to analytics, expected disputes"
     },
     {
      "check": "answered",
@@ -1247,24 +1257,22 @@
     }
    ],
    "routed": [
-    "disputes"
+    "analytics"
    ],
    "answer": "\n",
    "proposals": [],
    "stripeWrites": [],
-   "models": [
-    "qwen/qwen3.8-27b"
-   ],
-   "rateLimitErrors": 2,
-   "latencyMs": 376,
-   "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+   "models": [],
+   "rateLimitErrors": 5,
+   "latencyMs": 470,
+   "error": "No output generated. Check the stream for errors. | 429: Request too large for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on output tokens per minute (OTPM): Lim | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
   },
   "disputes-19": {
    "id": "disputes-19",
    "agent": "disputes",
    "kind": "answer",
    "question": "Is there an open dispute from Ethan Nguyen?",
-   "finishedAt": "2026-09-17T09:02:42.395Z",
+   "finishedAt": "2026-09-17T09:47:30.735Z",
    "status": "rate_limited",
    "checks": [
     {
@@ -1292,11 +1300,9 @@
    "answer": "\n",
    "proposals": [],
    "stripeWrites": [],
-   "models": [
-    "qwen/qwen3.8-27b"
-   ],
-   "rateLimitErrors": 2,
-   "latencyMs": 337,
+   "models": [],
+   "rateLimitErrors": 3,
+   "latencyMs": 297,
    "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
   },
   "disputes-20": {
@@ -1304,7 +1310,7 @@
    "agent": "disputes",
    "kind": "answer",
    "question": "Summarize the fraudulent dispute",
-   "finishedAt": "2026-09-17T09:02:47.767Z",
+   "finishedAt": "2026-09-17T09:47:35.977Z",
    "status": "rate_limited",
    "checks": [
     {
@@ -1342,11 +1348,9 @@
    "answer": "\n",
    "proposals": [],
    "stripeWrites": [],
-   "models": [
-    "qwen/qwen3.8-27b"
-   ],
-   "rateLimitErrors": 2,
-   "latencyMs": 367,
+   "models": [],
+   "rateLimitErrors": 3,
+   "latencyMs": 238,
    "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
   },
   "recovery-01": {
@@ -1354,7 +1358,7 @@
    "agent": "recovery",
    "kind": "answer",
    "question": "Which subscriptions are past due?",
-   "finishedAt": "2026-09-17T09:02:53.002Z",
+   "finishedAt": "2026-09-17T09:47:41.209Z",
    "status": "rate_limited",
    "checks": [
     {
@@ -1404,7 +1408,45 @@
    "stripeWrites": [],
    "models": [],
    "rateLimitErrors": 3,
-   "latencyMs": 231,
+   "latencyMs": 228,
+   "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
+  },
+  "recovery-02": {
+   "id": "recovery-02",
+   "agent": "recovery",
+   "kind": "answer",
+   "question": "Why did payments fail in the last 7 days?",
+   "finishedAt": "2026-09-17T09:47:46.456Z",
+   "status": "rate_limited",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": false,
+     "detail": "No output generated. Check the stream for errors."
+    },
+    {
+     "check": "fact:insufficient funds|not enough money",
+     "pass": false,
+     "detail": "missing \"insufficient funds|not enough money\""
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "\n",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [],
+   "rateLimitErrors": 3,
+   "latencyMs": 241,
    "error": "No output generated. Check the stream for errors. | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000, | 429: Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01kv51c4cnfps8aw68mxnew5r6` service tier `on_demand` on tokens per day (TPD): Limit 200000,"
   }
  }
