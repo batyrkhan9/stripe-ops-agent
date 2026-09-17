@@ -19,8 +19,8 @@ A deployed web app where a Stripe merchant connects an account through Stripe Co
 6. Run proactively: a daily morning brief by email and in-app.
 7. Execute plain-English automations the merchant writes, compiled to stored rules.
 8. Report revenue analytics (MRR, churn, cohort retention, decline rate by brand and country) with a narrative.
-9. Show a Customer 360 page with a churn explanation.
-10. Expose a public REST API and a CLI.
+9. Expose a public REST API and a CLI.
+10. Show a Customer 360 page with a churn explanation (built last, weakest evidence).
 
 Everything runs against Stripe test mode. No live keys anywhere in this repo, ever.
 
@@ -74,7 +74,7 @@ lib/trace/                trace writer and reader
 lib/db/                   Drizzle schema + migrations
 evals/                    cases.json, safety.json, runner, benchmark, judge-cache.json, results.md
 tests/                    unit + integration
-docs/discovery/           complaints.csv, clusters.md
+docs/discovery/           complaints.csv, evidence.csv (verbatim proof per complaint), clusters.md
 docs/adr/                 0001 to 0005
 docs/spec.md              one-page product spec
 docs/threat-model.md
@@ -179,13 +179,10 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 - Trace viewer page.
 - ADR 0003 (confirm-before-write).
 
-### Phase 4: analytics and Customer 360
+### Phase 4: analytics
 - lib/analytics/: MRR, churn, cohort retention, decline rate by card brand and by country. Pure
   functions over synced data, unit tested.
 - Analytics page with charts and an AI narrative from the analytics agent, with Sources.
-- Customer 360 page: profile, subscriptions, invoices, charges, disputes, timeline, and a churn
-  explanation for churned or at-risk customers.
-
 ### Phase 5: proactive mode and automations
 - Daily Vercel cron: runs the specialists, builds a morning brief (alerts, disputes due soon, failed
   invoices, MRR change), stores it, shows it on /briefs, emails it via Resend. Cron route checks CRON_SECRET.
@@ -200,6 +197,12 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
   stored hashed. Rate limited.
 - CLI in cli/ that wraps the API (ask, disputes, invoices, alerts, briefs).
 - /docs page documenting every endpoint and CLI command.
+
+### Phase 6b: Customer 360 (last feature)
+- Built after every other feature because it has the weakest evidence: 3 indirect complaints
+  (C044, C050, C069), none asking for a per-customer view. Cut it first if time runs short.
+- Customer 360 page: profile, subscriptions, invoices, charges, disputes, timeline, and a churn
+  explanation for churned or at-risk customers.
 
 ### Phase 7: quality
 - evals/cases.json: 100 question/answer cases over the seeded data, tagged by agent, including planner
@@ -238,6 +241,9 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 ## Rules for Claude Code
 
 - Commit after every working feature with a message that names the complaint ID. Small commits, many of them.
+- Push to GitHub after every commit.
+- Never add Co-Authored-By or any attribution lines to commits or PRs.
+- Real keys go only in .env.local. .env.example holds placeholders and is committed.
 - Write the test before or with the feature, not at the end.
 - No em dashes anywhere in code comments, docs, or UI text.
 - Do not add features not in this doc. If something is blocked, write it in docs/blocked.md and move on.

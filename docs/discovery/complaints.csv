@@ -1,7 +1,4 @@
 id,source_url,date,short_paraphrase,tag
-C001,https://www.indiehackers.com/post/first-dispute-in-stripe-ebf9a690f8,2023-06-13,Customer filed chargeback after simply changing their mind despite a 30 day refund guarantee,disputes
-C002,https://www.indiehackers.com/post/how-to-protect-saas-from-card-testing-attack-5bb21e38ec,2023-06-19,Stolen card testing spotted only by eyeballing signups; had to pause payments and buy Radar,anomalies_fraud
-C003,https://wordpress.org/support/topic/horrible-vulnerable-to-fraudulent-charges-and-penalized-with-fees/,2023-09-07,"Over 150 stolen card orders, canceled orders not refunded, then lost disputes cost a 15 dollar fee each",disputes
 C004,https://wordpress.org/support/topic/stripe-payments-not-syncing/,2023-10-14,"Stripe takes payments but accounts do not update, so customers pay twice and the merchant absorbs the fees",api_webhooks
 C005,https://news.ycombinator.com/item?id=38363066,2023-11-21,Stripe forced a 46000 dollar refund out of the merchant's business account,refunds
 C006,https://x.com/bruno_simon/status/1736779692697391163,2023-12-18,Fraud wave left 171K of stolen card payments on account and returning it was difficult,anomalies_fraud
