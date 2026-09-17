@@ -1,0 +1,963 @@
+{
+  "anchor": 1789619972,
+  "accountId": "acct_1UGTJL3FpwYTqedq",
+  "builtAt": "2026-09-17T08:29:57.979Z",
+  "cases": [
+    {
+      "id": "routing-01",
+      "kind": "routing",
+      "agent": "disputes",
+      "question": "Do I have any chargebacks I need to deal with?"
+    },
+    {
+      "id": "routing-02",
+      "kind": "routing",
+      "agent": "disputes",
+      "question": "Show me the evidence deadlines for my disputes"
+    },
+    {
+      "id": "routing-03",
+      "kind": "routing",
+      "agent": "disputes",
+      "question": "A customer says their package never arrived and opened a dispute. What now?"
+    },
+    {
+      "id": "routing-04",
+      "kind": "routing",
+      "agent": "recovery",
+      "question": "Why are cards getting declined?"
+    },
+    {
+      "id": "routing-05",
+      "kind": "routing",
+      "agent": "recovery",
+      "question": "Which customers have unpaid invoices?"
+    },
+    {
+      "id": "routing-06",
+      "kind": "routing",
+      "agent": "recovery",
+      "question": "Who needs to update their card?"
+    },
+    {
+      "id": "routing-07",
+      "kind": "routing",
+      "agent": "analytics",
+      "question": "What's our MRR?"
+    },
+    {
+      "id": "routing-08",
+      "kind": "routing",
+      "agent": "analytics",
+      "question": "How many customers do we have?"
+    },
+    {
+      "id": "routing-09",
+      "kind": "routing",
+      "agent": "analytics",
+      "question": "What was our revenue last week?"
+    },
+    {
+      "id": "routing-10",
+      "kind": "routing",
+      "agent": "analytics",
+      "question": "What's my available balance?"
+    },
+    {
+      "id": "routing-11",
+      "kind": "routing",
+      "agent": "actions",
+      "question": "Refund order KC-10244"
+    },
+    {
+      "id": "routing-12",
+      "kind": "routing",
+      "agent": "actions",
+      "question": "Create a 10% off coupon for returning customers"
+    },
+    {
+      "id": "routing-13",
+      "kind": "routing",
+      "agent": "actions",
+      "question": "Pause Aisha Bello's subscription"
+    },
+    {
+      "id": "routing-14",
+      "kind": "routing",
+      "agent": "actions",
+      "question": "Cancel Amara Okafor's plan"
+    },
+    {
+      "id": "routing-15",
+      "kind": "routing",
+      "agent": "analytics",
+      "question": "What is our churn rate this month?"
+    },
+    {
+      "id": "disputes-01",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Which disputes need a response?",
+      "facts": [
+        "Sep 25|September 25"
+      ],
+      "ids": [
+        "du_1UGX7p3FpwYTqedqcy6JowYK",
+        "du_1UGX7p3FpwYTqedqqJArppnd"
+      ]
+    },
+    {
+      "id": "disputes-02",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Which dispute is due soonest?",
+      "facts": [
+        "Sep 25|September 25"
+      ]
+    },
+    {
+      "id": "disputes-03",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "When is evidence due for Ethan Nguyen's dispute?",
+      "facts": [
+        "Sep 25|September 25"
+      ],
+      "ids": [
+        "du_1UGX7p3FpwYTqedqcy6JowYK"
+      ]
+    },
+    {
+      "id": "disputes-04",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What is Camila Torres's dispute about?",
+      "facts": [
+        "not received|never arrived|didn't arrive|did not arrive"
+      ],
+      "ids": [
+        "du_1UGX7p3FpwYTqedqqJArppnd"
+      ]
+    },
+    {
+      "id": "disputes-05",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "How much money is currently in dispute?",
+      "facts": [
+        "$93.00"
+      ]
+    },
+    {
+      "id": "disputes-06",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Which order is the fraudulent dispute for?",
+      "facts": [
+        "KC-10299"
+      ]
+    },
+    {
+      "id": "disputes-07",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What is the tracking number for the product not received dispute?",
+      "facts": [
+        "1ZKC473508949907"
+      ]
+    },
+    {
+      "id": "disputes-08",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What did Ethan Nguyen buy in the order he disputed?",
+      "facts": [
+        "pour-over kettle"
+      ]
+    },
+    {
+      "id": "disputes-09",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "How much is Ethan Nguyen disputing?",
+      "facts": [
+        "$65.00"
+      ]
+    },
+    {
+      "id": "disputes-10",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "How many open disputes do we have?",
+      "facts": [
+        "2|two"
+      ]
+    },
+    {
+      "id": "disputes-11",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What card did Camila Torres use for the disputed order?",
+      "facts": [
+        "2685"
+      ]
+    },
+    {
+      "id": "disputes-12",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "When was the charge that Camila Torres disputed made?",
+      "facts": [
+        "Sep 4|September 4"
+      ]
+    },
+    {
+      "id": "disputes-13",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Has evidence been submitted for any open dispute?",
+      "facts": [
+        "not|no "
+      ],
+      "forbidden": [
+        "evidence has been submitted",
+        "already submitted"
+      ]
+    },
+    {
+      "id": "disputes-14",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What evidence would help with Camila Torres's product not received dispute?",
+      "facts": [
+        "tracking"
+      ]
+    },
+    {
+      "id": "disputes-15",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What reason did the bank give for the $65.00 dispute?",
+      "facts": [
+        "fraud"
+      ]
+    },
+    {
+      "id": "disputes-16",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Which disputes were opened in the last 30 days?",
+      "facts": [
+        "Ethan Nguyen",
+        "Camila Torres"
+      ]
+    },
+    {
+      "id": "disputes-17",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "What is the order ID on Camila Torres's disputed charge?",
+      "facts": [
+        "KC-10300"
+      ]
+    },
+    {
+      "id": "disputes-18",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "How many days do I have left to respond to disputes?",
+      "facts": [
+        "8 days|eight days"
+      ]
+    },
+    {
+      "id": "disputes-19",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Is there an open dispute from Ethan Nguyen?",
+      "facts": [
+        "$65.00"
+      ]
+    },
+    {
+      "id": "disputes-20",
+      "kind": "answer",
+      "agent": "disputes",
+      "question": "Summarize the fraudulent dispute",
+      "facts": [
+        "Ethan Nguyen",
+        "$65.00",
+        "Sep 25|September 25"
+      ]
+    },
+    {
+      "id": "recovery-01",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Which subscriptions are past due?",
+      "facts": [
+        "Tomas Kowalski",
+        "Ella Novak",
+        "Arjun Mehta",
+        "Owen Davies",
+        "Camila Torres"
+      ]
+    },
+    {
+      "id": "recovery-02",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Why did payments fail in the last 7 days?",
+      "facts": [
+        "insufficient funds|not enough money"
+      ]
+    },
+    {
+      "id": "recovery-03",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How many payments failed in the last 7 days?",
+      "facts": [
+        "19"
+      ]
+    },
+    {
+      "id": "recovery-04",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How much in payments failed in the last 7 days?",
+      "facts": [
+        "$1,847.00"
+      ]
+    },
+    {
+      "id": "recovery-05",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Which invoices are unpaid?",
+      "facts": [
+        "Tomas Kowalski",
+        "Ella Novak",
+        "Arjun Mehta",
+        "Owen Davies",
+        "Camila Torres"
+      ]
+    },
+    {
+      "id": "recovery-06",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How much do past-due customers owe in total?",
+      "facts": [
+        "$75.00"
+      ]
+    },
+    {
+      "id": "recovery-07",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Why did Tomas Kowalski's payment fail?",
+      "facts": [
+        "bank|generic"
+      ]
+    },
+    {
+      "id": "recovery-08",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How much does Ella Novak owe?",
+      "facts": [
+        "$15.00"
+      ]
+    },
+    {
+      "id": "recovery-09",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "When will Arjun Mehta's invoice be retried?",
+      "facts": [
+        "Sep 18|September 18"
+      ]
+    },
+    {
+      "id": "recovery-10",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Does Owen Davies have an open invoice?",
+      "facts": [
+        "$15.00"
+      ]
+    },
+    {
+      "id": "recovery-11",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How many failed payments were for insufficient funds in the last 7 days?",
+      "facts": [
+        "9"
+      ]
+    },
+    {
+      "id": "recovery-12",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How many payments did banks decline without a reason in the last 7 days?",
+      "facts": [
+        "10"
+      ]
+    },
+    {
+      "id": "recovery-13",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Should I retry payments that failed for insufficient funds?",
+      "facts": [
+        "later|few days|after|wait"
+      ]
+    },
+    {
+      "id": "recovery-14",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How many failed payments were there in the last 30 days?",
+      "facts": [
+        "25"
+      ]
+    },
+    {
+      "id": "recovery-15",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Is Camila Torres behind on her subscription?",
+      "facts": [
+        "$15.00"
+      ]
+    },
+    {
+      "id": "recovery-16",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "Which subscription customers have a failed payment?",
+      "facts": [
+        "Tomas Kowalski",
+        "Ella Novak",
+        "Arjun Mehta",
+        "Owen Davies",
+        "Camila Torres"
+      ]
+    },
+    {
+      "id": "recovery-17",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How many subscriptions are past due?",
+      "facts": [
+        "5|five"
+      ],
+      "allowAgents": [
+        "analytics"
+      ]
+    },
+    {
+      "id": "recovery-18",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "What can a customer do when their bank declines without giving a reason?",
+      "facts": [
+        "bank",
+        "another card|different card|another payment"
+      ]
+    },
+    {
+      "id": "recovery-19",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "When is Stripe retrying Tomas Kowalski's payment next?",
+      "facts": [
+        "Sep 19|September 19"
+      ]
+    },
+    {
+      "id": "recovery-20",
+      "kind": "answer",
+      "agent": "recovery",
+      "question": "How much failed to collect in the last 30 days?",
+      "facts": [
+        "$1,983.00"
+      ],
+      "allowAgents": [
+        "analytics"
+      ]
+    },
+    {
+      "id": "analytics-01",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is our MRR?",
+      "facts": [
+        "$945.31"
+      ]
+    },
+    {
+      "id": "analytics-02",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What was MRR 30 days ago?",
+      "facts": [
+        "$891.65"
+      ]
+    },
+    {
+      "id": "analytics-03",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How much did MRR change over the last 30 days?",
+      "facts": [
+        "$53.66"
+      ]
+    },
+    {
+      "id": "analytics-04",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How much new MRR did we add in the last 30 days?",
+      "facts": [
+        "$160.66"
+      ]
+    },
+    {
+      "id": "analytics-05",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How much MRR did we lose to cancellations in the last 30 days?",
+      "facts": [
+        "$107.00"
+      ]
+    },
+    {
+      "id": "analytics-06",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is our subscriber churn rate over the last 30 days?",
+      "facts": [
+        "11.1%|11.11%"
+      ]
+    },
+    {
+      "id": "analytics-07",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is our revenue churn over the last 30 days?",
+      "facts": [
+        "12.0%|12%"
+      ]
+    },
+    {
+      "id": "analytics-08",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many subscriptions were canceled in the last 30 days?",
+      "facts": [
+        "3|three"
+      ]
+    },
+    {
+      "id": "analytics-09",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many new subscriptions started in the last 30 days?",
+      "facts": [
+        "6|six"
+      ]
+    },
+    {
+      "id": "analytics-10",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many active subscriptions do we have?",
+      "facts": [
+        "25"
+      ]
+    },
+    {
+      "id": "analytics-11",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How much revenue did we collect in the last 30 days?",
+      "facts": [
+        "$30,115.00"
+      ]
+    },
+    {
+      "id": "analytics-12",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many successful payments did we have in the last 30 days?",
+      "facts": [
+        "306"
+      ]
+    },
+    {
+      "id": "analytics-13",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is our dispute rate over the last 30 days?",
+      "facts": [
+        "0.65%"
+      ]
+    },
+    {
+      "id": "analytics-14",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many refunds did we issue in the last 30 days?",
+      "facts": [
+        "4|four"
+      ]
+    },
+    {
+      "id": "analytics-15",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How much did we refund in the last 30 days?",
+      "facts": [
+        "$233.00"
+      ]
+    },
+    {
+      "id": "analytics-16",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How much revenue did we collect in the last 7 days?",
+      "facts": [
+        "$6,771.00"
+      ]
+    },
+    {
+      "id": "analytics-17",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many successful payments did we have in the last 7 days?",
+      "facts": [
+        "67"
+      ]
+    },
+    {
+      "id": "analytics-18",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is our decline rate over the last 7 days?",
+      "facts": [
+        "22.1%"
+      ],
+      "allowAgents": [
+        "recovery"
+      ]
+    },
+    {
+      "id": "analytics-19",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is the decline rate for Visa cards?",
+      "facts": [
+        "10.6%"
+      ]
+    },
+    {
+      "id": "analytics-20",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is the decline rate for cards issued in the US?",
+      "facts": [
+        "9.9%"
+      ]
+    },
+    {
+      "id": "analytics-21",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is the decline rate for Mastercard?",
+      "facts": [
+        "0%|0.0%|zero|no declines|none"
+      ]
+    },
+    {
+      "id": "analytics-22",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How well has the July cohort retained?",
+      "facts": [
+        "92%",
+        "85%"
+      ]
+    },
+    {
+      "id": "analytics-23",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many customers do we have?",
+      "facts": [
+        "40"
+      ]
+    },
+    {
+      "id": "analytics-24",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "Is our dispute rate above Stripe's monitoring threshold?",
+      "facts": [
+        "0.65%"
+      ]
+    },
+    {
+      "id": "analytics-25",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many subscriptions are past due right now?",
+      "facts": [
+        "5|five"
+      ],
+      "allowAgents": [
+        "recovery"
+      ]
+    },
+    {
+      "id": "analytics-26",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is our decline rate over the last 30 days?",
+      "facts": [
+        "7.6%"
+      ],
+      "allowAgents": [
+        "recovery"
+      ]
+    },
+    {
+      "id": "analytics-27",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many of the subscriptions that started in June are still active?",
+      "facts": [
+        "5|five|100%|all"
+      ]
+    },
+    {
+      "id": "analytics-28",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What share of the August cohort is still subscribed?",
+      "facts": [
+        "91%"
+      ]
+    },
+    {
+      "id": "analytics-29",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "How many payment attempts did we have in the last 7 days?",
+      "facts": [
+        "86"
+      ]
+    },
+    {
+      "id": "analytics-30",
+      "kind": "answer",
+      "agent": "analytics",
+      "question": "What is the average successful payment over the last 30 days?",
+      "facts": [
+        "$98.41|$98.42"
+      ]
+    },
+    {
+      "id": "actions-01",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Refund Aisha Bello's most recent order",
+      "proposal": {
+        "tool": "create_refund",
+        "targetIds": [
+          "ch_3UGX7h3FpwYTqedq1Khj5O4I"
+        ]
+      }
+    },
+    {
+      "id": "actions-02",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Refund order KC-10135",
+      "proposal": {
+        "tool": "create_refund",
+        "targetIds": [
+          "ch_3UGX7V3FpwYTqedq0U7boHlY"
+        ]
+      }
+    },
+    {
+      "id": "actions-03",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Refund $10 of Ben Adeyemi's most recent payment",
+      "proposal": {
+        "tool": "create_refund",
+        "targetIds": [
+          "ch_3UGX7l3FpwYTqedq0Xc1ttLz"
+        ],
+        "params": {
+          "amount_cents": 1000
+        }
+      }
+    },
+    {
+      "id": "actions-04",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Create a coupon called WINBACK20 for 20% off, once",
+      "proposal": {
+        "tool": "create_coupon",
+        "params": {
+          "percent_off": 20,
+          "name": "WINBACK20"
+        }
+      }
+    },
+    {
+      "id": "actions-05",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Make a $5 off coupon named SORRY5 that applies once",
+      "proposal": {
+        "tool": "create_coupon",
+        "params": {
+          "amount_off_cents": 500
+        }
+      }
+    },
+    {
+      "id": "actions-06",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Create a 15% off coupon named LOYAL15 that lasts 3 months",
+      "proposal": {
+        "tool": "create_coupon",
+        "params": {
+          "percent_off": 15,
+          "duration": "repeating",
+          "duration_in_months": 3
+        }
+      }
+    },
+    {
+      "id": "actions-07",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Pause Chloe Martin's subscription",
+      "proposal": {
+        "tool": "pause_subscription",
+        "targetIds": [
+          "sub_1UGX6p3FpwYTqedq1iQc6A9o"
+        ]
+      }
+    },
+    {
+      "id": "actions-08",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Cancel Daniel Cohen's subscription at the end of the billing period",
+      "proposal": {
+        "tool": "cancel_subscription",
+        "targetIds": [
+          "sub_1UGX6t3FpwYTqedqmz1Qdj62"
+        ],
+        "params": {
+          "at_period_end": true
+        }
+      }
+    },
+    {
+      "id": "actions-09",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Cancel Diego Morales's subscription immediately",
+      "proposal": {
+        "tool": "cancel_subscription",
+        "targetIds": [
+          "sub_1UGX6w3FpwYTqedqW4idN7qv"
+        ],
+        "params": {
+          "at_period_end": false
+        }
+      }
+    },
+    {
+      "id": "actions-10",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Pause payment collection on Emily Clarke's subscription",
+      "proposal": {
+        "tool": "pause_subscription",
+        "targetIds": [
+          "sub_1UGX6w3FpwYTqedqoMfaAvht"
+        ]
+      }
+    },
+    {
+      "id": "actions-11",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Refund Ethan Nguyen's disputed $65.00 charge",
+      "proposal": null,
+      "facts": [
+        "disput"
+      ]
+    },
+    {
+      "id": "actions-12",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Refund Maya Patel's most recent order",
+      "proposal": {
+        "tool": "create_refund",
+        "targetIds": [
+          "ch_3UGX7M3FpwYTqedq1t4E2n65"
+        ]
+      }
+    },
+    {
+      "id": "actions-13",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Give Chloe Martin a refund for their last purchase",
+      "proposal": {
+        "tool": "create_refund",
+        "targetIds": [
+          "ch_3UGX7l3FpwYTqedq07Z6ehJm"
+        ]
+      }
+    },
+    {
+      "id": "actions-14",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Cancel Tomas Kowalski's past due subscription at the end of the period",
+      "proposal": {
+        "tool": "cancel_subscription",
+        "targetIds": [
+          "sub_1UGX793FpwYTqedqnDcaVfcG"
+        ]
+      }
+    },
+    {
+      "id": "actions-15",
+      "kind": "proposal",
+      "agent": "actions",
+      "question": "Stop charging Fatima Rahman",
+      "proposal": {
+        "tool": "pause_subscription|cancel_subscription",
+        "targetIds": [
+          "sub_1UGX6y3FpwYTqedqZOtdoGqo"
+        ]
+      }
+    }
+  ]
+}

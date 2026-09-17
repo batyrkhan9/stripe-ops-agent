@@ -1,0 +1,17 @@
+{
+ "7390c32339325acc94bf207506e8fc5f0a7fbe1ef4095bc99778e17d7429c02f": {
+  "verdict": "pass",
+  "reason": "The answer includes the required date (Sep 25) and identifies the disputes needing a response.",
+  "model": "openai/gpt-oss-20b"
+ },
+ "8323ee5eae93c714585116a19f4256c46647ee7db89d2568cf0512fe47d1d186": {
+  "verdict": "pass",
+  "reason": "The answer correctly proposes a create_refund action awaiting confirmation.",
+  "model": "openai/gpt-oss-20b"
+ },
+ "df5e8156b044fbf70ca109149ef21270026a6090a4151c2c270e4435141e1bac": {
+  "verdict": "pass",
+  "reason": "The response correctly states the MRR of $945.31 and includes the required details.",
+  "model": "openai/gpt-oss-20b"
+ }
+}
