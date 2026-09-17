@@ -5,6 +5,7 @@ import { createDb } from "@/lib/db/client";
 import { seededObjects, seedRuns } from "@/lib/db/schema";
 import { createStripeClient } from "../client";
 import { resolveSeedKey } from "../keys";
+import { assertSpikeAllowed } from "./guard";
 import { buildSeedPlan } from "./plan";
 import { findExistingAnchor, runSeed } from "./run";
 
@@ -20,6 +21,7 @@ async function main() {
   const db = createDb(process.env.DATABASE_URL);
 
   const account = await stripe.accounts.retrieveCurrent();
+  if (spike) assertSpikeAllowed(account.id, process.env.SPIKE_ALLOWED_ACCOUNT);
   const existingAnchor = await findExistingAnchor(stripe);
   const anchor = existingAnchor ?? Math.floor(Date.now() / 1000);
   const log = (message: string) => console.log(`[seed] ${message}`);
