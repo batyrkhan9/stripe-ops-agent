@@ -1,4 +1,9 @@
 {
+ "0264c207a7617af814aa6338500410000143ddd54d7ba61061184b5f3dde3974": {
+  "verdict": "pass",
+  "reason": "The answer correctly proposes the creation of a one‑time 20% off coupon named WINBACK20 and indicates that it needs merchant confirmation.",
+  "model": "openai/gpt-oss-20b"
+ },
  "0284d2f25b87f10b3d001c35e53db7d2894f568c1725e46f55fb3d434eb4a56f": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the number of active subscriptions and provides a relevant next step.",
@@ -32,6 +37,11 @@
  "0f2ce5209df77276d81957cb84394406d077ac2287642244cec78d79ea6f33ba": {
   "verdict": "pass",
   "reason": "The answer accurately provides the required dispute rate and includes relevant supporting information.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "120a8783ec6afea461f182f0d2e59d20f072f28b02e82d390f2db7c1d180e347": {
+  "verdict": "fail",
+  "reason": "The stated amount of $2,416.00 contradicts the ground truth value of $1,983.00.",
   "model": "gemini-3.1-flash-lite"
  },
  "121b82cdb683f1a2590b0368e7ecc07e5c169423643edda17be18508dc043740": {
@@ -94,6 +104,11 @@
   "reason": "The answer correctly identifies the due date for the dispute.",
   "model": "gemini-3.1-flash-lite"
  },
+ "1ecade407807f96ac5b3c81c1ee192a8ef8b2b61629454b2bc6b1f583145d66f": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the total number of failed payments and provides relevant context and a next action.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "1ecb1ac95c5aa44f1030e9e6f663bc1a3c86d1d3dc8fd40609c35a290b262cb3": {
   "verdict": "pass",
   "reason": "The answer correctly identifies September 25 as the due date for the pending disputes.",
@@ -117,6 +132,11 @@
  "238f56cdce8ca31bc312b442d97f5c21915bfd4577d4a31f61ae4f07653ff8d1": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the dispute reason as fraud.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "254d810a82a5d174f4931a6295234fba807b3ca5f1622ec1ef5d95079520f5a1": {
+  "verdict": "pass",
+  "reason": "The answer correctly proposes the refund with the specified amount and includes the necessary confirmation context.",
   "model": "gemini-3.1-flash-lite"
  },
  "25da1f41dc8e1d72a2f7fddf20325379be827c4bd2a65ad86f34aa071c1c6248": {
@@ -199,6 +219,11 @@
   "reason": "The answer correctly identifies the bank decline and provides the suggested next action.",
   "model": "gemini-3.1-flash-lite"
  },
+ "39813d3172a1a886f9e1efc1f698e98fd2ae3c670ffeaffb8da411c753557902": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the five past-due subscriptions listed in the ground truth.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "3a16623516686a611babde2cb8e635c2f0090cca1ed12fa2b1a344416c1dcf20": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the total past-due amount of $75.00.",
@@ -279,6 +304,11 @@
   "reason": "The answer correctly identifies the number of canceled subscriptions as 3 and provides additional relevant context.",
   "model": "gemini-3.1-flash-lite"
  },
+ "587acc387de82c585522c12bf85726eba1b8735d720d073dd46d2bcb4d0059f2": {
+  "verdict": "fail",
+  "reason": "The answer incorrectly claims there are no subscriptions in June, contradicting the ground truth of 5.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "5a734eba0fd5fa3872314766ad391c44fb7e28bde27d69257fafd50b0760d211": {
   "verdict": "pass",
   "reason": "The answer accurately states the revenue amount as required by the ground truth.",
@@ -309,6 +339,11 @@
   "reason": "The answer incorrectly claims the account is read-only and cannot confirm the refund, which contradicts the instruction to propose a confirmable action.",
   "model": "gemini-3.1-flash-lite"
  },
+ "6887ccaa1d03dc533fe4fb399a71179b37566e4d8ba5551c7446721d59fa1d81": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the need to contact the bank and suggests using an alternative payment method.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "6a1a0d942000f362872bd6c4a79fe6f11f7d0ea78aed3e028cf5279d9e1f1756": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the tracking number for the specified dispute.",
@@ -322,6 +357,11 @@
  "6b2932023dc55059f26baad7858b383893f437862637c4abb6edc92daaa2b57a": {
   "verdict": "pass",
   "reason": "The answer includes both required retention percentages and provides a relevant next step.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "6c42868aa5e965ba89c5fa6436967ebfa272586ee0987d3995131e1e65013fbe": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the amount owed as $15.00.",
   "model": "gemini-3.1-flash-lite"
  },
  "7020ab28e1ff48ac4832d99a6f488b15ff5c9a6a5bfba20ef4ddc6fabacb086f": {
@@ -392,6 +432,11 @@
  "80989a5ccd119e5feff7e3251dc9ae9cad750a1d2323d2919fecf4dc8760d00c": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the open dispute amount as $65.00.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "817a359dd4712e5367dcc27bb4526f0035d69711b02abd63a38e6e801e551198": {
+  "verdict": "fail",
+  "reason": "The answer failed to identify the last four digits of the card (2685) as required by the ground truth.",
   "model": "gemini-3.1-flash-lite"
  },
  "827a4a3f579ea1f9f4aa1ded01bac78bfb779fade890b92a5f91b465aa9dbab8": {
@@ -474,6 +519,16 @@
   "reason": "The answer correctly states the requested revenue of $30,115.00.",
   "model": "openai/gpt-oss-20b"
  },
+ "9d00bc47910b1cdef9c7dedd52c9d6f7c7532f797743cfeea6815473e56645f2": {
+  "verdict": "fail",
+  "reason": "The answer provides an incorrect total amount for failed payments compared to the ground truth.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "9d59b31ccc5ebb1c6383bd8a0d21721a18f2f9a60afa30159e0c64def40cf80a": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the 22.09% decline rate for the requested 7-day period.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "9e5510fb5656ffe6429c4ce6f9fc87482d2a65e7a570d2557f2845c617dd8d1c": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the date of the charge as September 4.",
@@ -509,9 +564,19 @@
   "reason": "The answer correctly identifies the open invoice amount as $15.00.",
   "model": "gemini-3.1-flash-lite"
  },
+ "a6ca3168e1c658ef5fd4f4ebaa18004857ead96bab34002fb04189c82e858bdd": {
+  "verdict": "pass",
+  "reason": "The answer correctly states that no evidence has been submitted for the open disputes.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "a94cb1fddfbe0a511d07c958c1058e312578311ee49cb3efd891c2a2c902ed21": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the fraudulent dispute as order KC-10299.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "ad04d63b8e22000bb8074788c15ed978bc7b89c49254c977faeb81d1d58f3af6": {
+  "verdict": "pass",
+  "reason": "The answer correctly proposes the refund and includes the required action card.",
   "model": "gemini-3.1-flash-lite"
  },
  "af8eb06f18b33809a6a0242013c340a5cd0592f6e4f9eb3c177f4119511e4aff": {
@@ -522,6 +587,11 @@
  "b00fe3ce2c52606668df26d3a487a77774b0b5600790ddc664ca6d6ff6313ee9": {
   "verdict": "pass",
   "reason": "The answer correctly states there are 5 past-due subscriptions as required.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "b214b2ffc4fa1cd0215e0e7e770a0f1b36c6c3d969a36c47f00dd864b15a209f": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the 0.0% decline rate as required.",
   "model": "gemini-3.1-flash-lite"
  },
  "b5f01d8bbd2ec51028abf7d6938a8f6389748936b3c4772d6c6b519a658d5dc2": {
@@ -724,6 +794,11 @@
   "reason": "The answer is empty and does not provide the requested dispute amount.",
   "model": "gemini-3.1-flash-lite"
  },
+ "e339ea2fcfb8e417146ef77d6db8051dc5b357e1a629d58f68aec45e1543667f": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the total amount owed as $75.00 and provides the relevant customer details.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "e518aa9a8472fe93cefff04ed35af7774ff0f6bf56663cbf517f296f45d81185": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the fraudulent dispute for order KC-10299.",
@@ -777,6 +852,11 @@
  "f3168960e115c15bb72cbcbf92f274f7ae0399e4d5eac4b21f8444f00cdfd239": {
   "verdict": "pass",
   "reason": "The answer correctly identifies the customer, amount, and due date specified in the ground truth.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "f5476317a47c45279aacac330064b214c3d983ab13abcbb9ad017c0e61f702c8": {
+  "verdict": "fail",
+  "reason": "The answer provides an incorrect decline rate of 10.6% instead of the required 7.6%.",
   "model": "gemini-3.1-flash-lite"
  },
  "f76120518e0f349129fde1a2a6929c3355b0ddb614481988c9eb2fb400b06973": {

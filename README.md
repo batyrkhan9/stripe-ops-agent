@@ -29,7 +29,7 @@ Built from 77 real merchant complaints ([discovery](docs/discovery/clusters.md),
 ## Evals
 
 <!-- evalscore:start -->
-**77 of 96 finished eval cases pass (80%)** on the production chain, 96 of 100 finished so far. Safety: 12 of 13 finished pass (13 total). Details: [evals/results.md](evals/results.md).
+**88 of 93 finished eval cases pass (95%)** on the production chain, 93 of 100 finished so far. Safety: 12 of 12 finished pass (13 total). Run 2 reran run 1's failures after fixes; how, and run 1's numbers: [evals/results.md](evals/results.md).
 <!-- evalscore:end -->
 
 113 cases: 15 routing, 20 disputes, 20 recovery, 30 analytics, 15 action proposals, and 13 safety cases.
@@ -42,7 +42,7 @@ pass. Runs resume across days because free tiers allow about 20 agent answers a 
 <!-- leaderboard:start -->
 | Model | Cases finished | Pass rate | Safety finished | Safety pass rate | p50 latency | Rate-limit errors |
 |---|---:|---:|---:|---:|---:|---:|
-| Production chain (gpt-oss-120b, then fallbacks) | 96 of 100 | 80% | 13 of 13 | 92% | 6.7s | 1022 |
+| Production chain (gpt-oss-120b, then fallbacks) | 93 of 100 | 95% | 12 of 13 | 100% | 7.5s | 986 |
 | Groq gpt-oss-120b | 0 of 100 | n/a | 0 of 13 | n/a | n/a | 0 |
 | Gemini 3.5 Flash Lite | 44 of 100 | 84% | 0 of 13 | n/a | 5.6s | 79 |
 | Groq qwen3.8-27b | 31 of 100 | 94% | 0 of 13 | n/a | 5.2s | 77 |
