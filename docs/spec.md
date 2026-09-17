@@ -29,7 +29,7 @@ Together they account for 59 of the 77 complaints.
 | Revenue analytics | MRR, churn, cohort retention, decline rate by card brand and country, with the calculation shown and an AI narrative. | C018, C019, C060, C047 |
 | Confirmed actions | Refund, coupon, pause or cancel subscription as proposed actions with a Confirm button, re-checked permissions, and an audit log. | C063, C078 |
 | API and CLI | Read endpoints, ask endpoint, proposed-action endpoints, documented on /docs. | C018, C067 |
-| Read-only onboarding | Stripe Connect OAuth, read_only by default, read_write opt-in for confirmed actions. | C028 |
+| Read-only onboarding | Merchant pastes a restricted test key. The app checks its permissions without changing data, stores it encrypted, and enables confirmed actions only for resources the key can write. | C028 |
 | Customer 360 (last) | One customer's payments, subscriptions, invoices, disputes, and a churn explanation. Built last: weakest evidence of any feature, only 3 indirect complaints and none asking for a per-customer view. | C044, C050, C069 |
 
 ## What v1 does not do
