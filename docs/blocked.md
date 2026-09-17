@@ -1,9 +1,9 @@
 # Blocked
 
-## Automatic deploys on push (2026-09-17)
+Nothing blocked right now.
 
-`vercel git connect` fails: "You need to add a Login Connection to your GitHub account first." The Vercel
-account has no GitHub login connection, and only the account owner can add one.
+## Resolved
 
-Unblock: in Vercel, Account Settings, Authentication, connect GitHub. Then run `npx vercel git connect` in the
-repo. Until then, production deploys run manually with `npx vercel deploy --prod`.
+- 2026-09-17, automatic deploys on push. `vercel git connect` failed until the Vercel account had a GitHub
+  login connection and the Vercel GitHub App was installed on the repo. Both done; pushes to main now deploy
+  to production.
