@@ -1,17 +1,147 @@
 {
+ "0bfa20bf163c4d76cb269ea2b4308474422d33a8a3f4384ffd652c52fad91b1e": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies that the dispute reason is \"product not received.\"",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "126a0cee6457dd05f7a97340386767ca3ee72645ed4c45ef65aebb87b8ac129d": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the item purchased and includes the required context.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "16ce8aee30152cbc5d8895ce959101ccfb633b3516a1821cd8c31f62bd30d781": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies September 25 as the due date for the pending disputes.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "180f8d22e187a18ab84f24409726262ba7ef01b22aa6d29720ad30c3db76140e": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the item purchased by Ethan Nguyen and provides the requested information.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "26c9ae9a7f4ab6967a6dd99673201ca817ce5c421a076b51fefec9989dc09f4e": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the response deadline for both disputes.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "34592b8c5a182bcc726750d90cea76aff505da0cb627e7eb080c39a0fd58d296": {
+  "verdict": "fail",
+  "reason": "The answer lists the individual disputes but fails to provide the total amount requested by the merchant.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "444b4ece39d35c45957d1653dfc522cd45bcdd7efdd02bfcf520a9834c586bfb": {
+  "verdict": "fail",
+  "reason": "The answer failed to identify the item (pour-over kettle) that Ethan Nguyen purchased.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "509dbc8a8b0435c1dd919b4ade9db54b49513886a3e4acad1d4e5a570604b35e": {
+  "verdict": "fail",
+  "reason": "The answer is empty and does not state the required amount of $65.00.",
+  "model": "openai/gpt-oss-20b"
+ },
+ "521df43b2a6a4737d183505a929f79a1a3ce6c8d60076ea3048fa9a5f20e0e15": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the due date for the specified dispute.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "71d14e068e80ebdb063807cb69f82e12fce6e05edd8048d00d2fa5e9398ec1b7": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the total disputed amount as $93.00 and provides relevant supporting details.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "7390c32339325acc94bf207506e8fc5f0a7fbe1ef4095bc99778e17d7429c02f": {
   "verdict": "pass",
   "reason": "The answer includes the required date (Sep 25) and identifies the disputes needing a response.",
   "model": "openai/gpt-oss-20b"
+ },
+ "790e818cbfbd2c7292c7086764cfd6c443ce93be0668578b8b58176ef76a2771": {
+  "verdict": "fail",
+  "reason": "The answer is empty and does not provide the requested tracking number.",
+  "model": "gemini-3.1-flash-lite"
  },
  "8323ee5eae93c714585116a19f4256c46647ee7db89d2568cf0512fe47d1d186": {
   "verdict": "pass",
   "reason": "The answer correctly proposes a create_refund action awaiting confirmation.",
   "model": "openai/gpt-oss-20b"
  },
+ "95bfff4cadf81c04a092ab95f5638a3f5bb64821b4872cf31d4977acd8325ea1": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies September 25 as the soonest due date.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "95cd2df4d8d9152a653d262407b0ca2966767fe66b2d339b59a0d3e6cf08f523": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the dispute amount and aligns with the ground truth.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "a04cd2f0ce5d5d9a79819dee510cfb4e1c05ab7375cc09c47848a875443388f6": {
+  "verdict": "fail",
+  "reason": "The answer is empty and does not provide the requested card information.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "a94cb1fddfbe0a511d07c958c1058e312578311ee49cb3efd891c2a2c902ed21": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the fraudulent dispute as order KC-10299.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "ba40377506a618d7e437165ac473378a41467ad67902e533f60063d679f7e150": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the tracking number and provides the requested information.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "beb20f881f4d57fe7170f4b7cf4e46b1e552683ce91170a7358cdd78e3f46e8a": {
+  "verdict": "fail",
+  "reason": "The answer is empty.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "c5a57b8948d8c763f719647e7eddd14be5df1028932063b7988d5549fdfe34f5": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies two open disputes as requested.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "c63189823efe4c348706bb5f7538eb55b5aa206bb3c03f0284729bb643059957": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the due date as September 25.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "cbad65368dffabd92222e677eeae50d58675be423cee2792b4d5b27ba9da5aa0": {
+  "verdict": "fail",
+  "reason": "The answer is empty and does not provide the requested information.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "d01a0bc9a5a5315f23aa5be265850c43ad4d27e2db7eec55b5b68815395b346c": {
+  "verdict": "fail",
+  "reason": "The answer is empty and fails to provide the requested information.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "d20942af206cb0256f963f55d7842ee1831b2d01b1a669536343f7bdc6eec9ee": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the deadline as Sep 25.",
+  "model": "gemini-3.1-flash-lite"
+ },
  "df5e8156b044fbf70ca109149ef21270026a6090a4151c2c270e4435141e1bac": {
   "verdict": "pass",
   "reason": "The response correctly states the MRR of $945.31 and includes the required details.",
   "model": "openai/gpt-oss-20b"
+ },
+ "df9161c46d48654a98b383e65e1443371b4d91d4f36467d1a652a8e827c1716b": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies the response deadline of Sep 25.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "e240356b30dd4997506e20b2d30a6423105a277be60a7451dcc6f4ca81af9568": {
+  "verdict": "fail",
+  "reason": "The answer is empty and does not provide the requested dispute amount.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "e6c7cd6eba233504d3668f80ece5192406915c0ca860b797e26e7913bc7280ce": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies that the dispute is about a product not received.",
+  "model": "gemini-3.1-flash-lite"
+ },
+ "ead5830e198464aedaf31546eedeb5ff72e4d273e2e0e36cd4edd175ab993973": {
+  "verdict": "pass",
+  "reason": "The answer correctly identifies order KC-10299 as the one associated with the fraudulent dispute.",
+  "model": "gemini-3.1-flash-lite"
  }
 }

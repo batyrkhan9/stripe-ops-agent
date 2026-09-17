@@ -1,0 +1,784 @@
+{
+ "label": "chain",
+ "model": "chain",
+ "anchor": 1789619972,
+ "startedAt": "2026-09-17T08:33:34.985Z",
+ "updatedAt": "2026-09-17T08:39:18.726Z",
+ "results": {
+  "routing-01": {
+   "id": "routing-01",
+   "agent": "disputes",
+   "kind": "routing",
+   "question": "Do I have any chargebacks I need to deal with?",
+   "finishedAt": "2026-09-17T08:33:35.348Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-120b"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 362
+  },
+  "routing-02": {
+   "id": "routing-02",
+   "agent": "disputes",
+   "kind": "routing",
+   "question": "Show me the evidence deadlines for my disputes",
+   "finishedAt": "2026-09-17T08:33:47.596Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-20b"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 245
+  },
+  "routing-03": {
+   "id": "routing-03",
+   "agent": "disputes",
+   "kind": "routing",
+   "question": "A customer says their package never arrived and opened a dispute. What now?",
+   "finishedAt": "2026-09-17T08:33:59.978Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-20b"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 376
+  },
+  "routing-04": {
+   "id": "routing-04",
+   "agent": "recovery",
+   "kind": "routing",
+   "question": "Why are cards getting declined?",
+   "finishedAt": "2026-09-17T08:34:12.456Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-20b"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 473
+  },
+  "routing-05": {
+   "id": "routing-05",
+   "agent": "recovery",
+   "kind": "routing",
+   "question": "Which customers have unpaid invoices?",
+   "finishedAt": "2026-09-17T08:34:24.816Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-20b"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 355
+  },
+  "routing-06": {
+   "id": "routing-06",
+   "agent": "recovery",
+   "kind": "routing",
+   "question": "Who needs to update their card?",
+   "finishedAt": "2026-09-17T08:34:37.493Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "recovery"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 672
+  },
+  "routing-07": {
+   "id": "routing-07",
+   "agent": "analytics",
+   "kind": "routing",
+   "question": "What's our MRR?",
+   "finishedAt": "2026-09-17T08:34:49.720Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-20b"
+   ],
+   "rateLimitErrors": 1,
+   "latencyMs": 216
+  },
+  "routing-08": {
+   "id": "routing-08",
+   "agent": "analytics",
+   "kind": "routing",
+   "question": "How many customers do we have?",
+   "finishedAt": "2026-09-17T08:35:02.398Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 675
+  },
+  "routing-09": {
+   "id": "routing-09",
+   "agent": "analytics",
+   "kind": "routing",
+   "question": "What was our revenue last week?",
+   "finishedAt": "2026-09-17T08:35:14.654Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "openai/gpt-oss-120b"
+   ],
+   "rateLimitErrors": 0,
+   "latencyMs": 253
+  },
+  "routing-10": {
+   "id": "routing-10",
+   "agent": "analytics",
+   "kind": "routing",
+   "question": "What's my available balance?",
+   "finishedAt": "2026-09-17T08:35:27.378Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 721
+  },
+  "routing-11": {
+   "id": "routing-11",
+   "agent": "actions",
+   "kind": "routing",
+   "question": "Refund order KC-10244",
+   "finishedAt": "2026-09-17T08:35:40.047Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "actions"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 664
+  },
+  "routing-12": {
+   "id": "routing-12",
+   "agent": "actions",
+   "kind": "routing",
+   "question": "Create a 10% off coupon for returning customers",
+   "finishedAt": "2026-09-17T08:35:52.693Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "actions"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 645
+  },
+  "routing-13": {
+   "id": "routing-13",
+   "agent": "actions",
+   "kind": "routing",
+   "question": "Pause Aisha Bello's subscription",
+   "finishedAt": "2026-09-17T08:36:05.492Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "actions"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 796
+  },
+  "routing-14": {
+   "id": "routing-14",
+   "agent": "actions",
+   "kind": "routing",
+   "question": "Cancel Amara Okafor's plan",
+   "finishedAt": "2026-09-17T08:36:18.222Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "actions"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 723
+  },
+  "routing-15": {
+   "id": "routing-15",
+   "agent": "analytics",
+   "kind": "routing",
+   "question": "What is our churn rate this month?",
+   "finishedAt": "2026-09-17T08:36:30.900Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "analytics"
+   ],
+   "answer": "",
+   "proposals": [],
+   "stripeWrites": [],
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 2,
+   "latencyMs": 675
+  },
+  "disputes-01": {
+   "id": "disputes-01",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Which disputes need a response?",
+   "finishedAt": "2026-09-17T08:36:47.259Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 25|September 25",
+     "pass": true
+    },
+    {
+     "check": "source:du_1UGX7p3FpwYTqedqcy6JowYK",
+     "pass": true
+    },
+    {
+     "check": "source:du_1UGX7p3FpwYTqedqqJArppnd",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Ethan Nguyen disputes a $65.00 charge as fraudulent, and Camila Torres disputes a $28.00 charge because the product was not received, both due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen and Camila Torres's disputes by September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies September 25 as the due date for the pending disputes.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 6,
+   "latencyMs": 4347
+  },
+  "disputes-02": {
+   "id": "disputes-02",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Which dispute is due soonest?",
+   "finishedAt": "2026-09-17T08:37:03.632Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 25|September 25",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Ethan Nguyen's dispute for $65.00 due Sep 25, in 8 days is one of the two disputes due soonest, alongside Camila Torres's dispute for $28.00 with the same deadline.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute and Camila Torres's $28.00 dispute by September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies September 25 as the soonest due date.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "openai/gpt-oss-120b",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite"
+   ],
+   "rateLimitErrors": 6,
+   "latencyMs": 4368
+  },
+  "disputes-03": {
+   "id": "disputes-03",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "When is evidence due for Ethan Nguyen's dispute?",
+   "finishedAt": "2026-09-17T08:37:19.540Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:Sep 25|September 25",
+     "pass": true
+    },
+    {
+     "check": "source:du_1UGX7p3FpwYTqedqcy6JowYK",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Evidence for Ethan Nguyen's $65.00 dispute is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence for Ethan Nguyen's $65.00 dispute before Sep 25\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the deadline as Sep 25.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "openai/gpt-oss-20b",
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 5,
+   "latencyMs": 3905
+  },
+  "disputes-04": {
+   "id": "disputes-04",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What is Camila Torres's dispute about?",
+   "finishedAt": "2026-09-17T08:37:38.877Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:not received|never arrived|didn't arrive|did not arrive",
+     "pass": true
+    },
+    {
+     "check": "source:du_1UGX7p3FpwYTqedqqJArppnd",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "Camila Torres's dispute for $28.00 is about product not received and is due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit tracking information or delivery confirmation to challenge Camila Torres's $28.00 dispute before Sep 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies that the dispute is about a product not received.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 6,
+   "latencyMs": 7334
+  },
+  "disputes-05": {
+   "id": "disputes-05",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "How much money is currently in dispute?",
+   "finishedAt": "2026-09-17T08:38:15.718Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:$93.00",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes",
+    "analytics"
+   ],
+   "answer": "There is currently $93.00 in dispute across two open cases.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nChargeback rate 0.65% Warning Last 30 days 2 disputes on 306 successful charges is 0.65%, over the 0.50% warning and below Stripe's 0.75%. Threshold: warn over 0.50%, Stripe monitors at 0.75%\nSubmit evidence for Ethan Nguyen and Camila Torres's $93.00 in open disputes before September 25.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received; Chargeback rate 0.65% Last 30 days",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the total disputed amount as $93.00 and provides relevant supporting details.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.1-flash-lite",
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 15,
+   "latencyMs": 24836
+  },
+  "disputes-06": {
+   "id": "disputes-06",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "Which order is the fraudulent dispute for?",
+   "finishedAt": "2026-09-17T08:38:34.686Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:KC-10299",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The fraudulent dispute is for Ethan Nguyen's order KC-10299, totaling $65.00 and due Sep 25, in 8 days.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nRespond to Ethan Nguyen's $65.00 fraudulent dispute by submitting evidence.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the fraudulent dispute as order KC-10299.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.5-flash-lite"
+   ],
+   "rateLimitErrors": 6,
+   "latencyMs": 6961
+  },
+  "disputes-07": {
+   "id": "disputes-07",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What is the tracking number for the product not received dispute?",
+   "finishedAt": "2026-09-17T08:38:50.798Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:1ZKC473508949907",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes"
+   ],
+   "answer": "The tracking number for the product not received dispute from Camila Torres is 1ZKC473508949907.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit the tracking number 1ZKC473508949907 as evidence for Camila Torres's dispute.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the tracking number and provides the requested information.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "openai/gpt-oss-120b",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite"
+   ],
+   "rateLimitErrors": 7,
+   "latencyMs": 4106
+  },
+  "disputes-08": {
+   "id": "disputes-08",
+   "agent": "disputes",
+   "kind": "answer",
+   "question": "What did Ethan Nguyen buy in the order he disputed?",
+   "finishedAt": "2026-09-17T08:39:18.726Z",
+   "status": "pass",
+   "checks": [
+    {
+     "check": "routing",
+     "pass": true
+    },
+    {
+     "check": "answered",
+     "pass": true
+    },
+    {
+     "check": "fact:pour-over kettle",
+     "pass": true
+    },
+    {
+     "check": "sources_verified",
+     "pass": true
+    },
+    {
+     "check": "judge",
+     "pass": true
+    }
+   ],
+   "routed": [
+    "disputes",
+    "analytics"
+   ],
+   "answer": "Ethan Nguyen purchased one pour-over kettle in the order he is currently disputing for $65.00.\nEthan Nguyen $65.00 Needs response Fraudulent due Sep 25, in 8 days Order KC-10299 Tracking 1ZKC035897582331\nCamila Torres $28.00 Needs response Product not received due Sep 25, in 8 days Order KC-10300 Tracking 1ZKC473508949907\nSubmit evidence to support the order for the pour-over kettle purchased by Ethan Nguyen for $65.00.\nCards: Ethan Nguyen $65.00 Fraudulent; Camila Torres $28.00 Product not received",
+   "proposals": [],
+   "stripeWrites": [],
+   "judge": {
+    "verdict": "pass",
+    "reason": "The answer correctly identifies the item purchased by Ethan Nguyen and provides the requested information.",
+    "model": "gemini-3.1-flash-lite",
+    "cached": false
+   },
+   "models": [
+    "gemini-3.1-flash-lite"
+   ],
+   "rateLimitErrors": 26,
+   "latencyMs": 15925
+  }
+ }
+}
