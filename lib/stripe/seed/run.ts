@@ -143,6 +143,7 @@ export async function runSeed(stripe: Stripe, plan: SeedPlan, log: Log): Promise
     record({ stripeId: subscription.id, kind: "created", objectType: "subscription", seedKey: spec.seedKey, occurredAt: spec.startedAt });
     if (spec.failedAt) record({ stripeId: subscription.id, kind: "failed", objectType: "subscription", seedKey: spec.seedKey, occurredAt: spec.failedAt });
     if (spec.canceledAt) record({ stripeId: subscription.id, kind: "canceled", objectType: "subscription", seedKey: spec.seedKey, occurredAt: spec.canceledAt });
+    for (const r of await tagSubscriptionInvoices(stripe, spec, subscription.id)) record(r);
     for (const charge of await tagSubscriptionCharges(stripe, spec, customer.id)) {
       record({ stripeId: charge.id, kind: "created", objectType: "charge", seedKey: charge.metadata.seed_key!, occurredAt: Number(charge.metadata.seed_occurred_at) });
     }
@@ -329,4 +330,40 @@ async function tagSubscriptionCharges(stripe: Stripe, spec: SubscriptionSpec, cu
     }
   }
   return tagged;
+}
+
+// Subscription invoices and their payment intents also need intended dates, for Recovery and analytics.
+// Payment intents are tagged before their invoice, so a re-run finishes any invoice left half tagged.
+async function tagSubscriptionInvoices(
+  stripe: Stripe,
+  spec: SubscriptionSpec,
+  subscriptionId: string,
+): Promise<SeededRecord[]> {
+  const invoices = await retry(() =>
+    stripe.invoices
+      .list({ subscription: subscriptionId, limit: 100, expand: ["data.payments"] })
+      .autoPagingToArray({ limit: 100 }),
+  );
+  const records: SeededRecord[] = [];
+  for (const invoice of invoices) {
+    const isUpgrade = invoice.billing_reason === "subscription_update";
+    const seedKey = `${spec.seedKey}:${isUpgrade ? "upgrade_invoice" : invoice.billing_reason ?? "invoice"}`;
+    const occurredAt = isUpgrade ? spec.failedAt ?? spec.startedAt : spec.startedAt;
+    const intentIds = (invoice.payments?.data ?? []).flatMap((p) =>
+      typeof p.payment.payment_intent === "string" ? [p.payment.payment_intent] : [],
+    );
+    if (invoice.metadata?.seed_key !== seedKey) {
+      for (const intentId of intentIds) {
+        await retry(() =>
+          stripe.paymentIntents.update(intentId, { metadata: seedMetadata(`${seedKey}:payment_intent`, occurredAt) }),
+        );
+      }
+      await retry(() => stripe.invoices.update(invoice.id!, { metadata: seedMetadata(seedKey, occurredAt) }));
+    }
+    records.push({ stripeId: invoice.id!, kind: "created", objectType: "invoice", seedKey, occurredAt });
+    for (const intentId of intentIds) {
+      records.push({ stripeId: intentId, kind: "created", objectType: "payment_intent", seedKey: `${seedKey}:payment_intent`, occurredAt });
+    }
+  }
+  return records;
 }
