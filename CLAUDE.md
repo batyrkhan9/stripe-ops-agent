@@ -39,7 +39,7 @@ If a task does not serve one of those five, skip it.
 
 - Next.js 15, App Router, TypeScript strict, pnpm
 - Postgres on Neon (free), Drizzle ORM
-- Stripe Node SDK, test mode only, webhooks for sync, test clocks for seeded history,
+- Stripe Node SDK, test mode only, webhooks for sync, seeded history dated via `occurred_at`,
   Connect OAuth (Standard, read_only scope) for onboarding
 - LLM: Vercel AI SDK. Primary provider Google AI Studio (Gemini Flash, free tier).
   Fallback provider Groq (free tier). Provider selection in one file: lib/llm/provider.ts.
@@ -121,14 +121,22 @@ README.md
 
 Idempotent: check before create, tag everything with metadata.seed=true.
 
-History with test clocks:
-- One test clock per cohort of customers. Start each clock 90 days in the past.
-- Advance in 7-day steps to today. At each step, create that step's charges and subscriptions.
-- Verify test clock limits (customers per clock, max advance per step) against Stripe docs before coding.
-- On the first run, check whether `created` on charges, invoices, and subscriptions follows the clock's
-  frozen time. Record the result in docs/adr/0001-test-clocks.md.
-- If `created` does not follow the clock, write `occurred_at` for every seeded object to our DB from the
-  seed, and drive alerts, analytics, and evals off `occurred_at`. Note this in the README.
+History (no test clocks in the demo dataset, see docs/adr/0001-test-clocks.md):
+- Why: Stripe cannot backdate charges, refunds, or disputes. Test clocks cap at 3 customers each,
+  auto-delete after 30 days along with their customers and subscriptions, and hide their objects from
+  list calls unless filtered. A long-lived public demo cannot depend on them.
+- The seed gives every object an intended date in the last 90 days, written to Stripe metadata
+  `seed_occurred_at` (unix seconds) and to our DB as `occurred_at`.
+- Demo time is frozen: in demo mode, "now" is the completion time of the last seed run, stored in our DB.
+  Alerts, analytics, briefs, and evals take `now` as a parameter and read `occurred_at`, so windows
+  never drift as real days pass.
+- Connected accounts use Stripe `created` and the real current time.
+- Run one test clock experiment (does a PaymentIntent for a clock customer get `created` at frozen time?),
+  record the result in ADR 0001, then delete the clock. The seed itself does not use clocks.
+- README notes that demo dates come from `occurred_at`, not Stripe `created`.
+- Use PaymentMethod tokens (pm_card_...) in API calls, not raw card numbers. Declining cards cannot be
+  attached to customers, so use them on one-off PaymentIntents. All documented decline cards are Visa,
+  so decline rate by brand only varies through successful charges; note this in the analytics page.
 
 Volumes:
 - 40 customers with realistic names and emails
@@ -159,7 +167,7 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 - Every feature below must reference at least one complaint ID.
 
 ### Phase 2: core
-- Next.js, DB, Stripe client, seed script with test clocks, webhook endpoint (payment_intent.*,
+- Next.js, DB, Stripe client, seed script, webhook endpoint (payment_intent.*,
   charge.dispute.*, invoice.*), Connect OAuth onboarding, demo mode.
 - Shared agent loop, planner, specialist scaffolding, all READ tools, trace writer.
 - Chat page with streaming and Sources block.
