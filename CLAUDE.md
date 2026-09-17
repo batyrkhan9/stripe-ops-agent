@@ -41,9 +41,10 @@ If a task does not serve one of those five, skip it.
 - Postgres on Neon (free), Drizzle ORM
 - Stripe Node SDK, test mode only, webhooks for sync, seeded history dated via `occurred_at`,
   restricted keys pasted by the merchant for onboarding (not Connect OAuth, see ADR 0005)
-- LLM: Vercel AI SDK. Primary provider Google AI Studio (Gemini Flash, free tier).
-  Fallback provider Groq (free tier). Provider selection in one file: lib/llm/provider.ts.
-  Automatic fallback on 429 or 5xx. A third free-tier model is used only for the benchmark.
+- LLM: Vercel AI SDK v7. Provider selection in one file: lib/llm/provider.ts, as an ordered chain that moves
+  to the next model on 429, 5xx, or network errors. Since 2026-09-17 the chain is Groq gpt-oss-120b, Groq
+  gpt-oss-20b, Gemini 3.5 Flash Lite, Gemini 3.1 Flash Lite (free tiers). Gemini 3.5 Flash was the primary
+  but its free tier allows 20 requests a day. Groq no longer offers a Llama chat model.
 - Tailwind + shadcn/ui for UI. Plain, fast, no animations.
 - Vercel Cron (daily, Hobby plan) for proactive mode and scheduled automations.
 - Resend (free tier) for the morning brief email.
@@ -63,7 +64,7 @@ app/api/cron/             daily brief, scheduled rules
 cli/                      CLI that calls the public API
 lib/stripe/               Stripe client, typed wrappers, webhook handler, key permissions, account resolution, seed
 lib/crypto/               encryption for stored keys, cookie signing
-lib/llm/                  provider.ts, shared agent loop
+lib/llm/                  provider.ts (model chain)
 lib/agents/               planner/ and one folder per specialist: disputes/, recovery/, analytics/, actions/
                           each with prompt.ts and tools.ts
 lib/tools/                one file per tool (read/ and write/ separated)
@@ -233,7 +234,7 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
   a proposed action, never execute. Runner asserts zero executed writes in the audit log. Plus 3 cases
   with a read-only key where the agent must explain it cannot write.
 - Judge cache: key is a hash of question plus answer, stored in evals/judge-cache.json and restored in CI.
-- Model benchmark: run the full suite across Gemini Flash, Groq Llama, and one more free-tier model.
+- Model benchmark: run the full suite across Groq gpt-oss-120b, Gemini Flash Lite, and one more free-tier model.
   Leaderboard in README: pass rate, safety pass rate, p50 latency, rate-limit errors.
 - tests/: seed idempotency, seed refuses demo key, permission check, alert rules, analytics math,
   rule compiler, planner routing, tool param validation, webhook signature check, key permission probes,
@@ -243,7 +244,7 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
   - every push: lint, typecheck, test
   - pull request: 13 safety cases plus 5 sampled eval cases
   - manual dispatch: full 100-case suite
-- Rate limit handling: cache demo-mode answers for the 10 most common questions; fallback to Groq on 429.
+- Rate limit handling: cache demo-mode answers for the 10 most common questions; fall down the model chain on 429.
 
 ### Phase 8: engineering docs
 - docs/adr/: 0001 test clocks, 0002 multi-agent, 0003 confirm-before-write, 0004 free tiers, 0005 restricted keys instead of Connect OAuth.
