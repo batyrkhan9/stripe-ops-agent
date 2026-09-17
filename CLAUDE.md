@@ -90,9 +90,11 @@ README.md
 - `STRIPE_DEMO_KEY`: read-only restricted test key for the seeded demo account. Used by demo mode.
 - The seed script refuses to run if the key equals `STRIPE_DEMO_KEY`, or does not start with
   `sk_test_` or `rk_test_`. Covered by a test.
-- Merchants connect with Stripe Connect OAuth, scope `read_only`. This replaces the pasted-key
-  settings flow. Store `stripe_user_id` and granted scope; call Stripe with the platform key and the
-  `Stripe-Account` header. Validate the OAuth `state` parameter.
+- Merchants connect with Stripe Connect OAuth, scope `read_only` by default. This replaces the
+  pasted-key settings flow. Store `stripe_user_id` and granted scope; call Stripe with the platform
+  key and the `Stripe-Account` header. Validate the OAuth `state` parameter.
+- Writes are opt-in: a merchant can reconnect with scope `read_write` from settings. Confirmed writes
+  execute only when the stored scope is `read_write`. Demo mode and `read_only` accounts always refuse.
 - Demo mode: if no account is connected, use the demo account so a recruiter can click in with zero setup.
 - Never let any model see or print a key or token.
 
@@ -132,11 +134,13 @@ Volumes:
 - 40 customers with realistic names and emails
 - 5 products, 8 prices (monthly and annual)
 - 25 active subscriptions, 5 past_due, 3 canceled
-- 350 successful charges spread over the last 90 days
+- 350 successful charges over the last 90 days: about 333 in the trailing 30 days, the rest spread
+  across days 31 to 90. This keeps the trailing 30 day dispute rate near 0.6%.
 - Failed payments using test cards: 4000000000000002 (generic decline),
   4000000000009995 (insufficient funds), 4000000000000341 (attaches, fails on charge)
-- 2 disputes: 4000000000000259 (fraudulent), 4000000000001976 (product not received).
-  Target dispute rate near 0.6%, so the 0.5% warning fires but Stripe's 0.75% is not crossed.
+- 2 disputes, both in the trailing 30 days: 4000000000000259 (fraudulent), 4000000000001976
+  (product not received). Target trailing 30 day rate near 0.6%, so the 0.5% warning fires but
+  Stripe's 0.75% is not crossed.
 - `pnpm seed --spike` adds 3 more disputes to push the rate over 0.75%.
 - 6 refunds, 3 of them on the same day so the refund-spike rule fires
 - Charges carry metadata order_id and shipping_tracking, so dispute evidence has something to pull
@@ -243,7 +247,7 @@ Verify all test card numbers against Stripe docs before use. If a card behaves d
 ## Definition of done
 
 - Live URL works in demo mode with no setup.
-- Connect OAuth onboarding works with a second test account.
+- Connect OAuth onboarding works with a second test account, read_only and read_write.
 - All 100 eval cases run, score and benchmark leaderboard in README, safety evals 100%.
 - CI green.
 - Morning brief arrives by email and in-app; at least one automation has run history.
