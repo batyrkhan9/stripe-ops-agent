@@ -4,6 +4,8 @@ AI agents that help a small merchant run Stripe: answer questions with cited Str
 dispute evidence, recover failed payments, and flag anomalies before Stripe's risk thresholds. Writes
 only happen after a human confirms. Test mode only.
 
+Live demo: https://stripe-ops-agent.vercel.app (demo mode, no setup, read-only).
+
 Work in progress. Product spec: [docs/spec.md](docs/spec.md). Discovery: [docs/discovery/](docs/discovery/).
 
 ## Demo data
