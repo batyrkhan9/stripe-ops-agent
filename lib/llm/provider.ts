@@ -70,3 +70,19 @@ export function agentModel(onServed?: (served: ServedBy) => void): LanguageModel
 export function finishModel(onServed?: (served: ServedBy) => void): LanguageModelV4 {
   return createFallbackModel(build(FINISH_CHAIN), onServed);
 }
+
+// Models the eval benchmark runs one at a time, with no fallback, so each row measures a single model
+// (evals/run.ts). qwen3.8-27b is the third free model: a different family from gpt-oss and Gemini on Groq's free tier.
+export const BENCHMARK_MODELS = {
+  "gpt-oss-120b": { provider: "groq", modelId: "openai/gpt-oss-120b" },
+  "gemini-3.5-flash-lite": { provider: "google", modelId: "gemini-3.5-flash-lite" },
+  "qwen3.8-27b": { provider: "groq", modelId: "qwen/qwen3.8-27b" },
+} as const;
+
+export type BenchmarkModel = keyof typeof BENCHMARK_MODELS;
+
+export function singleModel(name: BenchmarkModel) {
+  const entry = BENCHMARK_MODELS[name];
+  return (onServed?: (served: ServedBy) => void): LanguageModelV4 =>
+    createFallbackModel([entry.provider === "groq" ? groq(entry.modelId) : google(entry.modelId)], onServed);
+}
