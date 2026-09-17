@@ -27,6 +27,12 @@ const TOOL_LABELS: Record<string, string> = {
   search: "Stripe search",
   show_disputes: "dispute details",
   show_invoices: "invoice details",
+  show_alerts: "alert rules",
+  create_refund: "a refund proposal",
+  create_coupon: "a coupon proposal",
+  pause_subscription: "a pause proposal",
+  cancel_subscription: "a cancellation proposal",
+  submit_dispute_evidence: "an evidence proposal",
 };
 
 function SourcesBlock({ sources }: { sources: Sources }) {
