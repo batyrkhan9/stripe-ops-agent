@@ -1,6 +1,6 @@
 import type { LanguageModelV4, LanguageModelV4CallOptions } from "@ai-sdk/provider";
 import { describe, expect, it, vi } from "vitest";
-import { createFallbackModel, MODEL_CHAIN, shouldFallBack, type ServedBy } from "@/lib/llm/provider";
+import { createFallbackModel, FINISH_CHAIN, MODEL_CHAIN, shouldFallBack, type ServedBy } from "@/lib/llm/provider";
 
 const httpError = (statusCode: number) => Object.assign(new Error(`HTTP ${statusCode}`), { statusCode });
 
@@ -19,6 +19,7 @@ describe("shouldFallBack", () => {
     expect(shouldFallBack(httpError(429))).toBe(true);
     expect(shouldFallBack(httpError(500))).toBe(true);
     expect(shouldFallBack(httpError(503))).toBe(true);
+    expect(shouldFallBack(httpError(413))).toBe(true);
     expect(shouldFallBack(new Error("fetch failed"))).toBe(true);
   });
 
@@ -69,6 +70,13 @@ describe("createFallbackModel", () => {
 
   it("refuses an empty chain", () => {
     expect(() => createFallbackModel([])).toThrow();
+  });
+});
+
+describe("FINISH_CHAIN", () => {
+  it("uses the same four models, starting with Gemini Flash Lite", () => {
+    expect(FINISH_CHAIN[0]).toEqual({ provider: "google", modelId: "gemini-3.5-flash-lite" });
+    expect([...FINISH_CHAIN].map((m) => m.modelId).sort()).toEqual([...MODEL_CHAIN].map((m) => m.modelId).sort());
   });
 });
 

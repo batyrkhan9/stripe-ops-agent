@@ -25,7 +25,7 @@ describe("read tool input validation", () => {
   });
 
   it("bounds limits and days, and rejects unknown enum values", () => {
-    expect(READ_TOOLS.list_charges.input.safeParse({ limit: 51 }).success).toBe(false);
+    expect(READ_TOOLS.list_charges.input.safeParse({ limit: 26 }).success).toBe(false);
     expect(READ_TOOLS.list_charges.input.safeParse({ limit: 0 }).success).toBe(false);
     expect(READ_TOOLS.list_charges.input.safeParse({ days: 0 }).success).toBe(false);
     expect(READ_TOOLS.list_disputes.input.safeParse({ status: "pending" }).success).toBe(false);
@@ -49,7 +49,7 @@ describe("executeReadTool", () => {
       balance: { retrieve: async () => ({ available: [{ amount: 12345, currency: "usd" }], pending: [] }) },
     });
     const output = await executeReadTool(READ_TOOLS.get_balance, {}, ctx);
-    expect(output).toEqual({ available: [{ amount: 123.45, currency: "usd" }], pending: [] });
+    expect(output).toEqual({ available: ["$123.45"], pending: [] });
     expect(audit).toHaveBeenCalledWith({ agent: "analytics", tool: "get_balance", params: {}, stripeIds: [], result: output });
     expect(onToolResult).toHaveBeenCalledWith(expect.objectContaining({ tool: "get_balance", ok: true }));
   });
@@ -136,10 +136,45 @@ describe("list_charges totals", () => {
       succeeded: 2,
       failed: 1,
       disputed: 1,
-      gross_succeeded: [{ currency: "usd", amount: 20 }],
-      refunded: [{ currency: "usd", amount: 5 }],
-      decline_codes: { insufficient_funds: 1 },
+      gross_succeeded: ["$20.00"],
+      refunded: ["$5.00"],
+      decline_reasons: [{ reason: "Not enough money in the account", count: 1, retry: "later", customer_action: "Top up the account or use another card" }],
     });
     expect(output.charges).toHaveLength(2);
+  });
+});
+
+describe("list_disputes", () => {
+  const dispute = (id: string, status: string, daysAgo: number) => ({
+    id: `du_${id.repeat(14)}`,
+    status,
+    reason: "fraudulent",
+    amount: 6500,
+    currency: "usd",
+    created: NOW - daysAgo * DAY,
+    metadata: {},
+    evidence_details: { due_by: NOW + 8 * DAY, submission_count: 0 },
+    charge: { id: `ch_${id.repeat(14)}`, metadata: { order_id: "KC-10299" }, customer: { id: `cus_${id.repeat(14)}`, name: "Ethan Nguyen", email: "ethan@example.com" } },
+  });
+
+  it("lists every open dispute whatever its age, with the customer's name", async () => {
+    const list = vi.fn(() => pages([dispute("a", "needs_response", 2), dispute("b", "needs_response", 11), dispute("c", "won", 40)]));
+    const { ctx } = context({ disputes: { list } });
+    const output = (await executeReadTool(READ_TOOLS.list_disputes, { status: "open", days: 7 }, ctx)) as {
+      matching: number;
+      note?: string;
+      disputes: { customer_name?: string; deadline?: string }[];
+    };
+    expect(list).toHaveBeenCalledWith(expect.objectContaining({ expand: ["data.charge.customer"] }));
+    expect(output.matching).toBe(2);
+    expect(output.note).toMatch(/ignored/);
+    expect(JSON.stringify(output.disputes[0])).toContain("Ethan Nguyen");
+    expect(output.disputes[0]!.deadline).toMatch(/^due \w{3} \d+, in 8 days$/);
+  });
+
+  it("still applies days to closed statuses", async () => {
+    const { ctx } = context({ disputes: { list: () => pages([dispute("a", "won", 2), dispute("b", "won", 40)]) } });
+    const output = (await executeReadTool(READ_TOOLS.list_disputes, { status: "won", days: 30 }, ctx)) as { matching: number };
+    expect(output.matching).toBe(1);
   });
 });

@@ -18,12 +18,13 @@ export const PROVIDER_OPTIONS = { groq: { reasoningEffort: "low" } } as const;
 
 export type ServedBy = { provider: string; modelId: string; fellBack: boolean; failures: string[] };
 
-// Rate limits (429), server errors (5xx), and network failures with no status move to the next model.
-// Other client errors (4xx) do not, because the next model would fail the same way.
+// Rate limits (429), requests too large for one model's per-minute token limit (413), server errors (5xx),
+// and network failures move to the next model. Other client errors do not: the next model would fail the same way.
+// 413 was added after a 9489 token request failed on Groq's 8000 tokens a minute limit (evals/format-results.md).
 export function shouldFallBack(error: unknown): boolean {
   const status = (error as { statusCode?: number }).statusCode;
   if (status === undefined) return error instanceof Error && error.name !== "AbortError";
-  return status === 429 || status >= 500;
+  return status === 429 || status === 413 || status >= 500;
 }
 
 export function createFallbackModel(models: readonly LanguageModelV4[], onServed: (served: ServedBy) => void = () => {}): LanguageModelV4 {
@@ -55,9 +56,17 @@ export function createFallbackModel(models: readonly LanguageModelV4[], onServed
   };
 }
 
+// The finish step makes one forced tool call. gpt-oss-20b returned unparseable tool arguments there, so it
+// starts with Gemini Flash Lite, which has its own quota.
+export const FINISH_CHAIN = [MODEL_CHAIN[2], MODEL_CHAIN[0], MODEL_CHAIN[3], MODEL_CHAIN[1]] as const;
+
+type ChainEntry = (typeof MODEL_CHAIN)[number];
+const build = (chain: readonly ChainEntry[]) => chain.map((m) => (m.provider === "groq" ? groq(m.modelId) : google(m.modelId)));
+
 export function agentModel(onServed?: (served: ServedBy) => void): LanguageModelV4 {
-  return createFallbackModel(
-    MODEL_CHAIN.map((m) => (m.provider === "groq" ? groq(m.modelId) : google(m.modelId))),
-    onServed,
-  );
+  return createFallbackModel(build(MODEL_CHAIN), onServed);
+}
+
+export function finishModel(onServed?: (served: ServedBy) => void): LanguageModelV4 {
+  return createFallbackModel(build(FINISH_CHAIN), onServed);
 }

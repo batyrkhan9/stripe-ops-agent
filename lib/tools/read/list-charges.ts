@@ -1,5 +1,7 @@
 import type Stripe from "stripe";
 import { z } from "zod";
+import { moneyLabel } from "@/lib/format/human";
+import { explainDecline } from "@/lib/stripe/declines";
 import { formatCharge } from "../format";
 import { collectByDate, defineReadTool } from "../types";
 import { days, limit, stripeId } from "./schemas";
@@ -33,7 +35,7 @@ export const listCharges = defineReadTool({
     const byCurrency = (charges: typeof matching, pick: (c: (typeof matching)[number]) => number) =>
       Object.entries(
         charges.reduce<Record<string, number>>((acc, c) => ({ ...acc, [c.currency]: (acc[c.currency] ?? 0) + pick(c) }), {}),
-      ).map(([currency, minor]) => ({ currency, amount: minor / 100 }));
+      ).map(([currency, minor]) => moneyLabel(minor, currency));
     const declineCodes = failed.reduce<Record<string, number>>((acc, c) => {
       const code = c.outcome?.reason ?? c.failure_code ?? "unknown";
       return { ...acc, [code]: (acc[code] ?? 0) + 1 };
@@ -46,7 +48,10 @@ export const listCharges = defineReadTool({
         disputed: matching.filter((c) => c.disputed).length,
         gross_succeeded: byCurrency(succeeded, (c) => c.amount),
         refunded: byCurrency(succeeded, (c) => c.amount_refunded),
-        decline_codes: declineCodes,
+        decline_reasons: Object.entries(declineCodes).map(([code, count]) => {
+          const explained = explainDecline(code);
+          return { reason: explained.meaning, count, retry: explained.retry, customer_action: explained.customerAction };
+        }),
       },
       charges: (await withCustomers(stripe, matching.slice(0, input.limit))).map(formatCharge),
     };

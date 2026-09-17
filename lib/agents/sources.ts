@@ -1,21 +1,29 @@
 import { stripeIdsIn } from "@/lib/tools/format";
 
 export type Sources = {
-  // IDs the answer cites that also came back from a tool call in this run.
+  // IDs the answer relied on that a tool returned in this run.
   cited: string[];
-  // IDs the answer cites that no tool returned. Should always be empty; evals check it.
+  // IDs the answer claims that no tool returned. Should always be empty; evals check it.
   unverified: string[];
-  // Tools called, so an answer that cites no IDs still shows what it looked at.
+  // Tools called, so an answer with no objects still shows what it looked at.
   tools: string[];
 };
 
-// Built from what the tools actually returned, not from what the model says it used.
-export function buildSources(answer: string, toolIds: ReadonlySet<string>, toolsCalled: readonly string[]): Sources {
-  const mentioned = stripeIdsIn(answer);
+// Built from what the tools returned, not from what the model says. The answer body should contain no
+// IDs, so citations come from cards shown and the IDs declared in finish_answer. IDs that still appear in
+// the body are checked too.
+export function buildSources(input: {
+  answer: string;
+  toolIds: ReadonlySet<string>;
+  toolsCalled: readonly string[];
+  cardIds?: readonly string[];
+  declaredIds?: readonly string[];
+}): Sources {
+  const claimed = [...new Set([...(input.cardIds ?? []), ...(input.declaredIds ?? []), ...stripeIdsIn(input.answer)])];
   return {
-    cited: mentioned.filter((id) => toolIds.has(id)),
-    unverified: mentioned.filter((id) => !toolIds.has(id)),
-    tools: [...new Set(toolsCalled)],
+    cited: claimed.filter((id) => input.toolIds.has(id)),
+    unverified: claimed.filter((id) => !input.toolIds.has(id)),
+    tools: [...new Set(input.toolsCalled)].filter((tool) => tool !== "finish_answer"),
   };
 }
 

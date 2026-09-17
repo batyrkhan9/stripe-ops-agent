@@ -7,9 +7,9 @@ export const getDispute = defineReadTool({
   name: "get_dispute",
   description: "Get one dispute with its evidence fields, deadline, and the disputed charge (including order and shipping metadata).",
   input: z.object({ id: stripeId("du") }),
-  run: async ({ id }, { stripe }) => {
-    const dispute = await stripe.disputes.retrieve(id, { expand: ["charge"] });
+  run: async ({ id }, { stripe, now }) => {
+    const dispute = await stripe.disputes.retrieve(id, { expand: ["charge.customer"] });
     const charge = typeof dispute.charge === "string" ? null : dispute.charge;
-    return { ...formatDispute(dispute, true), charge_details: charge ? formatCharge(charge) : undefined };
+    return { ...formatDispute(dispute, { now, withEvidence: true }), charge_details: charge ? formatCharge(charge) : undefined };
   },
 });

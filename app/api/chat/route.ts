@@ -3,7 +3,7 @@ import { createAuditWriter } from "@/lib/audit/log";
 import { lastUserText, runAgentChat } from "@/lib/agents/run";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
 import { getDemoContext } from "@/lib/demo/context";
-import { agentModel } from "@/lib/llm/provider";
+import { agentModel, finishModel } from "@/lib/llm/provider";
 import { getActiveAccount } from "@/lib/stripe/active-account";
 import { saveRun } from "@/lib/trace/store";
 
@@ -29,6 +29,7 @@ export async function POST(request: Request) {
     accountId,
     now: demo?.now ?? Math.floor(Date.now() / 1000),
     model: agentModel,
+    finishModel,
     audit: createAuditWriter(accountId),
     saveRun,
   });

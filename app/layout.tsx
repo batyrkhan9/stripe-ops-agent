@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { NavLink } from "@/components/nav-link";
+import { getActiveAccount } from "@/lib/stripe/active-account";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-sans",
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -19,43 +22,65 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
-  { href: "/", label: "Dashboard" },
-  { href: "/chat", label: "Chat" },
-  { href: "/disputes", label: "Disputes" },
-  { href: "/recovery", label: "Recovery" },
-  { href: "/alerts", label: "Alerts" },
-  { href: "/analytics", label: "Analytics" },
-  { href: "/briefs", label: "Briefs" },
-  { href: "/rules", label: "Rules" },
-  { href: "/actions", label: "Actions" },
-  { href: "/traces", label: "Traces" },
-  { href: "/docs", label: "API docs" },
-  { href: "/settings", label: "Settings" },
+  {
+    group: "Operate",
+    items: [
+      { href: "/", label: "Dashboard" },
+      { href: "/chat", label: "Ask" },
+      { href: "/disputes", label: "Disputes" },
+      { href: "/recovery", label: "Recovery" },
+      { href: "/alerts", label: "Alerts" },
+      { href: "/actions", label: "Actions" },
+    ],
+  },
+  {
+    group: "Analyze",
+    items: [
+      { href: "/analytics", label: "Analytics" },
+      { href: "/briefs", label: "Briefs" },
+      { href: "/rules", label: "Rules" },
+    ],
+  },
+  {
+    group: "System",
+    items: [
+      { href: "/traces", label: "Traces" },
+      { href: "/docs", label: "API docs" },
+      { href: "/settings", label: "Settings" },
+    ],
+  },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const account = await getActiveAccount();
+  const accountLabel =
+    account.mode === "demo" ? "Demo account, read-only" : `Connected key ending ${account.connection.keyLast4}`;
+
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex min-h-screen">
-          <nav className="w-52 shrink-0 border-r p-4">
-            <p className="mb-4 text-sm font-semibold">Stripe Ops Agent</p>
-            <ul className="space-y-1 text-sm">
-              {NAV.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="block rounded px-2 py-1 hover:bg-muted">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 text-xs text-muted-foreground">Test mode only</p>
+    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+      <body>
+        <header className="flex h-10 items-center justify-between border-b px-4">
+          <span className="font-semibold">Stripe Ops Agent</span>
+          <span className="meta">
+            {accountLabel} <span className="ml-2 border px-1.5 py-px text-[0.78rem] uppercase tracking-wide">Test mode</span>
+          </span>
+        </header>
+        <div className="flex min-h-[calc(100vh-2.5rem)]">
+          <nav className="w-44 shrink-0 border-r py-3">
+            {NAV.map((section) => (
+              <div key={section.group} className="mb-3">
+                <p className="label px-3 pb-1">{section.group}</p>
+                {section.items.map((item) => (
+                  <NavLink key={item.href} href={item.href} label={item.label} />
+                ))}
+              </div>
+            ))}
           </nav>
-          <main className="flex-1 p-8">{children}</main>
+          <main className="min-w-0 flex-1 px-6 py-4">{children}</main>
         </div>
       </body>
     </html>

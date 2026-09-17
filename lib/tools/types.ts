@@ -17,7 +17,7 @@ export type ToolContext = {
   now: number;
   audit: (record: AuditRecord) => Promise<void>;
   // Called after every tool call so the run can build the Sources block and trace.
-  onToolResult?: (result: { tool: string; params: unknown; stripeIds: string[]; ok: boolean; ms: number }) => void;
+  onToolResult?: (result: { tool: string; params: unknown; output: unknown; stripeIds: string[]; ok: boolean; ms: number }) => void;
 };
 
 export type ReadToolDefinition<Schema extends z.ZodType = z.ZodType> = {
@@ -52,7 +52,7 @@ export async function executeReadTool(definition: ReadToolDefinition, rawInput: 
 
   const stripeIds = stripeIdsIn(output);
   await ctx.audit({ agent: ctx.agent, tool: definition.name, params: rawInput, stripeIds, result: output });
-  ctx.onToolResult?.({ tool: definition.name, params: rawInput, stripeIds, ok, ms: Date.now() - started });
+  ctx.onToolResult?.({ tool: definition.name, params: rawInput, output, stripeIds, ok, ms: Date.now() - started });
   return output;
 }
 

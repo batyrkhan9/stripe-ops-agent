@@ -42,7 +42,7 @@ If a task does not serve one of those five, skip it.
 - Stripe Node SDK, test mode only, webhooks for sync, seeded history dated via `occurred_at`,
   restricted keys pasted by the merchant for onboarding (not Connect OAuth, see ADR 0005)
 - LLM: Vercel AI SDK v7. Provider selection in one file: lib/llm/provider.ts, as an ordered chain that moves
-  to the next model on 429, 5xx, or network errors. Since 2026-09-17 the chain is Groq gpt-oss-120b, Groq
+  to the next model on 429, 413 (request over a per-minute token limit), 5xx, or network errors. Since 2026-09-17 the chain is Groq gpt-oss-120b, Groq
   gpt-oss-20b, Gemini 3.5 Flash Lite, Gemini 3.1 Flash Lite (free tiers). Gemini 3.5 Flash was the primary
   but its free tier allows 20 requests a day. Groq no longer offers a Llama chat model.
 - Tailwind + shadcn/ui for UI. Plain, fast, no animations.

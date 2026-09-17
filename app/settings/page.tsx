@@ -16,12 +16,29 @@ const ERRORS: Record<string, string> = {
 
 function PermissionList({ permissions }: { permissions: KeyPermissions }) {
   return (
-    <dl className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
-      <dt className="font-medium">Read</dt>
-      <dt className="font-medium">Write</dt>
-      <dd>{READ_PERMISSIONS.map((p) => `${p} ${permissions.read[p] ? "yes" : "no"}`).join(", ")}</dd>
-      <dd>{WRITE_PERMISSIONS.map((p) => `${p} ${permissions.write[p] ? "yes" : "no"}`).join(", ")}</dd>
-    </dl>
+    <table className="data-table max-w-md">
+      <thead>
+        <tr>
+          <th>Resource</th>
+          <th>Read</th>
+          <th>Write</th>
+        </tr>
+      </thead>
+      <tbody>
+        {READ_PERMISSIONS.map((p) => (
+          <tr key={p}>
+            <td className="capitalize">{p}</td>
+            <td>{permissions.read[p] ? "Yes" : "No"}</td>
+            <td>{(WRITE_PERMISSIONS as readonly string[]).includes(p) ? (permissions.write[p as (typeof WRITE_PERMISSIONS)[number]] ? "Yes" : "No") : ""}</td>
+          </tr>
+        ))}
+        <tr>
+          <td>Coupons</td>
+          <td></td>
+          <td>{permissions.write.coupons ? "Yes" : "No"}</td>
+        </tr>
+      </tbody>
+    </table>
   );
 }
 
@@ -35,18 +52,20 @@ export default async function SettingsPage({
   const missing = (params.missing ?? "").split(",").filter((p) => (READ_PERMISSIONS as readonly string[]).includes(p));
 
   return (
-    <div className="max-w-2xl space-y-8">
-      <h1 className="text-2xl font-semibold">Settings</h1>
+    <div className="max-w-3xl space-y-6">
+      <div className="page-header">
+        <h1>Settings</h1>
+      </div>
 
       <section className="space-y-2">
-        <h2 className="text-lg font-medium">Current account</h2>
+        <h2>Current account</h2>
         {account.mode === "demo" ? (
-          <p className="text-sm">
+          <p>
             Demo account (read-only). Everything you see is seeded test data. Connect your own test account below.
           </p>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm">
+            <p>
               Your restricted key ending in {account.connection.keyLast4}
               {account.connection.accountId ? ` on ${account.connection.accountId}` : ""}.{" "}
               {account.canWrite ? "Writes are possible after you confirm each one." : "Read-only: the agent cannot change anything."}
@@ -57,33 +76,33 @@ export default async function SettingsPage({
             </form>
           </div>
         )}
-        {params.connected && <p className="text-sm text-green-700">Key connected.</p>}
+        {params.connected && <p className="font-medium">Key connected.</p>}
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-medium">Connect a Stripe test account</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2>Connect a Stripe test account</h2>
+        <p className="max-w-2xl text-muted-foreground">
           In the Stripe Dashboard, create a restricted key in test mode. Grant Read on Charges, Customers, Subscriptions,
           Invoices, Disputes, Refunds, and Balance. To let the agent propose actions you can confirm, also grant Write
           on any of Refunds, Coupons, Subscriptions, or Disputes. Leave everything else as None.
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-2xl text-muted-foreground">
           The key is checked without changing any data, stored encrypted, never shown to the AI model, and deleted when
           you disconnect.
         </p>
         {params.error && (
-          <p className="text-sm text-red-700" role="alert">
+          <p className="alert-row alert-text px-2 py-1.5" role="alert">
             {ERRORS[params.error] ?? "Something went wrong."} {params.error === "missing_reads" && missing.join(", ")}
           </p>
         )}
-        <form action={connectKey} className="flex gap-2">
+        <form action={connectKey} className="flex max-w-2xl gap-2">
           <input
             name="key"
             type="password"
             autoComplete="off"
             required
             placeholder="rk_test_..."
-            className="flex-1 rounded border px-3 py-2 text-sm"
+            className="h-7 flex-1 rounded-sm border border-input px-2 font-mono text-[0.86rem]"
           />
           <Button type="submit">Check and connect</Button>
         </form>
