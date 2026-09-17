@@ -11,9 +11,7 @@ const RETRY_LABEL = { soon: "Retry soon", later: "Retry after a few days", no: "
 // The decline reason lives on the payment intent's error, or once that clears, on its latest failed charge.
 export function invoiceCard(invoice: Stripe.Invoice, now: number, failedCharge?: Stripe.Charge | null): InvoiceCard {
   const customer = invoice.customer && typeof invoice.customer !== "string" && !invoice.customer.deleted ? invoice.customer : null;
-  const intent = latestIntent(invoice);
-  const intentError = intent?.last_payment_error;
-  const code = intentError?.decline_code ?? intentError?.code ?? failedCharge?.outcome?.reason ?? failedCharge?.failure_code ?? null;
+  const code = invoiceDeclineCode(invoice, failedCharge);
   const error = code ? { code } : null;
   const decline = explainDecline(code);
   const nextAttempt = invoice.next_payment_attempt;
@@ -36,7 +34,12 @@ export function invoiceCard(invoice: Stripe.Invoice, now: number, failedCharge?:
   };
 }
 
-function latestIntent(invoice: Stripe.Invoice): Stripe.PaymentIntent | undefined {
+export function invoiceDeclineCode(invoice: Stripe.Invoice, failedCharge?: Stripe.Charge | null): string | null {
+  const intentError = latestIntent(invoice)?.last_payment_error;
+  return intentError?.decline_code ?? intentError?.code ?? failedCharge?.outcome?.reason ?? failedCharge?.failure_code ?? null;
+}
+
+export function latestIntent(invoice: Stripe.Invoice): Stripe.PaymentIntent | undefined {
   return (invoice.payments?.data ?? [])
     .map((p) => p.payment.payment_intent)
     .find((pi): pi is Stripe.PaymentIntent => Boolean(pi) && typeof pi !== "string");
