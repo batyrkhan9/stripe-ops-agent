@@ -2,7 +2,7 @@ import { and, desc, eq } from "drizzle-orm";
 import type { Db } from "./client";
 import { drafts } from "./schema";
 
-export type DraftKind = "dispute_evidence" | "recovery_plan";
+export type DraftKind = "dispute_evidence" | "recovery_plan" | "analytics_narrative";
 
 export async function saveDraft(
   db: Db,

@@ -36,9 +36,9 @@ describe("read tool input validation", () => {
     expect(READ_TOOLS.list_invoices.input.parse({})).toMatchObject({ status: "all", limit: 10 });
   });
 
-  it("exposes exactly the ten read tools from CLAUDE.md", () => {
+  it("exposes the ten read tools from CLAUDE.md plus get_metrics", () => {
     expect(Object.keys(READ_TOOLS).sort()).toEqual(
-      ["get_balance", "get_charge", "get_customer", "get_dispute", "list_charges", "list_customers", "list_disputes", "list_invoices", "list_subscriptions", "search"],
+      ["get_balance", "get_charge", "get_customer", "get_dispute", "get_metrics", "list_charges", "list_customers", "list_disputes", "list_invoices", "list_subscriptions", "search"],
     );
   });
 });
