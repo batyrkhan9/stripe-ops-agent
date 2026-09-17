@@ -6,9 +6,9 @@ Small merchants on Stripe lose money in ways they notice too late. They lose dis
 won because evidence is tedious and deadlines slip (C037, C061). Revenue leaks through declines nobody
 can explain (C021, C024, C058) and renewals that stall with no notification (C052). They cannot
 reproduce their own MRR (C019, C060), and fraud runs for weeks before anyone looks (C048).
-Discovery found 80 complaints in 5 clusters ([clusters.md](discovery/clusters.md)). v1 targets the four
+Discovery found 77 complaints in 5 clusters ([clusters.md](discovery/clusters.md)). v1 targets the four
 clusters a merchant-side tool can act on: P1 disputes, P3 failed payments, P4 data answers, P5 late anomalies.
-Together they account for 62 of the 80 complaints.
+Together they account for 59 of the 77 complaints.
 
 ## Users
 
@@ -23,19 +23,20 @@ Together they account for 62 of the 80 complaints.
 | Ask with Sources | Plain-English questions over Stripe data. Every answer cites the Stripe object IDs used. | C062, C070, C018 |
 | Dispute workbench | Lists open disputes by deadline. Disputes agent drafts evidence into Stripe's fields from charge metadata. Submit only after confirm. | C037, C061, C072, C075, C080, C055 |
 | Recovery | Failed and past-due invoices with decline codes in plain English, a retry plan, and a customer email draft per invoice. | C021, C024, C034, C058, C059, C040, C050, C052 |
-| Alerts | Refund spike, dispute rate over 0.5% trailing 30 days (before Stripe's 0.75%), decline rate over 15% trailing 7 days. | C064, C065, C046, C047, C053 |
+| Alerts | Refund spike, dispute rate over 0.5% trailing 30 days (before Stripe's 0.75%), decline rate over 15% trailing 7 days. Also addresses P2 indirectly: keeping chargeback and refund rates under Stripe's risk thresholds is the only merchant-side lever against reserves and holds. | C064, C065, C046, C047, C053 |
 | Morning brief | Daily email and in-app brief: new alerts, disputes due soon, failed invoices, MRR change. | C048, C052, C061 |
 | Automations | Merchant writes a rule in plain English, reviews the compiled rule, and it runs on cron and webhooks. It can alert, draft, or propose an action, never execute one. | C042, C050, C052, C064 |
 | Revenue analytics | MRR, churn, cohort retention, decline rate by card brand and country, with the calculation shown and an AI narrative. | C018, C019, C060, C047 |
-| Customer 360 | One customer's payments, subscriptions, invoices, disputes, and a churn explanation. | C044, C050, C069 |
 | Confirmed actions | Refund, coupon, pause or cancel subscription as proposed actions with a Confirm button, re-checked permissions, and an audit log. | C063, C078 |
 | API and CLI | Read endpoints, ask endpoint, proposed-action endpoints, documented on /docs. | C018, C067 |
 | Read-only onboarding | Stripe Connect OAuth, read_only by default, read_write opt-in for confirmed actions. | C028 |
+| Customer 360 (last) | One customer's payments, subscriptions, invoices, disputes, and a churn explanation. Built last: weakest evidence of any feature, only 3 indirect complaints and none asking for a per-customer view. | C044, C050, C069 |
 
 ## What v1 does not do
 
 - Anything about account reviews, payout holds, reserves, or Stripe support (P2, 18 complaints). Those
-  are Stripe's risk decisions; a merchant-side tool cannot change them.
+  are Stripe's risk decisions; a merchant-side tool cannot change them. Alerts cover the one indirect
+  lever: staying under dispute and refund rate thresholds.
 - Fraud blocking or Radar rules. v1 detects anomalies and alerts; it does not block payments (C007, C038).
 - Accounting reconciliation exports and ledger sync (C016, C022, C074).
 - Fixing third-party plugin sync bugs (C004, C009, C013, C032, C066).
