@@ -1,0 +1,81 @@
+id,verbatim_fragment
+C001,customers treat chargebacks as an easy way to get a refund
+C002,someone decided to test stolen cards on Seodity
+C003,hit with disputes and a $15 fee for each dispute that was lost
+C004,This is leading them to process payments multiple times
+C005,"Stripe forced a refund of $46,000 from our business accounts."
+C006,$171.000 of stolen credit card money on my Stripe account
+C007,transactions seem to be going directly through the WooCommerce Stripe Payment Gateway
+C008,no payment was attempted by Woocommerce
+C009,it enlarges the amound 3x
+C010,no details are given beyond that
+C011,Stripe is refusing to export our card data
+C012,I sent them dozens of emails just to receive the same canned answers.
+C013,An error occurred while trying to create the refund using the Payment Gateway API.
+C014,"I don’t know what any of this means, or how to fix this problem"
+C015,"Now when trying to challenge a dispute, I receive the following error"
+C016,This makes it difficult for my tax accountant to match the payouts
+C017,Form said I'd hear back in 2 business days. It's been 2 weeks
+C018,such a core figure is absent in their API
+C019,Stripe's MRR number is NOT correct for my application
+C020,leaving customers with fraudulent claims in every dispute
+C021,Stripe support said they can't do anything about it.
+C022,this is causing the totals not to match
+C023,in addition to the affected renewal going to failed (which is expected behaviour)
+C024,We contacted BNP but they have no clue and referred to Stripe
+C025,Payout scheduling is currently unavailable for your store.
+C026,Stripe says they can’t it has to be fixed by Woopayments
+C027,Renewal order does not charge the client
+C028,"A hacker created six Express accounts , linked them to our platform"
+C029,They fully ignored us.
+C030,the dispute process is a complete farce. There is zero visibility
+C031,claw back legitimate transactions no matter what evidence you show
+C032,Event: refund.created is there but Event: charge.refunded is not there
+C033,they are just holding my funds for last 120 days for no reason
+C034,I just wondered how we understand what unknown parameter description means
+C035,"Stripe reverses the charge, hits us with chargeback fee as well"
+C036,Stripe does not refund the processing fees when we refund our students
+C037,dragged into evidence-upload purgatory judged by a bank that doesn’t know your business
+C038,we suddenly see hundreds of empty customers created in Stripe via the plugin
+C039,Stripe held $450K of my money hostage over ONE dispute
+C040,reduce the number of credit card payment failures on recurring payments
+C041,you pay the chargeback fee no matter what
+C042,Why is cancelling the subscription ever the default?
+C043,Numerous renewal attempts are failing with
+C044,they end up getting nothing for their payments
+C045,I only get to retain 35% of the total amount?
+C046,Winning a dispute does not stop stripe from holding it against you.
+C047,the practical effect is lost orders and potential revenue
+C048,"1000+ failed payments, 222 successful payments, All in October and November."
+C049,"Customer payments go through normally, but payouts are not released"
+C050,invoices for their subscriptions continue to be generated but the payments fail every time
+C051,nearly half of my checkout attempts are being declined
+C052,Nothing happens and no emails are sent to the store owner or the customer
+C053,stripe is declining 50% of my orders
+C054,Most of these failures happen when a 7-day free trial converts
+C055,submitted all documents for customer usage and still i lost the dispute
+C056,got my money back after 160+ days
+C057,support keeps sending circular replies about the account closure instead of the refunds
+C058,all of my payments are being rejected with the above Failure code
+C059,Stripe declined the payment and deemed it high-risk
+C060,I'm never able to reproduce whats displayed in the UI
+C061,the dispute was lost because the evidence deadline was missed
+C062,no results were shown to help me identify where the payment was coming from
+C063,I've even had previously refunded payments become disputes hours after issuing the refund
+C064,resulting in a total of 8 disputes
+C065,I had a 50% reserve on my business bc of a small increase disputes
+C066,All had to be manually corrected to Processing/Completed after the fact
+C067,Takes me about 3 hours end of quarter with coffee and swearing.
+C068,the fee doesn't scale with the average order value at all
+C069,Customer started yet another dispute (the 4th)
+C070,missed a bunch of refunds that came in late
+C071,"That fee is never refunded, regardless of the outcome."
+C072,I keep losing these disputes even though customers received access
+C073,watching Stripe billing fees being raised slowly over the years
+C074,any downstream accounting integration that reads `_stripe_fee` gets nothing
+C075,and the bank still sided with them. had screenshot of the email and everything
+C076,We've never had a single dispute.
+C077,I get a reply that doesn't answer what I asked
+C078,"So they've now received $13,000 back on an $8000 charge."
+C079,So I have to pay a $15 fine because a CUSTOMER initiated a dispute?
+C080,why I only have the option to do a full refund in the dashboard
