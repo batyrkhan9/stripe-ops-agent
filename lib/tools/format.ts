@@ -1,5 +1,6 @@
 import type Stripe from "stripe";
 import { dateLabel, dueLabel, moneyLabel, titleCase } from "@/lib/format/human";
+import { explainDecline } from "@/lib/stripe/declines";
 
 // Compact, model-friendly views of Stripe objects. Keeps token use low on free tiers and drops
 // fields the agent does not need. Amounts are converted from minor units.
@@ -56,15 +57,18 @@ export function formatCharge(charge: Stripe.Charge) {
     ...customerFields(charge.customer),
     description: charge.description,
     card: card ? { brand: card.brand, country: card.country } : undefined,
-    failure:
-      charge.status === "failed"
-        ? { code: charge.failure_code, decline_code: charge.outcome?.reason ?? null, message: charge.failure_message }
-        : undefined,
+    // Plain reason only: with raw codes in rows, the model quoted "insufficient_funds" in answers.
+    failure: charge.status === "failed" ? declineFields(charge.outcome?.reason ?? charge.failure_code) : undefined,
     disputed: charge.disputed || undefined,
     refunded_amount: charge.amount_refunded ? money(charge.amount_refunded, charge.currency) : undefined,
     payment_intent: idOf(charge.payment_intent),
     metadata: businessMetadata(charge.metadata),
   };
+}
+
+export function declineFields(code: string | null | undefined) {
+  const explained = explainDecline(code);
+  return { reason: explained.meaning, retry: explained.retry, customer_action: explained.customerAction };
 }
 
 export function formatCustomer(customer: Stripe.Customer) {

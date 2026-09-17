@@ -10,15 +10,9 @@ import type { Card, NextAction } from "@/lib/cards/types";
 import { visibleAnswerText } from "@/lib/agents/present";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
 import type { Sources } from "@/lib/agents/sources";
+import { DEMO_QUESTIONS } from "@/lib/demo/questions";
 import { Markdown } from "./markdown";
 
-
-const EXAMPLES = [
-  "Which disputes need a response?",
-  "Why did payments fail in the last 7 days?",
-  "What is our dispute rate over the last 30 days?",
-  "Which subscriptions are past due?",
-];
 
 const TOOL_LABELS: Record<string, string> = {
   list_charges: "charges",
@@ -57,6 +51,7 @@ function Answer({ message, streaming }: { message: AgentUIMessage; streaming: bo
   let nextAction: NextAction | null = null;
   let sources: Sources | null = null;
   let agents: string[] = [];
+  let savedAt: string | null = null;
   let pendingTool: string | null = null;
 
   for (const part of message.parts) {
@@ -65,6 +60,7 @@ function Answer({ message, streaming }: { message: AgentUIMessage; streaming: bo
     else if (part.type === "data-sources") sources = part.data;
     else if (part.type === "data-next") nextAction = part.data;
     else if (part.type === "data-cards") cards.push(...part.data.cards);
+    else if (part.type === "data-cached") savedAt = part.data.savedAt;
     else if (isToolUIPart(part)) {
       const name = getToolName(part);
       if (part.state !== "output-available") pendingTool = name;
@@ -74,7 +70,12 @@ function Answer({ message, streaming }: { message: AgentUIMessage; streaming: bo
 
   return (
     <div className="space-y-3">
-      {agents.length > 0 && <p className="label">{agents.join(" and ")}</p>}
+      {agents.length > 0 && (
+        <p className="label">
+          {agents.join(" and ")}
+          {savedAt && <span className="ml-2 normal-case tracking-normal">Saved answer from {new Date(savedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>}
+        </p>
+      )}
       {texts.map((text, i) => (
         <Markdown key={i} text={visibleAnswerText(text, cards.length > 0)} />
       ))}
@@ -158,8 +159,8 @@ export function Chat({ mode }: { mode: "demo" | "connected" }) {
       {exchanges.length === 0 && (
         <div>
           <p className="label pb-1">Try</p>
-          <ul className="space-y-0.5">
-            {EXAMPLES.map((example) => (
+          <ul className="grid gap-x-6 gap-y-0.5 sm:grid-cols-2">
+            {DEMO_QUESTIONS.map((example) => (
               <li key={example}>
                 <button type="button" className="text-left underline-offset-2 hover:underline" onClick={() => send(example)}>
                   {example}

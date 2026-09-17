@@ -12,7 +12,7 @@ import { auditLog, seedRuns } from "@/lib/db/schema";
 import { agentModel, finishModel } from "@/lib/llm/provider";
 import { createStripeClient } from "@/lib/stripe/client";
 import type { Span } from "@/lib/trace/recorder";
-import { checkAnswerRules, type CapturedAnswer, type FormatExpectations, type RuleResult } from "./answer-rules";
+import { checkAnswerRules, type CapturedAnswer, type FormatExpectations, type RuleResult } from "@/lib/agents/answer-rules";
 
 config({ path: ".env.local", quiet: true });
 

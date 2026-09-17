@@ -2,9 +2,10 @@ import { createUIMessageStreamResponse } from "ai";
 import { createAuditWriter } from "@/lib/audit/log";
 import { lastUserText, runAgentChat } from "@/lib/agents/run";
 import type { AgentUIMessage } from "@/lib/agents/ui-types";
-import { getDemoContext } from "@/lib/demo/context";
+import { cacheableQuestion, cacheKey, loadCachedAnswer, promptVersion, recordStream, replayStream, saveCachedAnswer } from "@/lib/demo/answer-cache";
+import { getDb } from "@/lib/db";
 import { agentModel, finishModel } from "@/lib/llm/provider";
-import { getActiveAccount } from "@/lib/stripe/active-account";
+import { getRequestContext } from "@/lib/stripe/request-context";
 import { saveRun } from "@/lib/trace/store";
 
 export const runtime = "nodejs";
@@ -19,19 +20,37 @@ export async function POST(request: Request) {
   if (!question) return Response.json({ error: "missing question" }, { status: 400 });
   if (question.length > MAX_QUESTION_CHARS) return Response.json({ error: "question too long" }, { status: 400 });
 
-  const account = await getActiveAccount();
-  const demo = account.mode === "demo" ? await getDemoContext() : null;
-  const accountId = demo?.accountId ?? account.connection?.accountId ?? `connection:${account.connection?.id}`;
+  const { account, accountId, now } = await getRequestContext();
+  const demo = account.mode === "demo" ? { now } : null;
 
+  // Demo answers to the common questions are replayed from Postgres, which keeps the demo usable when the
+  // free model tiers are rate limited.
+  const cachedQuestion = demo ? cacheableQuestion(messages, account.mode) : null;
+  const version = promptVersion();
+  const key = demo && cachedQuestion ? cacheKey(cachedQuestion, demo.now, version) : null;
+  if (key) {
+    const hit = await loadCachedAnswer(getDb(), key).catch(() => null);
+    if (hit) return createUIMessageStreamResponse({ stream: replayStream(hit.chunks, hit.savedAt) });
+  }
+
+  let runOk = false;
   const stream = runAgentChat(messages, {
     stripe: account.stripe,
     mode: account.mode,
     accountId,
-    now: demo?.now ?? Math.floor(Date.now() / 1000),
+    now,
     model: agentModel,
     finishModel,
     audit: createAuditWriter(accountId),
-    saveRun,
+    saveRun: async (run) => {
+      runOk = run.status === "ok";
+      await saveRun(run);
+    },
   });
-  return createUIMessageStreamResponse({ stream });
+  if (!key || !demo || !cachedQuestion) return createUIMessageStreamResponse({ stream });
+  const recorded = recordStream(stream, {
+    runOk: () => runOk,
+    save: (chunks) => saveCachedAnswer(getDb(), { key, question: cachedQuestion, anchor: demo.now, version, chunks }),
+  });
+  return createUIMessageStreamResponse({ stream: recorded });
 }
