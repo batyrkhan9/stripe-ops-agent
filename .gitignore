@@ -14,3 +14,7 @@ npm-debug.log*
 .env
 .env.local
 .env*.local
+
+# Local agent context, not published
+CLAUDE.md
+.claude/
