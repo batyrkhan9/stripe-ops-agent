@@ -101,6 +101,12 @@ describe("collectByDate", () => {
     expect((await collectByDate(pages(items), { now: NOW })).map((i) => i.id)).toEqual(["seeded"]);
   });
 
+  it("drops objects created after now even when they carry a seeded date inside the window", async () => {
+    // Stripe's automatic retries copy seed_occurred_at from the invoice's payment intent onto new charges.
+    const items = [item("seed_run", NOW + 600, NOW - DAY), item("later_retry", NOW + 7 * DAY, NOW - DAY)];
+    expect((await collectByDate(pages(items), { now: NOW, days: 7 })).map((i) => i.id)).toEqual(["seed_run"]);
+  });
+
   it("stops after maxScan objects", async () => {
     const items = Array.from({ length: 50 }, (_, i) => item(`x${i}`, NOW - i));
     expect(await collectByDate(pages(items), { now: NOW, maxScan: 10 })).toHaveLength(10);

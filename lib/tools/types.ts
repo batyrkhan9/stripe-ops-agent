@@ -64,6 +64,8 @@ export function isExperimentLeftover(item: { metadata?: Stripe.Metadata | null }
   return item.metadata?.seed_key === "experiment";
 }
 
+const CREATED_SLACK = 3_600;
+
 // Lists by intended date. Stripe's own created filter would be wrong for seeded demo data, so collect
 // up to maxScan objects, filter by effectiveTime, and sort newest first.
 export async function collectByDate<T extends Dated>(
@@ -76,6 +78,10 @@ export async function collectByDate<T extends Dated>(
   for await (const item of pages) {
     if (++scanned > (options.maxScan ?? 1000)) break;
     if (isExperimentLeftover(item)) continue;
+    // Nothing created after "now" belongs in a window ending at "now". In the frozen demo this drops Stripe's later
+    // automatic retries, whose charges copy the seeded date from the invoice's payment intent. The slack covers the
+    // seed run itself, which creates objects for a few minutes after its anchor.
+    if (item.created > options.now + CREATED_SLACK) continue;
     const time = effectiveTime(item);
     if (time > since && time <= options.now && (options.where?.(item) ?? true)) items.push(item);
   }

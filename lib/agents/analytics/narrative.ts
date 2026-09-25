@@ -34,7 +34,8 @@ export async function writeNarrative(
         maxRetries: 0,
         providerOptions: PROVIDER_OPTIONS,
       });
-      const text = result.text.replace(/\*\*/g, "").trim();
+      // Bold and em dashes are removed: neither belongs in the app's text.
+      const text = result.text.replace(/\*\*/g, "").replace(/\s*\u2014\s*/g, ", ").trim();
       if (text) return { text, served, unverified: unverifiedNumbers(text, facts) };
       lastError = "empty narrative";
     } catch (error) {

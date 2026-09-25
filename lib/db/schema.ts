@@ -162,3 +162,51 @@ export const drafts = pgTable("drafts", {
   provider: text("provider"),
   modelId: text("model_id"),
 });
+
+// One morning brief per account per real calendar day (lib/brief). Built by the daily cron for the demo account and on
+// demand from /briefs. Demo content is computed at the frozen demo time, so its briefs repeat by design.
+export const briefs = pgTable(
+  "briefs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    accountId: text("account_id").notNull(),
+    dayKey: text("day_key").notNull(),
+    content: jsonb("content").notNull(),
+    summaryModel: text("summary_model"),
+    trigger: text("trigger").notNull(),
+    emailedTo: text("emailed_to"),
+    emailedAt: timestamp("emailed_at", { withTimezone: true }),
+    emailError: text("email_error"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("briefs_account_day").on(table.accountId, table.dayKey)],
+);
+
+// Plain-English automations compiled to typed rules (lib/automations). A rule can alert, add a brief item, draft, or
+// propose an action; it can never execute a write (ADR 0003).
+export const automationRules = pgTable("automation_rules", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  accountId: text("account_id").notNull(),
+  connectionId: uuid("connection_id"),
+  name: text("name").notNull(),
+  sourceText: text("source_text").notNull(),
+  rule: jsonb("rule").notNull(),
+  readback: text("readback").notNull(),
+  enabled: boolean("enabled").notNull().default(true),
+  lastRunAt: timestamp("last_run_at", { withTimezone: true }),
+});
+
+export const automationRuns = pgTable("automation_runs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  ruleId: uuid("rule_id")
+    .notNull()
+    .references(() => automationRules.id, { onDelete: "cascade" }),
+  accountId: text("account_id").notNull(),
+  trigger: text("trigger").notNull(),
+  eventId: text("event_id"),
+  matched: boolean("matched").notNull(),
+  outcome: jsonb("outcome"),
+  error: text("error"),
+});
