@@ -1,4 +1,4 @@
-# Status, 2026-09-17 (end of unattended session)
+# Status, updated 2026-09-25
 
 Every item in the queue is done except what free tier quotas stopped. Nothing live was touched, no demo
 data was deleted, no paid service was added. 194 unit tests pass, CI is green, production pages return 200.
@@ -39,9 +39,18 @@ Still failing in run 2, all model reasoning errors worth a look: adding up faile
 
 - CI eval jobs need repository secrets `STRIPE_DEMO_KEY`, `GROQ_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`. Until added, pull request eval steps print a notice and skip. Details in [blocked.md](blocked.md).
 
-## Not in this queue (still in CLAUDE.md)
+## Done since 2026-09-17
 
-Phase 5 morning brief and automations, Phase 6 public API and CLI, Customer 360, threat model, and runbook.
+| Item | Result | Where |
+|---|---|---|
+| Phase 5 morning brief | Alerts, every dispute deadline, failed invoices, MRR change, built by code with a checked AI opening; stored per day on /briefs; daily Vercel cron at 13:00 UTC guarded by CRON_SECRET (set locally and in Vercel); emailed through Resend once a key exists (blocked.md) | `lib/brief/`, `app/api/cron/daily/`, [learn](learn/phase-5-briefs-and-automations.md) |
+| Phase 5 automations | A sentence compiles to a typed rule restated in plain English before saving; rules alert, add brief lines, draft, or propose, never write; event rules run on demo webhooks, daily rules on the cron and a button; run history on /rules. 10 unit tests plus the compiler checked on three inputs, including a refusal | `lib/automations/`, `app/rules/` |
+| Demo cache | Rewarmed for the current prompts, all 10 questions | |
+| Frozen demo drift | Stripe's automatic invoice retries were leaking into the frozen windows through copied seed dates; objects created after demo time are now skipped | `lib/tools/types.ts` |
+
+## Not built yet (still in CLAUDE.md)
+
+Phase 6 public API and CLI, Customer 360, threat model, and runbook. Eval and benchmark runs are still partial (see above).
 
 ## Suggested next steps
 
