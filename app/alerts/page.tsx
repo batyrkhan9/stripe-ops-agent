@@ -1,6 +1,7 @@
 import { checkAlerts } from "@/lib/alerts/check";
 import { THRESHOLDS } from "@/lib/alerts/rules";
 import { alertHistory } from "@/lib/alerts/store";
+import { recentRuleMessages } from "@/lib/automations/store";
 import { getDb } from "@/lib/db";
 import { dateLabel } from "@/lib/format/human";
 import { getRequestContext } from "@/lib/stripe/request-context";
@@ -12,9 +13,10 @@ const RULE_NAMES: Record<string, string> = { chargeback_rate: "Chargeback rate",
 export default async function AlertsPage() {
   const { account, accountId, now } = await getRequestContext();
   const db = getDb();
-  const [results, history] = await Promise.all([
+  const [results, history, ruleAlerts] = await Promise.all([
     checkAlerts({ db, stripe: account.stripe, accountId, now, trigger: "page_load" }),
     alertHistory(db, accountId),
+    recentRuleMessages(db, accountId, "alert", 7 * 24 * 60 * 60 * 1000),
   ]);
   const firing = results.filter((r) => r.firing).length;
 
@@ -59,6 +61,25 @@ export default async function AlertsPage() {
         closure. Keeping disputes and refunds low is the one lever a merchant controls, so the warning fires early at{" "}
         {(THRESHOLDS.chargebackWarn * 100).toFixed(2)}%.
       </p>
+
+      <section className="space-y-1">
+        <h2>From your rules, last 7 days</h2>
+        {ruleAlerts.length === 0 ? (
+          <p className="meta">No rule has raised an alert. Write one on the Rules page.</p>
+        ) : (
+          <table className="data-table">
+            <tbody>
+              {ruleAlerts.map((a, i) => (
+                <tr key={i} className="alert-row">
+                  <td className="meta w-40 whitespace-nowrap">{a.at.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" })}</td>
+                  <td className="font-medium">{a.ruleName}</td>
+                  <td>{a.message}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
 
       <section className="space-y-1">
         <h2>History</h2>

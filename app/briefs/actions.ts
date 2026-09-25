@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { dayKeyFor } from "@/lib/brief/build";
+import { recentRuleMessages } from "@/lib/automations/store";
 import { runBrief } from "@/lib/brief/run";
 import { briefForDay } from "@/lib/brief/store";
 import { getDb } from "@/lib/db";
@@ -22,7 +23,8 @@ export async function buildBriefAction(): Promise<BriefFormState> {
     }
   }
   try {
-    const result = await runBrief({ db, stripe: account.stripe, accountId, now, date: today, trigger: "page", items: [], email: false });
+    const items = await recentRuleMessages(db, accountId, "brief_item");
+    const result = await runBrief({ db, stripe: account.stripe, accountId, now, date: today, trigger: "page", items, email: false });
     revalidatePath("/briefs");
     return { ok: true, message: result.brief.summary ? "Built." : "Built without the AI summary; the model providers are busy." };
   } catch {

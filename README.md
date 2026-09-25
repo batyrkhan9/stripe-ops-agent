@@ -21,6 +21,8 @@ Built from 77 real merchant complaints ([discovery](docs/discovery/clusters.md),
 | Recovery | Failed invoices with decline reasons in plain English, a retry plan based on the decline type, and a customer email draft | C021, C040, C052 |
 | Analytics | MRR, net MRR movement, churn, cohort retention, decline rate by card brand and country, and a narrative whose numbers are checked against the metrics | C018, C019, C047, C060 |
 | Actions | Refunds, coupons, pauses, and cancellations proposed by the agent, confirmed here, and an audit log of every tool call | C028, C063, C078 |
+| Briefs | A daily morning brief (alerts, dispute deadlines, failed invoices, MRR change) built by cron, with a checked AI opening, shown in-app and emailed through Resend | C048, C052, C061 |
+| Rules | Plain-English automations compiled to typed rules you review before saving; they alert, add brief lines, draft, or propose, and never write to Stripe | C042, C050, C052, C064 |
 | Traces | Every agent run: routing, models, tokens, latency, and each tool call | |
 | Settings | Connect your own Stripe test account with a restricted key; the app checks its permissions without changing data | C028 |
 
@@ -81,6 +83,7 @@ and shadcn/ui, Vitest, GitHub Actions, and Vercel. No paid services. How the age
 ```bash
 pnpm install
 cp .env.example .env.local   # fill in DATABASE_URL, Stripe test keys, GROQ_API_KEY, GOOGLE_GENERATIVE_AI_API_KEY, secrets
+                             # optional: RESEND_API_KEY, BRIEF_FROM_EMAIL, BRIEF_TO_EMAIL for the emailed brief; CRON_SECRET for the daily cron
 pnpm db:migrate
 pnpm seed                    # needs STRIPE_SEED_KEY (a test key that can write); idempotent
 pnpm dev                     # http://localhost:3000
